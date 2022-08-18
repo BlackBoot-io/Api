@@ -3,8 +3,14 @@
 [Table(nameof(Event), Schema = nameof(EntitySchema.Base))]
 public class Event : IEntity
 {
-    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
+    public Event() => Code = Guid.NewGuid();
+
+
+    [Key]
     public int Id { get; set; }
+
+    public Guid Code { get; set; }
 
     public Guid? ProjectId { get; set; }
     [ForeignKey(nameof(ProjectId))]
