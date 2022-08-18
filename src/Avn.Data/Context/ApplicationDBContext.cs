@@ -1,5 +1,5 @@
 ﻿using Avn.Data.Extensions;
-using Avn.Shared.Extentions;
+using Avn.Domain.Entities;
 
 namespace Avn.Data.Context;
 
@@ -16,7 +16,7 @@ public class ApplicationDBContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.RegisterAllEntities<IEntity>(typeof(object).Assembly);
+        modelBuilder.RegisterAllEntities<IEntity>(typeof(User).Assembly);
     }
 }
 
