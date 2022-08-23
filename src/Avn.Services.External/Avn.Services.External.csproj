@@ -2,16 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Avn.Shared\Avn.Shared.csproj" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dtos\Tokens\" />
+    <ProjectReference Include="..\Avn.Data\Avn.Data.csproj" />
   </ItemGroup>
 
 </Project>

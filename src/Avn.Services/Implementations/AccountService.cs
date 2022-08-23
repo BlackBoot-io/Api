@@ -1,4 +1,4 @@
-﻿using Avn.Domain.Dtos;
+﻿using Avn.Domain.Dtos.Users;
 using Avn.Domain.Enums;
 using Avn.Services.Interfaces;
 using Google.Apis.Auth;

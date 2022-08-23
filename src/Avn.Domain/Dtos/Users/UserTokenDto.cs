@@ -1,4 +1,4 @@
-﻿namespace Avn.Domain.Dtos;
+﻿namespace Avn.Domain.Dtos.Users;
 
 public class UserTokenDto
 {

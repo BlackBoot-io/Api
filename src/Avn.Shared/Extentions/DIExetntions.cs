@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Avn.Shared.Core;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace Avn.Services.Extensions;
+namespace Avn.Shared.Extensions;
 
-internal static class DIExetntions
+public static class DIExetntions
 {
     /// <summary>
     ///  Register All Services that Inplemetes IScopedDependency

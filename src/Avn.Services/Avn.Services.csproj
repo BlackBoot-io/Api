@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Avn.Data\Avn.Data.csproj" />
+    <ProjectReference Include="..\Avn.Services.External\Avn.Services.External.csproj" />
   </ItemGroup>
 
   <ItemGroup>

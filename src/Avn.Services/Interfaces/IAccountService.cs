@@ -1,4 +1,4 @@
-﻿using Avn.Domain.Dtos;
+﻿using Avn.Domain.Dtos.Users;
 
 namespace Avn.Services.Interfaces;
 
