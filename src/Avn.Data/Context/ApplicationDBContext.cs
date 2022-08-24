@@ -17,6 +17,7 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.RegisterAllEntities<IEntity>(typeof(User).Assembly);
+        modelBuilder.AddPluralizingTableNameConvention();
     }
 }
 

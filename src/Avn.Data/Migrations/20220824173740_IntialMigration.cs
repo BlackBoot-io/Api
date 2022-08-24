@@ -16,7 +16,7 @@ namespace Avn.Data.Migrations
                 name: "Admin");
 
             migrationBuilder.CreateTable(
-                name: "Network",
+                name: "Networks",
                 schema: "Base",
                 columns: table => new
                 {
@@ -29,11 +29,11 @@ namespace Avn.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Network", x => x.Id);
+                    table.PrimaryKey("PK_Networks", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "Users",
                 schema: "Admin",
                 columns: table => new
                 {
@@ -50,11 +50,11 @@ namespace Avn.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.UserId);
+                    table.PrimaryKey("PK_Users", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Project",
+                name: "Projects",
                 schema: "Base",
                 columns: table => new
                 {
@@ -67,17 +67,17 @@ namespace Avn.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Project", x => x.Id);
+                    table.PrimaryKey("PK_Projects", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Project_User_UserId",
+                        name: "FK_Projects_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "Admin",
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "UserId");
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserJwtToken",
+                name: "UserJwtTokens",
                 schema: "Admin",
                 columns: table => new
                 {
@@ -91,17 +91,17 @@ namespace Avn.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserJwtToken", x => x.UserJwtTokenId);
+                    table.PrimaryKey("PK_UserJwtTokens", x => x.UserJwtTokenId);
                     table.ForeignKey(
-                        name: "FK_UserJwtToken_User_UserId",
+                        name: "FK_UserJwtTokens_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "Admin",
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "UserId");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Event",
+                name: "Events",
                 schema: "Base",
                 columns: table => new
                 {
@@ -127,31 +127,31 @@ namespace Avn.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Event", x => x.Id);
+                    table.PrimaryKey("PK_Events", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Event_Network_NetworkId",
+                        name: "FK_Events_Networks_NetworkId",
                         column: x => x.NetworkId,
                         principalSchema: "Base",
-                        principalTable: "Network",
+                        principalTable: "Networks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Event_Project_ProjectId",
+                        name: "FK_Events_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalSchema: "Base",
-                        principalTable: "Project",
+                        principalTable: "Projects",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Event_User_UserId",
+                        name: "FK_Events_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "Admin",
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Token",
+                name: "Tokens",
                 schema: "Base",
                 columns: table => new
                 {
@@ -165,77 +165,77 @@ namespace Avn.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Token", x => x.Id);
+                    table.PrimaryKey("PK_Tokens", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Token_Event_EventId",
+                        name: "FK_Tokens_Events_EventId",
                         column: x => x.EventId,
                         principalSchema: "Base",
-                        principalTable: "Event",
+                        principalTable: "Events",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Event_NetworkId",
+                name: "IX_Events_NetworkId",
                 schema: "Base",
-                table: "Event",
+                table: "Events",
                 column: "NetworkId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Event_ProjectId",
+                name: "IX_Events_ProjectId",
                 schema: "Base",
-                table: "Event",
+                table: "Events",
                 column: "ProjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Event_UserId",
+                name: "IX_Events_UserId",
                 schema: "Base",
-                table: "Event",
+                table: "Events",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Project_UserId",
+                name: "IX_Projects_UserId",
                 schema: "Base",
-                table: "Project",
+                table: "Projects",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Token_EventId",
+                name: "IX_Tokens_EventId",
                 schema: "Base",
-                table: "Token",
+                table: "Tokens",
                 column: "EventId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserJwtToken_UserId",
+                name: "IX_UserJwtTokens_UserId",
                 schema: "Admin",
-                table: "UserJwtToken",
+                table: "UserJwtTokens",
                 column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Token",
+                name: "Tokens",
                 schema: "Base");
 
             migrationBuilder.DropTable(
-                name: "UserJwtToken",
+                name: "UserJwtTokens",
                 schema: "Admin");
 
             migrationBuilder.DropTable(
-                name: "Event",
+                name: "Events",
                 schema: "Base");
 
             migrationBuilder.DropTable(
-                name: "Network",
+                name: "Networks",
                 schema: "Base");
 
             migrationBuilder.DropTable(
-                name: "Project",
+                name: "Projects",
                 schema: "Base");
 
             migrationBuilder.DropTable(
-                name: "User",
+                name: "Users",
                 schema: "Admin");
         }
     }

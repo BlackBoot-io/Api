@@ -97,7 +97,7 @@ namespace Avn.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Event", "Base");
+                    b.ToTable("Events", "Base");
                 });
 
             modelBuilder.Entity("Avn.Domain.Entities.Network", b =>
@@ -124,7 +124,7 @@ namespace Avn.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Network", "Base");
+                    b.ToTable("Networks", "Base");
                 });
 
             modelBuilder.Entity("Avn.Domain.Entities.Project", b =>
@@ -159,7 +159,7 @@ namespace Avn.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Project", "Base");
+                    b.ToTable("Projects", "Base");
                 });
 
             modelBuilder.Entity("Avn.Domain.Entities.Token", b =>
@@ -192,7 +192,7 @@ namespace Avn.Data.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("Token", "Base");
+                    b.ToTable("Tokens", "Base");
                 });
 
             modelBuilder.Entity("Avn.Domain.Entities.User", b =>
@@ -244,7 +244,7 @@ namespace Avn.Data.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("User", "Admin");
+                    b.ToTable("Users", "Admin");
                 });
 
             modelBuilder.Entity("Avn.Domain.Entities.UserJwtToken", b =>
@@ -276,7 +276,7 @@ namespace Avn.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserJwtToken", "Admin");
+                    b.ToTable("UserJwtTokens", "Admin");
                 });
 
             modelBuilder.Entity("Avn.Domain.Entities.Event", b =>
