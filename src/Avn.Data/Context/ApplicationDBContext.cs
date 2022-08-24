@@ -3,10 +3,10 @@ using Avn.Domain.Entities;
 
 namespace Avn.Data.Context;
 
-public class ApplicationDBContext : DbContext
+public class ApplicationDbContext : DbContext
 {
-    public ApplicationDBContext() { }
-    public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options) { }
+    public ApplicationDbContext() { }
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {

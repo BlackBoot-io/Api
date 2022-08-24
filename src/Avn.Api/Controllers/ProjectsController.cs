@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Avn.Api.Controllers
 {
-    public class ProjectController : BaseController
+    public class ProjectsController : BaseController
     {
         private readonly IProjectsService _projectService;
-        public ProjectController(IProjectsService projectService) => _projectService = projectService;
+        public ProjectsController(IProjectsService projectService) => _projectService = projectService;
 
         [HttpPost]
         public async Task<IActionResult> AddAsync(Guid userId, [FromBody] Project item)

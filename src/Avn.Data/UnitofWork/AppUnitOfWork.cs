@@ -8,12 +8,10 @@ namespace Avn.Data.UnitofWork;
 
 public partial class AppUnitOfWork : IAppUnitOfWork
 {
-    private readonly ApplicationDBContext _dbContext;
+    private readonly ApplicationDbContext _dbContext;
 
-    public AppUnitOfWork(ApplicationDBContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    public AppUnitOfWork(ApplicationDbContext dbContext) => _dbContext = dbContext;
+
 
     public ChangeTracker ChangeTracker => _dbContext.ChangeTracker;
 

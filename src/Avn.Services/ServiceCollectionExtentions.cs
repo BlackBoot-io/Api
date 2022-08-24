@@ -1,4 +1,5 @@
-﻿using Avn.Shared.Extensions;
+﻿using Avn.Services.External;
+using Avn.Shared.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Avn.Services;
@@ -11,6 +12,11 @@ public static class ServiceCollectionExtentions
         services.RegisterScopedServices(assembly);
         services.RegisterSingletonServices(assembly);
         services.RegisterTransientServices(assembly);
+
+
+
+
+        services.RegisterApplicatioinExternalServices();
     }
 }
 

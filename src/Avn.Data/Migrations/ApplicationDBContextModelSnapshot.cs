@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Avn.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ApplicationDbContext))]
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -44,6 +44,9 @@ namespace Avn.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<byte>("EventStatus")
+                        .HasColumnType("tinyint");
+
                     b.Property<string>("EventUri")
                         .HasMaxLength(100)
                         .IsUnicode(false)
@@ -51,6 +54,9 @@ namespace Avn.Data.Migrations
 
                     b.Property<DateTime>("ExpireDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsPrivate")
                         .HasColumnType("bit");
@@ -165,6 +171,9 @@ namespace Avn.Data.Migrations
                     b.Property<bool>("Burn")
                         .HasColumnType("bit");
 
+                    b.Property<int>("ContractTokenId")
+                        .HasColumnType("int");
+
                     b.Property<int>("EventId")
                         .HasColumnType("int");
 
@@ -174,9 +183,6 @@ namespace Avn.Data.Migrations
                     b.Property<string>("OwerWalletAddress")
                         .IsUnicode(false)
                         .HasColumnType("varchar(max)");
-
-                    b.Property<int>("TokenId")
-                        .HasColumnType("int");
 
                     b.Property<string>("UniqueCode")
                         .IsUnicode(false)
@@ -238,7 +244,7 @@ namespace Avn.Data.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("User", "Base");
+                    b.ToTable("User", "Admin");
                 });
 
             modelBuilder.Entity("Avn.Domain.Entities.UserJwtToken", b =>
@@ -270,7 +276,7 @@ namespace Avn.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserJwtToken", "Base");
+                    b.ToTable("UserJwtToken", "Admin");
                 });
 
             modelBuilder.Entity("Avn.Domain.Entities.Event", b =>

@@ -12,6 +12,9 @@ namespace Avn.Data.Migrations
             migrationBuilder.EnsureSchema(
                 name: "Base");
 
+            migrationBuilder.EnsureSchema(
+                name: "Admin");
+
             migrationBuilder.CreateTable(
                 name: "Network",
                 schema: "Base",
@@ -31,7 +34,7 @@ namespace Avn.Data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "User",
-                schema: "Base",
+                schema: "Admin",
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -68,14 +71,14 @@ namespace Avn.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Project_User_UserId",
                         column: x => x.UserId,
-                        principalSchema: "Base",
+                        principalSchema: "Admin",
                         principalTable: "User",
                         principalColumn: "UserId");
                 });
 
             migrationBuilder.CreateTable(
                 name: "UserJwtToken",
-                schema: "Base",
+                schema: "Admin",
                 columns: table => new
                 {
                     UserJwtTokenId = table.Column<int>(type: "int", nullable: false)
@@ -92,7 +95,7 @@ namespace Avn.Data.Migrations
                     table.ForeignKey(
                         name: "FK_UserJwtToken_User_UserId",
                         column: x => x.UserId,
-                        principalSchema: "Base",
+                        principalSchema: "Admin",
                         principalTable: "User",
                         principalColumn: "UserId");
                 });
@@ -111,6 +114,7 @@ namespace Avn.Data.Migrations
                     Description = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
                     TemplateType = table.Column<byte>(type: "tinyint", nullable: false),
                     DeliveryType = table.Column<byte>(type: "tinyint", nullable: false),
+                    EventStatus = table.Column<byte>(type: "tinyint", nullable: false),
                     NetworkId = table.Column<int>(type: "int", nullable: false),
                     EventUri = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
                     Location = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
@@ -118,7 +122,8 @@ namespace Avn.Data.Migrations
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsVirtual = table.Column<bool>(type: "bit", nullable: false),
-                    IsPrivate = table.Column<bool>(type: "bit", nullable: false)
+                    IsPrivate = table.Column<bool>(type: "bit", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -139,7 +144,7 @@ namespace Avn.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Event_User_UserId",
                         column: x => x.UserId,
-                        principalSchema: "Base",
+                        principalSchema: "Admin",
                         principalTable: "User",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
@@ -152,7 +157,7 @@ namespace Avn.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     EventId = table.Column<int>(type: "int", nullable: false),
-                    TokenId = table.Column<int>(type: "int", nullable: false),
+                    ContractTokenId = table.Column<int>(type: "int", nullable: false),
                     Mint = table.Column<bool>(type: "bit", nullable: false),
                     Burn = table.Column<bool>(type: "bit", nullable: false),
                     OwerWalletAddress = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
@@ -202,7 +207,7 @@ namespace Avn.Data.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserJwtToken_UserId",
-                schema: "Base",
+                schema: "Admin",
                 table: "UserJwtToken",
                 column: "UserId");
         }
@@ -215,7 +220,7 @@ namespace Avn.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserJwtToken",
-                schema: "Base");
+                schema: "Admin");
 
             migrationBuilder.DropTable(
                 name: "Event",
@@ -231,7 +236,7 @@ namespace Avn.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "User",
-                schema: "Base");
+                schema: "Admin");
         }
     }
 }
