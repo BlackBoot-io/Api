@@ -61,11 +61,38 @@ namespace Avn.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AddProjectOperationFail.
+        /// </summary>
+        public static string AddProjectOperationFail {
+            get {
+                return ResourceManager.GetString("AddProjectOperationFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to InvalidUser.
         /// </summary>
         public static string InvalidUser {
             get {
                 return ResourceManager.GetString("InvalidUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RecordNotFound.
+        /// </summary>
+        public static string RecordNotFound {
+            get {
+                return ResourceManager.GetString("RecordNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UpdateProjectOperationFail.
+        /// </summary>
+        public static string UpdateProjectOperationFail {
+            get {
+                return ResourceManager.GetString("UpdateProjectOperationFail", resourceCulture);
             }
         }
         
