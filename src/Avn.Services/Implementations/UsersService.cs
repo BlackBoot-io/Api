@@ -1,34 +1,29 @@
 ﻿#nullable disable
 using Avn.Data.Context;
+using Avn.Data.UnitofWork;
 using Avn.Domain.Entities;
 using Avn.Services.Interfaces;
 
 namespace BlackBoot.Services.Implementations;
 
-public class UserService : IUserService
+public class UsersService : IUsersService
 {
-    private readonly DbSet<User> _users;
-    private readonly ApplicationDBContext _context;
+    private readonly IAppUnitOfWork _uow;
 
-    public UserService(ApplicationDBContext context)
-    {
-        _context = context;
-        _users = context.Set<User>();
-    }
+    public UsersService(IAppUnitOfWork uow) => _uow = uow;
+
 
     public async Task<IActionResponse<User>> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
-        => new ActionResponse<User>(await _users.FirstOrDefaultAsync(x => x.Email == email.ToLower(), cancellationToken));
+        => new ActionResponse<User>(await _uow.UserRepo.GetAll().FirstOrDefaultAsync(x => x.Email == email.ToLower(), cancellationToken));
 
     public async Task<IActionResponse<User>> GetAsync(Guid id, CancellationToken cancellationToken = default)
-        => new ActionResponse<User>(await _users.FindAsync(new object[] { id }, cancellationToken));
+        => new ActionResponse<User>(await _uow.UserRepo.FindAsync(new object[] { id }, cancellationToken));
 
     public async Task<IActionResponse<Guid>> AddAsync(User user, CancellationToken cancellationToken = default)
     {
-        await _users.AddAsync(user);
+        await _uow.UserRepo.AddAsync(user,cancellationToken);
 
-
-
-        var dbResult = await _context.SaveChangesAsync();
+        var dbResult = await _uow.SaveChangesAsync();
         if (!dbResult.ToSaveChangeResult())
             return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError);
 
@@ -36,9 +31,9 @@ public class UserService : IUserService
     }
     public async Task<IActionResponse<Guid>> UpdateAsync(User user, CancellationToken cancellationToken = default)
     {
-        _users.Update(user);
+        _uow.UserRepo.Update(user);
 
-        var dbResult = await _context.SaveChangesAsync();
+        var dbResult = await _uow.SaveChangesAsync();
         if (!dbResult.ToSaveChangeResult())
             return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError);
 

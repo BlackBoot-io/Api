@@ -2,7 +2,7 @@
 
 namespace Avn.Services.Interfaces;
 
-public interface IUserJwtTokenService : IScopedDependency
+public interface IUserJwtTokensService : IScopedDependency
 {
     Task<IActionResponse> AddUserTokenAsync(Guid userId, string accessToken, string refreshToken, CancellationToken cancellationToken = default);
     Task<IActionResponse> RevokeUserTokensAsync(Guid userId, string refreshToken, CancellationToken cancellationToken = default);

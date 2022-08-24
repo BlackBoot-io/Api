@@ -1,6 +1,6 @@
 ﻿namespace Avn.Domain.Entities;
 
-[Table(nameof(UserJwtToken), Schema = nameof(EntitySchema.Base))]
+[Table(nameof(UserJwtToken), Schema = nameof(EntitySchema.Admin))]
 public class UserJwtToken : IEntity
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

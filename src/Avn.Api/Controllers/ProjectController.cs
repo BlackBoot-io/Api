@@ -5,8 +5,8 @@ namespace Avn.Api.Controllers
 {
     public class ProjectController : BaseController
     {
-        private readonly IProjectService _projectService;
-        public ProjectController(IProjectService projectService) => _projectService = projectService;
+        private readonly IProjectsService _projectService;
+        public ProjectController(IProjectsService projectService) => _projectService = projectService;
 
         [HttpPost]
         public async Task<IActionResult> AddAsync(Guid userId, [FromBody] Project item)

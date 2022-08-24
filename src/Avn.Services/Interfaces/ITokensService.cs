@@ -2,7 +2,7 @@
 
 namespace Avn.Services.Interfaces;
 
-public interface ITokenServices : IScopedDependency
+public interface ITokensService : IScopedDependency
 {
     Task<IActionResponse<TokenDto>> GetAsync(string uniqueCode, CancellationToken cancellationToken = default);
     Task<IActionResponse<string>> AddAsync(CreateTokenDto item, CancellationToken cancellationToken = default);

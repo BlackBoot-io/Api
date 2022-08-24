@@ -2,5 +2,6 @@
 
 public static class EntitySchema
 {
+    public const string Admin = nameof(Admin);
     public const string Base = nameof(Base);
 }

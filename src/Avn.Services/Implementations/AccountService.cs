@@ -10,13 +10,13 @@ namespace Avn.Services.Implementations;
 public class AccountService : IAccountService
 {
 
-    private readonly IUserService _userService;
-    private readonly IUserJwtTokenService _userTokenService;
+    private readonly IUsersService _userService;
+    private readonly IUserJwtTokensService _userTokenService;
     private readonly IJwtTokenFactory _tokenFactoryService;
     private readonly IConfiguration _configuration;
 
-    public AccountService(IUserService userService,
-                          IUserJwtTokenService userTokenService,
+    public AccountService(IUsersService userService,
+                          IUserJwtTokensService userTokenService,
                           IJwtTokenFactory tokenFactoryService,
                           IConfiguration configuration)
     {
