@@ -12,12 +12,12 @@ public class AccountService : IAccountService
 
     private readonly IUsersService _userService;
     private readonly IUserJwtTokensService _userTokenService;
-    private readonly IJwtTokenFactory _tokenFactoryService;
+    private readonly IJwtTokensFactory _tokenFactoryService;
     private readonly IConfiguration _configuration;
 
     public AccountService(IUsersService userService,
                           IUserJwtTokensService userTokenService,
-                          IJwtTokenFactory tokenFactoryService,
+                          IJwtTokensFactory tokenFactoryService,
                           IConfiguration configuration)
     {
         _userService = userService;

@@ -8,10 +8,10 @@ using System.Text;
 
 namespace BlackBoot.Services.Implementations;
 
-public class JwtTokenFactory : IJwtTokenFactory
+public class JwtTokensFactory : IJwtTokensFactory
 {
     private readonly JwtSettings _jwtSettings;
-    public JwtTokenFactory(IConfiguration configuration) => _jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
+    public JwtTokensFactory(IConfiguration configuration) => _jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
 
     public IActionResponse<(string Token, int TokenExpirationMinutes)> CreateToken(List<Claim> claims, JwtTokenType tokenType)
     {
