@@ -28,6 +28,7 @@ public class Event : IEntity
 
     public TemplateType TemplateType { get; set; }
     public DeliveryType DeliveryType { get; set; }
+    public EventStatus EventStatus { get; set; } = EventStatus.Pending;
 
 
     public int NetworkId { get; set; }
@@ -46,7 +47,7 @@ public class Event : IEntity
 
     public bool IsVirtual { get; set; }
     public bool IsPrivate { get; set; }
-
+    public bool IsActive { get; set; }
 
     public ICollection<Token> Tokens { get; set; }
 

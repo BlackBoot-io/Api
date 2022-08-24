@@ -10,8 +10,4 @@
     <ProjectReference Include="..\Avn.Shared\Avn.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Dtos\Tokens\" />
-  </ItemGroup>
-
 </Project>

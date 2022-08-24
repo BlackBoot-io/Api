@@ -1,10 +1,13 @@
-﻿namespace Avn.Services.Interfaces;
+﻿using Avn.Domain.Dtos.Tokens;
+
+namespace Avn.Services.Interfaces;
 
 public interface ITokenServices : IScopedDependency
 {
-    Task<IActionResponse<object>> GetAsync(object id, CancellationToken cancellationToken = default);
-    Task<IActionResponse<object>> AddAsync(object eventId, CancellationToken cancellationToken = default);
-    Task<IActionResponse<object>> ConnectWalletAsync(object item, CancellationToken cancellation = default);
-    Task<IActionResponse<object>> MintAsync(object item, CancellationToken cancellation = default);
-    Task<IActionResponse<object>> BurnAsync(object item, CancellationToken cancellation = default);
+    Task<IActionResponse<TokenDto>> GetAsync(string uniqueCode, CancellationToken cancellationToken = default);
+    Task<IActionResponse<string>> AddAsync(CreateTokenDto item, CancellationToken cancellationToken = default);
+    Task<IActionResponse<IEnumerable<string>>> AddRangeAsync(List<CreateTokenDto> items, CancellationToken cancellationToken = default);
+    Task<IActionResponse<bool>> ConnectWalletAsync(Guid id, string walletAdress, CancellationToken cancellationToken = default);
+    Task<IActionResponse<bool>> MintAsync(Guid id, int contractTokenId, CancellationToken cancellationToken = default);
+    Task<IActionResponse<bool>> BurnAsync(Guid id, int contractTokenId, CancellationToken cancellationToken = default);
 }

@@ -10,7 +10,7 @@ public class Token : IEntity
     public int EventId { get; set; }
     [ForeignKey(nameof(EventId))]
     public virtual Event Event { get; set; }
-    public int TokenId { get; set; }
+    public int ContractTokenId { get; set; }
 
     public bool Mint { get; set; }
     public bool Burn { get; set; }

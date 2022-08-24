@@ -120,6 +120,9 @@
   <data name="InvalidUser" xml:space="preserve">
     <value>InvalidUser</value>
   </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>Not Found</value>
+  </data>
   <data name="UserNotFound" xml:space="preserve">
     <value>User not found</value>
   </data>
