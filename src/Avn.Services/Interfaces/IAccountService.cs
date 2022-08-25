@@ -1,9 +1,11 @@
 ﻿using Avn.Domain.Dtos.Users;
+using Avn.Domain.Entities;
 
 namespace Avn.Services.Interfaces;
 
 public interface IAccountService : IScopedDependency
 {
+    Task<IActionResponse<UserTokenDto>> SignupAsync(User user, CancellationToken cancellationToken = default);
     Task<IActionResponse<UserTokenDto>> LoginAsync(UserLoginDto userLoginDto, CancellationToken cancellationToken = default);
     Task<IActionResponse<UserTokenDto>> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default);
     Task<IActionResponse> LogoutAsync(Guid userId,string refreshToken, CancellationToken cancellationToken = default);

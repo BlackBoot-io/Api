@@ -79,6 +79,15 @@ namespace Avn.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not Found.
+        /// </summary>
+        public static string NotFound {
+            get {
+                return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to RecordNotFound.
         /// </summary>
         public static string RecordNotFound {
@@ -88,20 +97,20 @@ namespace Avn.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current Transaction is failed! Please try again later..
+        /// </summary>
+        public static string TransactionFailed {
+            get {
+                return ResourceManager.GetString("TransactionFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UpdateProjectOperationFail.
         /// </summary>
         public static string UpdateProjectOperationFail {
             get {
                 return ResourceManager.GetString("UpdateProjectOperationFail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Not Found.
-        /// </summary>
-        public static string NotFound {
-            get {
-                return ResourceManager.GetString("NotFound", resourceCulture);
             }
         }
         

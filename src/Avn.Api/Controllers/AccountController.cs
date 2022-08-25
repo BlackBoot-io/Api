@@ -10,6 +10,10 @@ public class AccountController : BaseController
     public AccountController(IAccountService accountService) => _accountService = accountService;
 
     [HttpPost, AllowAnonymous]
+    public async Task<IActionResult> SignupAsync(User user, CancellationToken cancellationToken)
+        => Ok(await _accountService.SignupAsync(user, cancellationToken));
+
+    [HttpPost, AllowAnonymous]
     public async Task<IActionResult> LoginAsync(UserLoginDto userLoginDto, CancellationToken cancellationToken)
         => Ok(await _accountService.LoginAsync(userLoginDto, cancellationToken));
 

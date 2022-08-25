@@ -8,6 +8,7 @@ using Google.Apis.Auth;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
+using Avn.Domain.Entities;
 
 namespace Avn.Services.Implementations;
 
@@ -110,6 +111,33 @@ public class AccountService : IAccountService
         };
 
         return result;
+    }
+    public async Task<IActionResponse<UserTokenDto>> SignupAsync(User user, CancellationToken cancellationToken = default)
+    {
+        user.Password = HashGenerator.Hash(user.Password);
+        var addedUser = await _userService.AddAsync(user, cancellationToken);
+
+        #region create random code
+        var newCode = RandomStringGenerator.Generate(10);
+        user.Code = newCode;
+        #endregion
+
+        if (!addedUser.IsSuccess)
+            return new ActionResponse<UserTokenDto>(ActionResponseStatusCode.BadRequest, AppResource.TransactionFailed);
+        var usertokens = await GenerateTokenAsync(user.UserId, cancellationToken);
+        await _userTokenService.AddUserTokenAsync(user.UserId, usertokens.AccessToken, usertokens.RefreshToken, cancellationToken);
+
+        #region send code
+        _emailGatewayAdapter.Send(new EmailDto
+        {
+            Content = newCode,
+            Receiver = user.Email,
+            Subject = "Recovery Password",
+            Template = EmailTemplate.Verification
+        });
+        #endregion
+
+        return new ActionResponse<UserTokenDto>(usertokens);
     }
     public async Task<IActionResponse<bool>> VerifyAsync(Guid userId, string code, CancellationToken cancellationToken = default)
     {
