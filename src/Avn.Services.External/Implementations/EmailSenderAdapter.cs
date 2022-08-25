@@ -9,16 +9,17 @@ using sib_api_v3_sdk.Model;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Threading.Tasks;
 
 namespace Avn.Services.External.Implementations;
 
-public class EmailGatewayAdapter : IEmailGatewayAdapter, IScopedDependency
+public class EmailSenderAdapter : IEmailSenderAdapter
 {
     private readonly IConfiguration _configuration;
-    public EmailGatewayAdapter(IConfiguration configuration)
+    public EmailSenderAdapter(IConfiguration configuration)
         => _configuration = configuration;
 
-    private (bool, string) SendWithSendinBlue(EmailDto email)
+    private async Task<EmailResponseDto> SendWithSendinBlue(EmailRequestDto email)
     {
         try
         {
@@ -50,46 +51,36 @@ public class EmailGatewayAdapter : IEmailGatewayAdapter, IScopedDependency
                 messageVersions: null,
                 tags: null);
 
-            var sendMailResult = apiInstance.SendTransacEmail(smtpEmail);
+            var sendMailResult = await apiInstance.SendTransacEmailAsync(smtpEmail);
             if (!string.IsNullOrEmpty(sendMailResult.MessageId))
-                return (true, sendMailResult.MessageId?.Split("@")[0]?.Substring(1));
+                return new(true, sendMailResult.MessageId?.Split("@")[0]?.Substring(1));
             else
-                return (false, string.Empty);
+                return new(false, string.Empty);
         }
         catch (SmtpCommandException ex)
         {
-            return (false, $"SmtpException {ex.Message}");
+            return new(false, $"SmtpException {ex.Message}");
         }
         catch (Exception e)
         {
-            return (false, $"Exception {e.Message}");
+            return new(false, $"Exception {e.Message}");
         }
     }
 
-    public IActionResponse<bool> Send(EmailDto email)
+    public async Task<IActionResponse> Send(EmailRequestDto email)
     {
-        ActionResponse<bool> response = new();
+
         try
         {
-            var sendResult = SendWithSendinBlue(email);
-            if (sendResult.Item1)
-            {
-                response.Data = true;
-                response.IsSuccess = true;
-                response.Message = $"Status: Success | ID: {sendResult.Item2}";
-            }
+            var sendResult = await SendWithSendinBlue(email);
+            if (sendResult.IsSucess)
+                return new ActionResponse(ActionResponseStatusCode.Success, $"Status: Success | ID: {sendResult.Message}");
             else
-            {
-                response.Data = false;
-                response.Message = $"Status: Fail | ID: {sendResult.Item2}";
-            }
-
-            return response;
+                return new ActionResponse(ActionResponseStatusCode.Success, $"Status: Fail | ID: {sendResult.Message}");
         }
         catch (Exception e)
         {
-            response.Message = $"Exception {e.Message}";
-            return response;
+            return new ActionResponse(ActionResponseStatusCode.ServerError, $"Exception {e.Message}");
         }
     }
 }
