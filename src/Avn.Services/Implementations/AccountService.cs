@@ -1,21 +1,26 @@
-﻿using Avn.Domain.Dtos.Users;
+﻿using Avn.Domain.Dtos;
+using Avn.Domain.Dtos.Users;
 using Avn.Domain.Enums;
 using Avn.Services.Interfaces;
+using Avn.Shared.Utilities;
+using Avn.Services.External.Implementations;
 using Google.Apis.Auth;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 
 namespace Avn.Services.Implementations;
 
 public class AccountService : IAccountService
 {
 
-    private readonly IUserService _userService;
+    private readonly IUsersService _userService;
     private readonly IUserJwtTokenService _userTokenService;
     private readonly IJwtTokenFactory _tokenFactoryService;
     private readonly IConfiguration _configuration;
+    private readonly EmailGatewayAdapter _emailGatewayAdapter;
 
-    public AccountService(IUserService userService,
+    public AccountService(IUsersService userService,
                           IUserJwtTokenService userTokenService,
                           IJwtTokenFactory tokenFactoryService,
                           IConfiguration configuration)
@@ -71,8 +76,6 @@ public class AccountService : IAccountService
             IsActive= user.Data.IsActive
         });
     }
-
-
     private async Task<UserTokenDto> GenerateTokenAsync(Guid userId, CancellationToken cancellationToken)
     {
         var user = await _userService.GetAsync(userId, cancellationToken);
@@ -108,8 +111,83 @@ public class AccountService : IAccountService
 
         return result;
     }
+    public async Task<IActionResponse<bool>> VerifyAsync(Guid userId, string code, CancellationToken cancellationToken = default)
+    {
+        #region get user
+        var foundUserResponse = await _userService.GetAsync(userId);
+        var foundUser = foundUserResponse.Data;
+        if (foundUser == null)
+            return new ActionResponse<bool>(ActionResponseStatusCode.NotFound);
+        #endregion
 
+        #region check if the user sent the same code, then make IsVerified true
+        if (foundUser.Code != code)
+            return new ActionResponse<bool>(ActionResponseStatusCode.NotFound);
 
+        foundUser.EmailIsApproved = true;
 
+        var dbResult = await _userService.UpdateAsync(foundUser, cancellationToken);
 
+        if (!dbResult.IsSuccess)
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError);
+        #endregion
+
+        return new ActionResponse<bool>();
+    }
+    public async Task<IActionResponse<bool>> ResendOtpAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        #region get user
+        var foundUserResponse = await _userService.GetAsync(userId);
+        var foundUser = foundUserResponse.Data;
+        if (foundUser == null)
+            return new ActionResponse<bool>(ActionResponseStatusCode.NotFound);
+        #endregion
+
+        #region generate random code for user and save it
+        var newCode = RandomStringGenerator.Generate(10);
+
+        foundUser.Code = newCode;
+        var dbResult = await _userService.UpdateAsync(foundUser, cancellationToken);
+
+        if (!dbResult.IsSuccess)
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError);
+        #endregion
+
+        #region send the generated code to the user via email
+        _emailGatewayAdapter.Send(new EmailDto
+        {
+            Content = newCode,
+            Receiver = foundUser.Email,
+            Subject = "Recovery Password",
+            Template = EmailTemplate.Verification
+        });
+        #endregion
+
+        return new ActionResponse<bool>();
+    }
+    public async Task<IActionResponse<bool>> UpdateEmailAsync(Guid userId, string email, CancellationToken cancellationToken = default)
+    {
+        #region validate email
+        if (!Regex.Match(email, @"^[\w -\.] +@([\w -] +\.)+[\w -]{ 2,4}$").Success)
+            return new ActionResponse<bool>(ActionResponseStatusCode.BadRequest);
+        #endregion
+
+        #region get user
+        var foundUserResponse = await _userService.GetAsync(userId);
+        var foundUser = foundUserResponse.Data;
+        if (foundUser == null)
+            return new ActionResponse<bool>(ActionResponseStatusCode.NotFound);
+        #endregion
+
+        #region Update Email field
+        foundUser.Email = email;
+
+        var dbResult = await _userService.UpdateAsync(foundUser, cancellationToken);
+
+        if (!dbResult.IsSuccess)
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError);
+        #endregion
+
+        return new ActionResponse<bool>();
+    }
 }

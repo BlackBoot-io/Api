@@ -2,7 +2,7 @@
 
 namespace Avn.Services.Interfaces;
 
-public interface IUserService : IScopedDependency
+public interface IUsersService : IScopedDependency
 {
     Task<IActionResponse<Guid>> AddAsync(User user, CancellationToken cancellationToken = default);
     Task<IActionResponse<User>> GetAsync(Guid id, CancellationToken cancellationToken = default);

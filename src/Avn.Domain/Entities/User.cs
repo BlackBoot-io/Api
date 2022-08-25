@@ -9,7 +9,7 @@ public class User : IEntity
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid UserId { get; set; }
 
-
+    public string Code { get; set; }
 
     [Required, MaxLength(150)]
     public string FullName { get; set; } = null!;
