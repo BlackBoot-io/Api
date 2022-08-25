@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Avn.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20220818110704_IntialMigration")]
+    [DbContext(typeof(ApplicationDbContext))]
+    [Migration("20220824173740_IntialMigration")]
     partial class IntialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,6 +46,9 @@ namespace Avn.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<byte>("EventStatus")
+                        .HasColumnType("tinyint");
+
                     b.Property<string>("EventUri")
                         .HasMaxLength(100)
                         .IsUnicode(false)
@@ -53,6 +56,9 @@ namespace Avn.Data.Migrations
 
                     b.Property<DateTime>("ExpireDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsPrivate")
                         .HasColumnType("bit");
@@ -93,7 +99,7 @@ namespace Avn.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Event", "Base");
+                    b.ToTable("Events", "Base");
                 });
 
             modelBuilder.Entity("Avn.Domain.Entities.Network", b =>
@@ -120,7 +126,7 @@ namespace Avn.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Network", "Base");
+                    b.ToTable("Networks", "Base");
                 });
 
             modelBuilder.Entity("Avn.Domain.Entities.Project", b =>
@@ -155,7 +161,7 @@ namespace Avn.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Project", "Base");
+                    b.ToTable("Projects", "Base");
                 });
 
             modelBuilder.Entity("Avn.Domain.Entities.Token", b =>
@@ -167,6 +173,9 @@ namespace Avn.Data.Migrations
                     b.Property<bool>("Burn")
                         .HasColumnType("bit");
 
+                    b.Property<int>("ContractTokenId")
+                        .HasColumnType("int");
+
                     b.Property<int>("EventId")
                         .HasColumnType("int");
 
@@ -177,9 +186,6 @@ namespace Avn.Data.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(max)");
 
-                    b.Property<int>("TokenId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UniqueCode")
                         .IsUnicode(false)
                         .HasColumnType("varchar(max)");
@@ -188,7 +194,7 @@ namespace Avn.Data.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("Token", "Base");
+                    b.ToTable("Tokens", "Base");
                 });
 
             modelBuilder.Entity("Avn.Domain.Entities.User", b =>
@@ -240,7 +246,7 @@ namespace Avn.Data.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("User", "Base");
+                    b.ToTable("Users", "Admin");
                 });
 
             modelBuilder.Entity("Avn.Domain.Entities.UserJwtToken", b =>
@@ -272,7 +278,7 @@ namespace Avn.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserJwtToken", "Base");
+                    b.ToTable("UserJwtTokens", "Admin");
                 });
 
             modelBuilder.Entity("Avn.Domain.Entities.Event", b =>

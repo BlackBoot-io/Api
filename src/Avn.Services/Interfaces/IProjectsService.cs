@@ -2,7 +2,7 @@
 
 namespace Avn.Services.Interfaces
 {
-    public interface IProjectService
+    public interface IProjectsService
     {
         Task<IActionResponse<IEnumerable<Project>>> GetAllAsync(Guid userid, CancellationToken cancellationToken = default);
 

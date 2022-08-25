@@ -1,23 +1,20 @@
-﻿using Avn.Domain.Dtos.Tokens;
+﻿using Avn.Data.UnitofWork;
+using Avn.Domain.Dtos.Tokens;
 using Avn.Domain.Entities;
 
 namespace Avn.Services.Interfaces;
 
-public class TokenServices : ITokenServices
+public class TokensService : ITokensService
 {
 
-    private readonly ApplicationDBContext _uow;
-    private readonly DbSet<Token> _tokens;
-    public TokenServices(ApplicationDBContext uow)
-    {
-        _uow = uow;
-        _tokens = _uow.Set<Token>();
+    private readonly IAppUnitOfWork _uow;
 
-    }
+    public TokensService(IAppUnitOfWork uow) => _uow = uow;
+
 
     public async Task<IActionResponse<TokenDto>> GetAsync(string uniqueCode, CancellationToken cancellationToken = default)
     {
-        var result = await _tokens.Where(x => x.UniqueCode == uniqueCode).Select(row => new TokenDto
+        var result = await _uow.TokenRepo.GetAll().Where(x => x.UniqueCode == uniqueCode).Select(row => new TokenDto
         {
 
         }).FirstOrDefaultAsync(cancellationToken);
@@ -32,7 +29,7 @@ public class TokenServices : ITokenServices
     {
         var model = new Token { };
 
-        await _tokens.AddAsync(model, cancellationToken);
+        await _uow.TokenRepo.AddAsync(model, cancellationToken);
         await _uow.SaveChangesAsync(cancellationToken);
 
         return new ActionResponse<string>(model.UniqueCode);
@@ -42,7 +39,7 @@ public class TokenServices : ITokenServices
     {
         var models = items.Select(row => new Token { });
 
-        await _tokens.AddRangeAsync(models, cancellationToken);
+        await _uow.TokenRepo.AddRangeAsync(models, cancellationToken);
         await _uow.SaveChangesAsync(cancellationToken);
 
         return new ActionResponse<IEnumerable<string>>(models.Select(x => x.UniqueCode));
@@ -50,7 +47,7 @@ public class TokenServices : ITokenServices
 
     public async Task<IActionResponse<bool>> ConnectWalletAsync(Guid id, string walletAdress, CancellationToken cancellationToken = default)
     {
-        var model = await _tokens.FirstOrDefaultAsync(x => x.Id == id && x.OwerWalletAddress == null, cancellationToken);
+        var model = await _uow.TokenRepo.GetAll().FirstOrDefaultAsync(x => x.Id == id && x.OwerWalletAddress == null, cancellationToken);
         if (model == null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
 
@@ -62,7 +59,7 @@ public class TokenServices : ITokenServices
     }
     public async Task<IActionResponse<bool>> MintAsync(Guid id, int contractTokenId, CancellationToken cancellationToken = default)
     {
-        var model = await _tokens.FirstOrDefaultAsync(x => x.Id == id && x.OwerWalletAddress != null && !x.Mint, cancellationToken);
+        var model = await _uow.TokenRepo.GetAll().FirstOrDefaultAsync(x => x.Id == id && x.OwerWalletAddress != null && !x.Mint, cancellationToken);
         if (model == null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
 
@@ -76,7 +73,7 @@ public class TokenServices : ITokenServices
 
     public async Task<IActionResponse<bool>> BurnAsync(Guid id, int contractTokenId, CancellationToken cancellationToken = default)
     {
-        var model = await _tokens.FirstOrDefaultAsync(x => x.Id == id && x.OwerWalletAddress != null && x.Mint && x.Burn, cancellationToken);
+        var model = await _uow.TokenRepo.GetAll().FirstOrDefaultAsync(x => x.Id == id && x.OwerWalletAddress != null && x.Mint && x.Burn, cancellationToken);
         if (model == null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
 

@@ -1,7 +1,7 @@
 ﻿using Avn.Shared.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Avn.Services;
+namespace Avn.Services.External;
 
 public static class ServiceCollectionExtentions
 {

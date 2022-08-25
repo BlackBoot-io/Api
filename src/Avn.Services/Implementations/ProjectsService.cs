@@ -1,23 +1,20 @@
-﻿using Avn.Domain.Dtos.Projects;
+﻿using Avn.Data.UnitofWork;
+using Avn.Domain.Dtos.Projects;
 using Avn.Domain.Entities;
 using Avn.Services.Interfaces;
 
 namespace Avn.Services.Implementations
 {
-    public class ProjectService : IProjectService
+    public class ProjectsService : IProjectsService
     {
 
-        private readonly ApplicationDBContext _context;
-        private readonly DbSet<Project> _project;
+        private readonly IAppUnitOfWork _uow;
 
-        public ProjectService(ApplicationDBContext context)
-        {
-            _context = context;
-            _project = context.Set<Project>();
-        }
+        public ProjectsService(IAppUnitOfWork uow) => _uow = uow;
+
 
         public async Task<IActionResponse<IEnumerable<Project>>> GetAllAsync(Guid userid, CancellationToken cancellationToken = default)
-       => new ActionResponse<IEnumerable<Project>>(await _project.Where(X => X.UserId == userid) 
+       => new ActionResponse<IEnumerable<Project>>(await _uow.ProjectRepo.GetAll().Where(X => X.UserId == userid) 
            .AsNoTracking()
            .ToListAsync());
 
@@ -30,8 +27,8 @@ namespace Avn.Services.Implementations
             project.ApiKey = (new Guid()).ToString(); //TODO check GUID DataType
 
 
-            await _context.AddAsync(project);
-            var dbResult = await _context.SaveChangesAsync();
+            await _uow.ProjectRepo.AddAsync(project);
+            var dbResult = await _uow.SaveChangesAsync();
 
             if (!dbResult.ToSaveChangeResult())
                 return new ActionResponse<Project>(ActionResponseStatusCode.ServerError, AppResource.AddProjectOperationFail);
@@ -50,7 +47,7 @@ namespace Avn.Services.Implementations
 
         public async Task<IActionResponse<Project>> UpdateAsync(Project item, CancellationToken cancellationToken = default)
         {
-            var project = await _project.FirstOrDefaultAsync(x => x.Id == item.Id);
+            var project = await _uow.ProjectRepo.GetAll().FirstOrDefaultAsync(x => x.Id == item.Id);
             if (project == null)  
                 return new ActionResponse<Project>(  ActionResponseStatusCode.NotFound, AppResource.RecordNotFound);
             
@@ -60,7 +57,7 @@ namespace Avn.Services.Implementations
             project.ApiKey = item.ApiKey;
 
             await UpdateAsync(project);
-            var dbResult = await _context.SaveChangesAsync();
+            var dbResult = await _uow.SaveChangesAsync();
 
             if (!dbResult.ToSaveChangeResult())
                 return new ActionResponse<Project>(ActionResponseStatusCode.ServerError, AppResource.AddProjectOperationFail);

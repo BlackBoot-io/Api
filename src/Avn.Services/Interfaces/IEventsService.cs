@@ -2,7 +2,7 @@
 
 namespace Avn.Services.Interfaces;
 
-public interface IEventServices : IScopedDependency
+public interface IEventsService : IScopedDependency
 {
     Task<IActionResponse<IEnumerable<EventDto>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default);
     Task<IActionResponse<Guid>> CreateAsync(CreateEventDto item, CancellationToken cancellationToken = default);

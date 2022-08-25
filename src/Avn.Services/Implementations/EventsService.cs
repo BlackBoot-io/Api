@@ -1,26 +1,25 @@
-﻿using Avn.Domain.Dtos.Events;
+﻿using Avn.Data.UnitofWork;
+using Avn.Domain.Dtos.Events;
 using Avn.Domain.Entities;
 using Avn.Domain.Enums;
 using Avn.Services.External.Implementations;
 
 namespace Avn.Services.Interfaces;
 
-public class EventServices : IEventServices
+public class EventsService : IEventsService
 {
-    private readonly ApplicationDBContext _uow;
-    private readonly DbSet<Event> _events;
+    private readonly IAppUnitOfWork _uow;
     private readonly INftStorageAdaptar _nftStorageAdaptar;
-    public EventServices(ApplicationDBContext uow, INftStorageAdaptar nftStorageAdaptar)
+    public EventsService(IAppUnitOfWork uow, INftStorageAdaptar nftStorageAdaptar)
     {
         _uow = uow;
-        _events = _uow.Set<Event>();
         _nftStorageAdaptar = nftStorageAdaptar;
     }
 
 
     public async Task<IActionResponse<IEnumerable<EventDto>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default)
     {
-        var result = await _events.AsNoTracking().Where(x => x.UserId == userId).Select(row => new EventDto
+        var result = await _uow.EventRepo.GetAll().AsNoTracking().Where(x => x.UserId == userId).Select(row => new EventDto
         {
             Id = row.Id,
             Code = row.Code,
@@ -51,7 +50,7 @@ public class EventServices : IEventServices
     {
         var model = new Event { };
 
-        await _events.AddAsync(model, cancellationToken);
+        await _uow.EventRepo.AddAsync(model, cancellationToken);
         await _uow.SaveChangesAsync(cancellationToken);
 
         return new ActionResponse<Guid>(model.Code);
@@ -59,7 +58,7 @@ public class EventServices : IEventServices
 
     public async Task<IActionResponse<bool>> DeactiveAsync(Guid code, CancellationToken cancellationToken = default)
     {
-        var model = await _events.FirstOrDefaultAsync(x => x.Code == code, cancellationToken);
+        var model = await _uow.EventRepo.GetAll().FirstOrDefaultAsync(x => x.Code == code, cancellationToken);
         if (model == null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
 
@@ -73,7 +72,7 @@ public class EventServices : IEventServices
 
     public async Task<IActionResponse<bool>> ConfirmAsync(int eventId, CancellationToken cancellationToken = default)
     {
-        var model = await _events.FirstOrDefaultAsync(x => x.Id == eventId && x.EventStatus == EventStatus.Pending, cancellationToken);
+        var model = await _uow.EventRepo.GetAll().FirstOrDefaultAsync(x => x.Id == eventId && x.EventStatus == EventStatus.Pending, cancellationToken);
         if (model == null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
 
@@ -91,7 +90,7 @@ public class EventServices : IEventServices
 
     public async Task<IActionResponse<bool>> RejectAsync(int eventId, CancellationToken cancellation = default)
     {
-        var model = await _events.FirstOrDefaultAsync(x => x.Id == eventId && x.EventStatus == EventStatus.Pending, cancellation);
+        var model = await _uow.EventRepo.GetAll().FirstOrDefaultAsync(x => x.Id == eventId && x.EventStatus == EventStatus.Pending, cancellation);
         if (model == null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
 

@@ -15,14 +15,14 @@ public class AccountService : IAccountService
 {
 
     private readonly IUsersService _userService;
-    private readonly IUserJwtTokenService _userTokenService;
-    private readonly IJwtTokenFactory _tokenFactoryService;
+    private readonly IUserJwtTokensService _userTokenService;
+    private readonly IJwtTokensFactory _tokenFactoryService;
     private readonly IConfiguration _configuration;
     private readonly EmailGatewayAdapter _emailGatewayAdapter;
 
     public AccountService(IUsersService userService,
-                          IUserJwtTokenService userTokenService,
-                          IJwtTokenFactory tokenFactoryService,
+                          IUserJwtTokensService userTokenService,
+                          IJwtTokensFactory tokenFactoryService,
                           IConfiguration configuration)
     {
         _userService = userService;
