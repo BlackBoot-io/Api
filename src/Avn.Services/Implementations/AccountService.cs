@@ -8,6 +8,7 @@ using Google.Apis.Auth;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
+using Avn.Services.External.Interfaces;
 
 namespace Avn.Services.Implementations;
 
@@ -18,7 +19,7 @@ public class AccountService : IAccountService
     private readonly IUserJwtTokensService _userTokenService;
     private readonly IJwtTokensFactory _tokenFactoryService;
     private readonly IConfiguration _configuration;
-    private readonly EmailGatewayAdapter _emailGatewayAdapter;
+    private readonly IEmailSenderAdapter _emailGatewayAdapter;
 
     public AccountService(IUsersService userService,
                           IUserJwtTokensService userTokenService,
@@ -154,13 +155,8 @@ public class AccountService : IAccountService
         #endregion
 
         #region send the generated code to the user via email
-        _emailGatewayAdapter.Send(new EmailDto
-        {
-            Content = newCode,
-            Receiver = foundUser.Email,
-            Subject = "Recovery Password",
-            Template = EmailTemplate.Verification
-        });
+        await _emailGatewayAdapter.Send(new EmailRequestDto(EmailTemplate.Verification, foundUser.Email, "Recovery Password", newCode));
+
         #endregion
 
         return new ActionResponse<bool>();

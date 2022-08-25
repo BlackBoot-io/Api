@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Avn.Services.External.Implementations;
 
-public interface INftStorageAdaptar: IScopedDependency
+public interface INftStorageAdapter: IScopedDependency
 {
     Task<object> Upload(object item, CancellationToken cancellationToken = default);
 }

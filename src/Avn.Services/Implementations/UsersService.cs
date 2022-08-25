@@ -13,7 +13,7 @@ namespace Avn.Services.Implementations;
 public class UsersService : IUsersService
 {
     private readonly IAppUnitOfWork _uow;
-    private readonly EmailGatewayAdapter _emailGatewayAdapter;
+    private readonly EmailSenderAdapter _emailGatewayAdapter;
 
     public UsersService(IAppUnitOfWork uow) => _uow = uow;
 
@@ -31,20 +31,14 @@ public class UsersService : IUsersService
         user.Code = newCode;
         #endregion
 
-        await _uow.UserRepo.AddAsync(user,cancellationToken);
+        await _uow.UserRepo.AddAsync(user, cancellationToken);
 
         var dbResult = await _uow.SaveChangesAsync();
         if (!dbResult.ToSaveChangeResult())
             return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError);
 
         #region send code
-        _emailGatewayAdapter.Send(new EmailDto
-        {
-            Content = newCode,
-            Receiver = user.Email,
-            Subject = "Recovery Password",
-            Template = EmailTemplate.Verification
-        });
+        await _emailGatewayAdapter.Send(new EmailRequestDto(EmailTemplate.Verification, user.Email, "Recovery Password", newCode));
         #endregion
 
         return new ActionResponse<Guid>();

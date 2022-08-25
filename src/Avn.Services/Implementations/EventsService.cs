@@ -9,8 +9,8 @@ namespace Avn.Services.Interfaces;
 public class EventsService : IEventsService
 {
     private readonly IAppUnitOfWork _uow;
-    private readonly INftStorageAdaptar _nftStorageAdaptar;
-    public EventsService(IAppUnitOfWork uow, INftStorageAdaptar nftStorageAdaptar)
+    private readonly INftStorageAdapter _nftStorageAdaptar;
+    public EventsService(IAppUnitOfWork uow, INftStorageAdapter nftStorageAdaptar)
     {
         _uow = uow;
         _nftStorageAdaptar = nftStorageAdaptar;
