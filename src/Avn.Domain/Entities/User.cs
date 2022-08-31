@@ -5,8 +5,7 @@ public class User : IEntity
 {
     public User() => UserId = Guid.NewGuid();
 
-
-    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Key]
     public Guid UserId { get; set; }
 
     public string Code { get; set; }

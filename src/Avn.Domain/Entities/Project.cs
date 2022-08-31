@@ -8,23 +8,27 @@ public class Project : IEntity
     [Key]
     public Guid Id { get; set; }
 
-    public Guid? UserId { get; set; }
     [ForeignKey(nameof(UserId))]
-    public virtual User User { get; set; }
+    public User User { get; set; }
+    public Guid UserId { get; set; }
 
     [MaxLength(50)]
+    [Required]
     public string Name { get; set; }
 
-    [MaxLength(50)]
+    [Required]
+    [MaxLength(15)]
+    [Column(TypeName = "varchar")]
     public string SourceIp { get; set; }
 
-
+    [Required]
     [MaxLength(50)]
-    public string Website { get; set; }
-
     public string ApiKey { get; set; }
 
+    [MaxLength(50)]
+    [Column(TypeName = "varchar")]
+    public string Website { get; set; }
 
+    public DateTime InsertDate { get; set; }
     public ICollection<Event> Events { get; set; }
-
 }

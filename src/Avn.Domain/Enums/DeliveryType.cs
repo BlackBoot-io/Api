@@ -1,8 +1,7 @@
-﻿namespace Avn.Domain.Enums
+﻿namespace Avn.Domain.Enums;
+
+public enum DeliveryType : byte
 {
-    public enum DeliveryType : byte
-    {
-        Individual = 1,
-        Organization = 2
-    }
+    Link = 1,
+    QR = 2
 }
