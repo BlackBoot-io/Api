@@ -1,8 +1,7 @@
-﻿namespace Avn.Domain.Enums
+﻿namespace Avn.Domain.Enums;
+
+public enum UserType : byte
 {
-    public enum UserType : byte
-    {
-        Individual = 1,
-        Organization = 2
-    }
+    Individual = 1,
+    Organization = 2
 }
