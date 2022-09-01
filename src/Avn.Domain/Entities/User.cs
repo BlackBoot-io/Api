@@ -29,7 +29,7 @@ public class User : IEntity
     [Column(TypeName = "varchar")]
     public string PasswordSalt { get; set; }
 
-    public UserType UserType { get; set; }
+    public UserType Type { get; set; }
    
     [Required]
     [MaxLength(256)]

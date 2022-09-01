@@ -11,7 +11,7 @@ public class Network : IEntity
     public string Name { get; set; }
 
     [Required]
-    public NetworkType NetworkType { get; set; }
+    public NetworkType Type { get; set; }
 
     [Required]
     [Column(TypeName = "decimal(21,9)")]

@@ -70,7 +70,7 @@ public class AccountService : IAccountService
         {
             Email = user.Data.Email,
             FullName = user.Data.FullName,
-            UserType = user.Data.UserType,
+            UserType = user.Data.Type,
             OrganizationName = user.Data.OrganizationName,
             WalletAddress = user.Data.WalletAdress,
             UserId = user.Data.UserId,
@@ -102,7 +102,7 @@ public class AccountService : IAccountService
             {
                 Email = user.Data.Email,
                 FullName = user.Data.FullName,
-                UserType = user.Data.UserType,
+                UserType = user.Data.Type,
                 OrganizationName = user.Data.OrganizationName,
                 WalletAddress = user.Data.WalletAdress,
                 UserId = user.Data.UserId,
