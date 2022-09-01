@@ -48,7 +48,7 @@ public class EventsService : IEventsService
 
     public async Task<IActionResponse<Guid>> CreateAsync(CreateEventDto item, CancellationToken cancellationToken = default)
     {
-        var model = new Event { };
+        var model = new Drop { };
 
         await _uow.EventRepo.AddAsync(model, cancellationToken);
         await _uow.SaveChangesAsync(cancellationToken);

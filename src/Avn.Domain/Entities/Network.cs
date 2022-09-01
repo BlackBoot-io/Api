@@ -23,5 +23,5 @@ public class Network : IEntity
 
     public bool IsActive { get; set; }
 
-    public ICollection<Event> Events { get; set; }
+    public ICollection<Drop> Events { get; set; }
 }

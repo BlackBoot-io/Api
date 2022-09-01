@@ -18,7 +18,7 @@ public interface IAppUnitOfWork : IDisposable, IAsyncDisposable
     public IGenericRepo<UserJwtToken> UserJwtTokenRepo { get; }
     #endregion
     #region Base
-    public IGenericRepo<Event> EventRepo { get; }
+    public IGenericRepo<Drop> EventRepo { get; }
     public IGenericRepo<Token> TokenRepo { get; }
     public IGenericRepo<Project> ProjectRepo { get; }
     public IGenericRepo<Network> NetworkRepo { get; }

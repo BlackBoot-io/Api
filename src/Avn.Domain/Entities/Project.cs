@@ -30,5 +30,5 @@ public class Project : IEntity
     public string Website { get; set; }
 
     public DateTime InsertDate { get; set; }
-    public ICollection<Event> Events { get; set; }
+    public ICollection<Drop> Events { get; set; }
 }

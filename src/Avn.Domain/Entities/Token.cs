@@ -4,12 +4,13 @@
 public class Token : IEntity
 {
     public Token() => Id = Guid.NewGuid();
+
     [Key]
     public Guid Id { get; set; }
    
-    [ForeignKey(nameof(EventId))]
-    public virtual Event Event { get; set; }
-    public int EventId { get; set; }
+    [ForeignKey(nameof(DropId))]
+    public virtual Drop Drop { get; set; }
+    public int DropId { get; set; }
 
     public int ContractTokenId { get; set; }
 
@@ -18,12 +19,10 @@ public class Token : IEntity
 
     [Required]
     [MaxLength(150)]
-    [Column(TypeName = "varchar")]
     public string OwerWalletAddress { get; set; }
 
     [Required]
     [MaxLength(15)]
-    [Column(TypeName = "varchar")]
     public string UniqueCode { get; set; }
 
     public DateTime InsertDate { get; set; }

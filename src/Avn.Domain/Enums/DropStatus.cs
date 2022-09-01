@@ -1,6 +1,6 @@
 ﻿namespace Avn.Domain.Enums;
 
-public enum EventStatus : byte
+public enum DropStatus : byte
 {
     Pending = 1,
     Rejected = 2,

@@ -1,9 +1,9 @@
 ﻿namespace Avn.Domain.Entities;
 
-[Table(nameof(Event), Schema = nameof(EntitySchema.Base))]
-public class Event : IEntity
+[Table(nameof(Drop), Schema = nameof(EntitySchema.Base))]
+public class Drop : IEntity
 {
-    public Event() => Code = Guid.NewGuid();
+    public Drop() => Code = Guid.NewGuid();
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -26,11 +26,12 @@ public class Event : IEntity
     public string Name { get; set; }
 
     public DeliveryType DeliveryType { get; set; }
-    public EventStatus EventStatus { get; set; } = EventStatus.Pending;
+
+    public DropStatus DropStatus { get; set; } = DropStatus.Pending;
 
     [MaxLength(100)]
     [Required]
-    public string EventUri { get; set; }
+    public string DropUri { get; set; }
 
     [MaxLength(50)]
     [Required]
