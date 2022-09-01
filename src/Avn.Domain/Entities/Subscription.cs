@@ -1,6 +1,6 @@
 ﻿namespace Avn.Domain.Entities;
 
-[Table(nameof(Subscription), Schema = nameof(EntitySchema.Auth))]
+[Table(nameof(Subscription), Schema = nameof(EntitySchema.User))]
 public class Subscription : IEntity
 {
     [Key]
