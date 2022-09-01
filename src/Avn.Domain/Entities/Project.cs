@@ -1,6 +1,6 @@
 ﻿namespace Avn.Domain.Entities;
 
-[Table(nameof(Project), Schema = nameof(EntitySchema.Base))]
+[Table(nameof(Project), Schema = nameof(EntitySchema.User))]
 public class Project : IEntity
 {
     public Project() => Id = Guid.NewGuid();

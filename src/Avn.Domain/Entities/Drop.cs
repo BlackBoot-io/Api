@@ -1,6 +1,6 @@
 ﻿namespace Avn.Domain.Entities;
 
-[Table(nameof(Drop), Schema = nameof(EntitySchema.Base))]
+[Table(nameof(Drop), Schema = nameof(EntitySchema.User))]
 public class Drop : IEntity
 {
     public Drop() => Code = Guid.NewGuid();

@@ -1,7 +1,7 @@
 ﻿namespace Avn.Domain.Entities;
 
 [Table(nameof(Settings), Schema = nameof(EntitySchema.Base))]
-public class Settings
+public class Settings : IEntity
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

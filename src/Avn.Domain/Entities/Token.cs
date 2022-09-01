@@ -1,6 +1,6 @@
 ﻿namespace Avn.Domain.Entities;
 
-[Table(nameof(Token), Schema = nameof(EntitySchema.Base))]
+[Table(nameof(Token), Schema = nameof(EntitySchema.User))]
 public class Token : IEntity
 {
     public Token() => Id = Guid.NewGuid();

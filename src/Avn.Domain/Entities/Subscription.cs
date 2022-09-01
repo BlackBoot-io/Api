@@ -1,7 +1,7 @@
 ﻿namespace Avn.Domain.Entities;
 
 [Table(nameof(Subscription), Schema = nameof(EntitySchema.Auth))]
-public class Subscription
+public class Subscription : IEntity
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
