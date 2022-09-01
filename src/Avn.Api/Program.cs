@@ -2,7 +2,6 @@ using Avn.Api.Extentions;
 using Avn.Api.Middlewares;
 using Avn.Services;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
