@@ -114,7 +114,7 @@ namespace Avn.Data.Migrations
                     Description = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
                     TemplateType = table.Column<byte>(type: "tinyint", nullable: false),
                     DeliveryType = table.Column<byte>(type: "tinyint", nullable: false),
-                    EventStatus = table.Column<byte>(type: "tinyint", nullable: false),
+                    DropStatus = table.Column<byte>(type: "tinyint", nullable: false),
                     NetworkId = table.Column<int>(type: "int", nullable: false),
                     EventUri = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
                     Location = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),

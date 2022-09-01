@@ -29,11 +29,10 @@ public class EventsService : IEventsService
             User = row.User != null ? row.User.FullName : "",
             Name = row.Name,
             Description = row.Description,
-            TemplateType = row.TemplateType,
             DeliveryType = row.DeliveryType,
             NetworkId = row.NetworkId,
             Network = row.Network != null ? row.Network.Name : "",
-            EventUri = row.EventUri,
+            EventUri = row.DropUri,
             Location = row.Location,
             StartDate = row.StartDate,
             EndDate = row.EndDate,
@@ -72,11 +71,11 @@ public class EventsService : IEventsService
 
     public async Task<IActionResponse<bool>> ConfirmAsync(int eventId, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.EventRepo.GetAll().FirstOrDefaultAsync(x => x.Id == eventId && x.EventStatus == EventStatus.Pending, cancellationToken);
+        var model = await _uow.EventRepo.GetAll().FirstOrDefaultAsync(x => x.Id == eventId && x.DropStatus == DropStatus.Pending, cancellationToken);
         if (model == null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
 
-        model.EventStatus = EventStatus.Confirmed;
+        model.DropStatus = DropStatus.Confirmed;
 
 
         var result = await _uow.SaveChangesAsync(cancellationToken);
@@ -90,11 +89,11 @@ public class EventsService : IEventsService
 
     public async Task<IActionResponse<bool>> RejectAsync(int eventId, CancellationToken cancellation = default)
     {
-        var model = await _uow.EventRepo.GetAll().FirstOrDefaultAsync(x => x.Id == eventId && x.EventStatus == EventStatus.Pending, cancellation);
+        var model = await _uow.EventRepo.GetAll().FirstOrDefaultAsync(x => x.Id == eventId && x.DropStatus == DropStatus.Pending, cancellation);
         if (model == null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
 
-        model.EventStatus = EventStatus.Reject;
+        model.DropStatus = DropStatus.Reject;
 
         await _uow.SaveChangesAsync(cancellation);
 

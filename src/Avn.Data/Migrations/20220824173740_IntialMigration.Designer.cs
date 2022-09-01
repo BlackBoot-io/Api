@@ -46,7 +46,7 @@ namespace Avn.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<byte>("EventStatus")
+                    b.Property<byte>("DropStatus")
                         .HasColumnType("tinyint");
 
                     b.Property<string>("EventUri")

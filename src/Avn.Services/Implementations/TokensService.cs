@@ -59,7 +59,7 @@ public class TokensService : ITokensService
     }
     public async Task<IActionResponse<bool>> MintAsync(Guid id, int contractTokenId, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.TokenRepo.GetAll().FirstOrDefaultAsync(x => x.Id == id && x.OwerWalletAddress != null && !x.Mint, cancellationToken);
+        var model = await _uow.TokenRepo.GetAll().FirstOrDefaultAsync(x => x.Id == id && x.OwerWalletAddress != null && !x.IsMinted, cancellationToken);
         if (model == null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
 

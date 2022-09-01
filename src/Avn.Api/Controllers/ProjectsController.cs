@@ -1,29 +1,25 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿namespace Avn.Api.Controllers;
 
-namespace Avn.Api.Controllers
+public class ProjectsController : BaseController
 {
-    public class ProjectsController : BaseController
+    private readonly IProjectsService _projectService;
+    public ProjectsController(IProjectsService projectService) => _projectService = projectService;
+
+    [HttpPost]
+    public async Task<IActionResult> AddAsync(Guid userId, [FromBody] Project item)
     {
-        private readonly IProjectsService _projectService;
-        public ProjectsController(IProjectsService projectService) => _projectService = projectService;
-
-        [HttpPost]
-        public async Task<IActionResult> AddAsync(Guid userId, [FromBody] Project item)
-        {
-            item.UserId = userId;
-            return Ok(await _projectService.CreateAsync(item));
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> UpdateAsync(Guid userId, [FromBody] Project item)
-        {
-            item.UserId = userId;
-            return Ok(await _projectService.UpdateAsync(item));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAllAsync(Guid userId)
-            => Ok(await _projectService.GetAllAsync(userId));
+        item.UserId = userId;
+        return Ok(await _projectService.CreateAsync(item));
     }
+
+    [HttpPost]
+    public async Task<IActionResult> UpdateAsync(Guid userId, [FromBody] Project item)
+    {
+        item.UserId = userId;
+        return Ok(await _projectService.UpdateAsync(item));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllAsync(Guid userId)
+        => Ok(await _projectService.GetAllAsync(userId));
 }
