@@ -59,8 +59,8 @@ public class AccountService : IAccountService
         if (refreshTokenModel.Data is null)
             return new ActionResponse<UserTokenDto>(ActionResponseStatusCode.NotFound, AppResource.InvalidUser);
 
-        var usertokens = await GenerateTokenAsync(refreshTokenModel.Data.UserId.Value, cancellationToken);
-        await _userTokenService.AddUserTokenAsync(refreshTokenModel.Data.UserId.Value, usertokens.AccessToken, usertokens.RefreshToken, cancellationToken);
+        var usertokens = await GenerateTokenAsync(refreshTokenModel.Data.UserId, cancellationToken);
+        await _userTokenService.AddUserTokenAsync(refreshTokenModel.Data.UserId, usertokens.AccessToken, usertokens.RefreshToken, cancellationToken);
         return new ActionResponse<UserTokenDto>(usertokens);
     }
     public async Task<IActionResponse<UserDto>> GetCurrentUserAsync(Guid userId, CancellationToken cancellationToken = default)
@@ -74,8 +74,8 @@ public class AccountService : IAccountService
             OrganizationName = user.Data.OrganizationName,
             WalletAddress = user.Data.WalletAdress,
             UserId = user.Data.UserId,
-            EmailIsApproved=user.Data.EmailIsApproved,
-            IsActive= user.Data.IsActive
+            EmailIsApproved = user.Data.EmailIsApproved,
+            IsActive = user.Data.IsActive
         });
     }
     private async Task<UserTokenDto> GenerateTokenAsync(Guid userId, CancellationToken cancellationToken)
@@ -120,7 +120,7 @@ public class AccountService : IAccountService
 
         #region create random code
         var newCode = RandomStringGenerator.Generate(10);
-        user.Code = newCode;
+        // user.Code = newCode;
         #endregion
 
         if (!addedUser.IsSuccess)
@@ -144,8 +144,8 @@ public class AccountService : IAccountService
         #endregion
 
         #region check if the user sent the same code, then make IsVerified true
-        if (foundUser.Code != code)
-            return new ActionResponse<bool>(ActionResponseStatusCode.NotFound);
+        //  if (foundUser.Code != code)
+        //      return new ActionResponse<bool>(ActionResponseStatusCode.NotFound);
 
         foundUser.EmailIsApproved = true;
 
@@ -169,7 +169,7 @@ public class AccountService : IAccountService
         #region generate random code for user and save it
         var newCode = RandomStringGenerator.Generate(10);
 
-        foundUser.Code = newCode;
+        // foundUser.Code = newCode;
         var dbResult = await _userService.UpdateAsync(foundUser, cancellationToken);
 
         if (!dbResult.IsSuccess)

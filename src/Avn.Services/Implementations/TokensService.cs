@@ -63,7 +63,7 @@ public class TokensService : ITokensService
         if (model == null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
 
-        model.Mint = true;
+        model.IsMinted = true;
         model.ContractTokenId = contractTokenId;
 
         await _uow.SaveChangesAsync(cancellationToken);
@@ -73,16 +73,15 @@ public class TokensService : ITokensService
 
     public async Task<IActionResponse<bool>> BurnAsync(Guid id, int contractTokenId, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.TokenRepo.GetAll().FirstOrDefaultAsync(x => x.Id == id && x.OwerWalletAddress != null && x.Mint && x.Burn, cancellationToken);
+        var model = await _uow.TokenRepo.GetAll().FirstOrDefaultAsync(x => x.Id == id && x.OwerWalletAddress != null && x.IsMinted && x.IsBurned, cancellationToken);
         if (model == null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
 
-        model.Burn = true;
+        model.IsBurned = true;
         model.ContractTokenId = contractTokenId;
 
         await _uow.SaveChangesAsync(cancellationToken);
 
         return new ActionResponse<bool>(true);
     }
-
 }

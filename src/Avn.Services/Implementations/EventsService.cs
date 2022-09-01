@@ -92,8 +92,8 @@ public class EventsService : IEventsService
         var model = await _uow.EventRepo.GetAll().FirstOrDefaultAsync(x => x.Id == eventId && x.DropStatus == DropStatus.Pending, cancellation);
         if (model == null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
-
-        model.DropStatus = DropStatus.Reject;
+        
+        model.DropStatus = DropStatus.Rejected;
 
         await _uow.SaveChangesAsync(cancellation);
 
