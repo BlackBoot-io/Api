@@ -9,8 +9,7 @@ public class Subscription
 
     [ForeignKey(nameof(UserId))]
     public User User { get; set; }
-    public Guid UserId { get; set; }
-
+    public Guid? UserId { get; set; }
 
     [ForeignKey(nameof(PricingId))]
     public Pricing Pricing { get; set; }
