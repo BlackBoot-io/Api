@@ -1,6 +1,4 @@
 ﻿using Avn.Data.Context;
-using Avn.Data.Repository;
-using Avn.Domain.Entities;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -11,7 +9,6 @@ public partial class AppUnitOfWork : IAppUnitOfWork
     private readonly ApplicationDbContext _dbContext;
 
     public AppUnitOfWork(ApplicationDbContext dbContext) => _dbContext = dbContext;
-
 
     public ChangeTracker ChangeTracker => _dbContext.ChangeTracker;
 

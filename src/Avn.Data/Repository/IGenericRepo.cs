@@ -1,6 +1,5 @@
 ﻿namespace Avn.Data.Repository;
 
-
 public interface IGenericRepo<TEntity> where TEntity : class
 {
     public IQueryable<TEntity> GetAll();

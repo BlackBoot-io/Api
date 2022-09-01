@@ -2,7 +2,6 @@
 
 namespace Avn.Data.Repository;
 
-
 public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity : class
 {
     protected readonly DbSet<TEntity> _entities;
