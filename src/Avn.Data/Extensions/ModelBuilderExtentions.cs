@@ -12,7 +12,7 @@ public static class ModelBuilderExtentions
     /// <param name="modelBuilder"></param>
     public static void AddPluralizingTableNameConvention(this ModelBuilder modelBuilder)
     {
-        Pluralizer pluralizer = new Pluralizer();
+        Pluralizer pluralizer = new();
         foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
         {
             string tableName = entityType.GetTableName();

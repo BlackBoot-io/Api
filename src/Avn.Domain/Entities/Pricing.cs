@@ -16,7 +16,8 @@ public class Pricing
     public string AvailableNetworks { get; set; }
 
     [Required]
-    public int Price { get; set; }
+    [Column(TypeName = "decimal(21,9)")]
+    public decimal Price { get; set; }
 
     [Required]
     public int RequestsPerSecond { get; set; }

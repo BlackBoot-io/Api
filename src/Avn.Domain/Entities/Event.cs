@@ -48,6 +48,7 @@ public class Event : IEntity
     public Guid Code { get; set; }
 
     [Required]
+    [Column(TypeName = "decimal(21,9)")]
     public decimal GasFee { get; set; }
 
     [MaxLength(500)]
