@@ -5,5 +5,6 @@ public enum BlockchainNetwork : byte
     Ethereum = 2,
     Solana = 3,
     Tether = 4,
-    Binance = 5
+    Binance = 5,
+    Avanod = 6
 }

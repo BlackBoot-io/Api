@@ -11,6 +11,8 @@ public class VerificationCode : IEntity
     public User User { get; set; }
     public Guid UserId { get; set; }
 
+    public VerificationType VerificationType { get; set; }
+
     public int PinCode { get; set; }
 
     public bool IsUsed { get; set; }

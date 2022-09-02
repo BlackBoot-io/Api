@@ -21,6 +21,9 @@ public class Network : IEntity
     [Column(TypeName = "decimal(21,9)")]
     public decimal Wages { get; set; }
 
+    [Required]
+    public string SmartContractAddress { get; set; }
+
     public bool IsActive { get; set; }
 
     public ICollection<Drop> Events { get; set; }

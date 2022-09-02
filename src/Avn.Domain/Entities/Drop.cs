@@ -13,9 +13,9 @@ public class Drop : IEntity
     public User User { get; set; }
     public Guid UserId { get; set; }
 
-    public Guid? ProjectId { get; set; }
     [ForeignKey(nameof(ProjectId))]
     public Project Project { get; set; }
+    public Guid? ProjectId { get; set; }
 
     [ForeignKey(nameof(NetworkId))]
     public Network Network { get; set; }
@@ -50,7 +50,7 @@ public class Drop : IEntity
 
     [Required]
     [Column(TypeName = "decimal(21,9)")]
-    public decimal GasFee { get; set; }
+    public decimal Wages { get; set; }
 
     [MaxLength(500)]
     public string Description { get; set; }

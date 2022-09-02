@@ -15,7 +15,6 @@ public class Subscription : IEntity
     public Pricing Pricing { get; set; }
     public int PricingId { get; set; }
 
-
     [ForeignKey(nameof(TransactionId))]
     public Transaction Transaction { get; set; }
     public int TransactionId { get; set; }

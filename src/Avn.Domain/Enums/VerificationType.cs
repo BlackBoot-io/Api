@@ -1,6 +1,6 @@
 ﻿namespace Avn.Domain.Enums;
 
-public enum EmailTemplate : byte
+public enum VerificationType : byte
 {
     Verification = 1,
     Registration = 2,

@@ -12,8 +12,9 @@ public class Transaction : IEntity
     public User User { get; set; }
     public Guid UserId { get; set; }
 
-
-    public BlockchainNetwork Network { get; set; }
+    [ForeignKey(nameof(PaymentMethodId))]
+    public PaymentMethod PaymentMethod { get; set; }
+    public int PaymentMethodId { get; set; }
 
     /// <summary>
     /// UsdtAmount
@@ -25,6 +26,12 @@ public class Transaction : IEntity
     /// </summary>
     [Column(TypeName = "decimal(21,9)")]
     public decimal CryptoAmount { get; set; }
+
+    [Column(TypeName = "decimal(21,9)")]
+    public decimal DiscountUsdtAmount { get; set; }
+
+    [Column(TypeName = "decimal(21,9)")]
+    public decimal TotalEndFee { get; set; }
 
     public DateTime Date { get; set; }
 

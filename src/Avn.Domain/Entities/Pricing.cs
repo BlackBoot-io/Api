@@ -12,15 +12,19 @@ public class Pricing
     public string Name { get; set; }
 
     [Required]
-    [MaxLength(50)]
-    public string AvailableNetworks { get; set; }
+    public int UsdtAmount { get; set; }
 
     [Required]
-    [Column(TypeName = "decimal(21,9)")]
-    public decimal Price { get; set; }
+    public int DiscountForYearlySubscription { get; set; }
 
     [Required]
     public int RequestsPerSecond { get; set; }
+
+    [Required]
+    public int RequestsPerDay { get; set; }
+
+    [Required]
+    public int TokenPerDay { get; set; }
 
     public bool IsActive { get; set; }
 }
