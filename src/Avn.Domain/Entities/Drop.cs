@@ -25,6 +25,8 @@ public class Drop : IEntity
     [Required]
     public string Name { get; set; }
 
+    public int Count { get; set; }
+
     public DeliveryType DeliveryType { get; set; }
 
     public DropStatus DropStatus { get; set; } = DropStatus.Pending;

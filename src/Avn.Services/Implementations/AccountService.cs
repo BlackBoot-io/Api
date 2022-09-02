@@ -127,7 +127,7 @@ public class AccountService : IAccountService
         await _userTokenService.AddUserTokenAsync(user.UserId, usertokens.AccessToken, usertokens.RefreshToken, cancellationToken);
 
         #region send code
-        await _emailGatewayAdapter.Send(new EmailRequestDto(EmailTemplate.Verification, user.Email, "Recovery Password", newCode));
+        await _emailGatewayAdapter.Send(new EmailRequestDto(VerificationType.Verification, user.Email, "Recovery Password", newCode));
         #endregion
 
         return new ActionResponse<UserTokenDto>(usertokens);
@@ -175,7 +175,7 @@ public class AccountService : IAccountService
         #endregion
 
         #region send the generated code to the user via email
-        await _emailGatewayAdapter.Send(new EmailRequestDto(EmailTemplate.Verification, foundUser.Email, "Recovery Password", newCode));
+        await _emailGatewayAdapter.Send(new EmailRequestDto(VerificationType.Verification, foundUser.Email, "Recovery Password", newCode));
 
         #endregion
 
