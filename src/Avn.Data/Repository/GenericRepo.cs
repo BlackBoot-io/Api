@@ -1,4 +1,5 @@
-﻿using Avn.Data.Context;
+﻿#nullable disable
+using Avn.Data.Context;
 
 namespace Avn.Data.Repository;
 
