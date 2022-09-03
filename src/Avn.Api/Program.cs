@@ -31,6 +31,7 @@ builder.Services.AddCors(options =>
         .AllowCredentials();
     });
 });
+builder.Services.AddHttpClient();
 
 builder.Services.RegisterApplicatioinServices();
 #endregion
