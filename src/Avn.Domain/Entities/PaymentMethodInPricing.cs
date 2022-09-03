@@ -1,7 +1,7 @@
 ﻿namespace Avn.Domain.Entities;
 
 [Table(nameof(PaymentMethodInPricing), Schema = nameof(EntitySchema.Base))]
-public class PaymentMethodInPricing
+public class PaymentMethodInPricing : IEntity
 {
     [Key]
     public int Id { get; set; }

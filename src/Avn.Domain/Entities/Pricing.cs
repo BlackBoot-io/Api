@@ -27,4 +27,11 @@ public class Pricing
     public int TokenPerDay { get; set; }
 
     public bool IsActive { get; set; }
+
+    public bool PublicDocumentation { get; set; }
+
+    public bool TicketsSupport { get; set; }
+
+    public bool PriorityTicketsSupport { get; set; }
+
 }
