@@ -1,6 +1,6 @@
-﻿namespace Avn.Domain.Dtos.Events;
+﻿namespace Avn.Domain.Dtos;
 
-public class UpdateEventDto
+public record UpdateDropDto
 {
     public Guid Code { get; set; }
     public string Name { get; set; }

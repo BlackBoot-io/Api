@@ -1,7 +1,7 @@
-﻿namespace Avn.Domain.Dtos.Tokens;
+﻿namespace Avn.Domain.Dtos;
 
 public class TokenDto
 {
     //token
-    //event
+    //Drop
 }

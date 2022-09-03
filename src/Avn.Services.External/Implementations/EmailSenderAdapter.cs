@@ -1,6 +1,4 @@
-﻿using Avn.Domain.Dtos;
-using Avn.Services.External.Interfaces;
-using Avn.Shared.Core;
+﻿using Avn.Services.External.Interfaces;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
 using sib_api_v3_sdk.Api;
@@ -8,7 +6,6 @@ using sib_api_v3_sdk.Client;
 using sib_api_v3_sdk.Model;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Threading.Tasks;
 
 namespace Avn.Services.External.Implementations;

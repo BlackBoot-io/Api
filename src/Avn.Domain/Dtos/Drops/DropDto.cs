@@ -1,6 +1,6 @@
-﻿namespace Avn.Domain.Dtos.Events;
+﻿namespace Avn.Domain.Dtos;
 
-public class EventDto
+public record DropDto
 {
     public int Id { get; set; }
 
@@ -24,8 +24,9 @@ public class EventDto
 
     public string Network { get; set; }
 
-    public string EventUri { get; set; }
+    public string DropUri { get; set; }
 
+    public string ContentId { get; set; }
     public string Location { get; set; }
 
     public DateTime StartDate { get; set; }

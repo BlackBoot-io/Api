@@ -1,6 +1,6 @@
-﻿namespace Avn.Domain.Dtos.Users;
+﻿namespace Avn.Domain.Dtos;
 
-public class UserDto
+public record UserDto
 {
     public Guid UserId { get; set; }
     public string Email { get; set; }
@@ -12,8 +12,4 @@ public class UserDto
     public string WalletAddress { get; set; }
 
     public bool IsActive { get; set; }
-
-
-
-
 }

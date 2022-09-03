@@ -35,6 +35,10 @@ public class Drop : IEntity
     [Required]
     public string DropUri { get; set; }
 
+    [MaxLength(100)]
+    [Required]
+    public string ContentId { get; set; }
+
     [MaxLength(50)]
     [Required]
     public string Location { get; set; }

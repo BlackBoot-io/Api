@@ -1,5 +1,5 @@
 ﻿namespace Avn.Domain.Dtos;
 
-public record UpdateProjectDto
+public record CreateDropDto
 {
 }

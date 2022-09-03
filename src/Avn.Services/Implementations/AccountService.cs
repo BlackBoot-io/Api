@@ -1,10 +1,4 @@
-﻿using Avn.Domain.Dtos;
-using Avn.Domain.Dtos.Users;
-using Avn.Domain.Entities;
-using Avn.Domain.Enums;
-using Avn.Services.External.Interfaces;
-using Avn.Services.Interfaces;
-using Avn.Shared.Utilities;
+﻿using Avn.Shared.Utilities;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 using System.Text.RegularExpressions;

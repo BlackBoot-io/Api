@@ -13,12 +13,12 @@ public interface IAppUnitOfWork : IDisposable, IAsyncDisposable
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
     #region Repos
-    #region Admin
+    #region Auth
     public IGenericRepo<User> UserRepo { get; }
     public IGenericRepo<UserJwtToken> UserJwtTokenRepo { get; }
     #endregion
     #region Base
-    public IGenericRepo<Drop> EventRepo { get; }
+    public IGenericRepo<Drop> DropRepo { get; }
     public IGenericRepo<Token> TokenRepo { get; }
     public IGenericRepo<Project> ProjectRepo { get; }
     public IGenericRepo<Network> NetworkRepo { get; }

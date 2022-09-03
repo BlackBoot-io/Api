@@ -1,6 +1,4 @@
-﻿using Avn.Domain.Dtos.Tokens;
-
-namespace Avn.Services.Interfaces;
+﻿namespace Avn.Services.Interfaces;
 
 public interface ITokensService : IScopedDependency
 {

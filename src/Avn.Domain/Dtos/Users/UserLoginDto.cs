@@ -1,4 +1,4 @@
-﻿namespace Avn.Domain.Dtos.Users;
+﻿namespace Avn.Domain.Dtos;
 
 public class UserLoginDto
 {

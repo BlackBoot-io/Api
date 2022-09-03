@@ -459,17 +459,17 @@ namespace Avn.Data.Migrations
             modelBuilder.Entity("Avn.Domain.Entities.Drop", b =>
                 {
                     b.HasOne("Avn.Domain.Entities.Network", "Network")
-                        .WithMany("Events")
+                        .WithMany("Drops")
                         .HasForeignKey("NetworkId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Avn.Domain.Entities.Project", "Project")
-                        .WithMany("Events")
+                        .WithMany("Drops")
                         .HasForeignKey("ProjectId");
 
                     b.HasOne("Avn.Domain.Entities.User", "User")
-                        .WithMany("Events")
+                        .WithMany("Drops")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -568,17 +568,17 @@ namespace Avn.Data.Migrations
 
             modelBuilder.Entity("Avn.Domain.Entities.Network", b =>
                 {
-                    b.Navigation("Events");
+                    b.Navigation("Drops");
                 });
 
             modelBuilder.Entity("Avn.Domain.Entities.Project", b =>
                 {
-                    b.Navigation("Events");
+                    b.Navigation("Drops");
                 });
 
             modelBuilder.Entity("Avn.Domain.Entities.User", b =>
                 {
-                    b.Navigation("Events");
+                    b.Navigation("Drops");
 
                     b.Navigation("Projects");
 

@@ -42,6 +42,6 @@ public class User : IEntity
 
     public ICollection<UserJwtToken> UserJwtTokens { get; set; }
     public ICollection<Project> Projects { get; set; }
-    public ICollection<Drop> Events { get; set; }
+    public ICollection<Drop> Drops { get; set; }
     public ICollection<Subscription> Subscriptions { get; set; }
 }

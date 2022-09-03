@@ -1,55 +1,53 @@
 ﻿using Avn.Data.UnitofWork;
-using Avn.Domain.Dtos.Events;
-using Avn.Domain.Entities;
-using Avn.Domain.Enums;
 using Avn.Services.External.Implementations;
 
 namespace Avn.Services.Interfaces;
 
-public class EventsService : IEventsService
+public class DropsService : IDropsService
 {
     private readonly IAppUnitOfWork _uow;
     private readonly INftStorageAdapter _nftStorageAdaptar;
-    public EventsService(IAppUnitOfWork uow, INftStorageAdapter nftStorageAdaptar)
+    public DropsService(IAppUnitOfWork uow, INftStorageAdapter nftStorageAdaptar)
     {
         _uow = uow;
         _nftStorageAdaptar = nftStorageAdaptar;
     }
 
-
-    public async Task<IActionResponse<IEnumerable<EventDto>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<IEnumerable<DropDto>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default)
     {
-        var result = await _uow.EventRepo.GetAll().AsNoTracking().Where(x => x.UserId == userId).Select(row => new EventDto
-        {
-            Id = row.Id,
-            Code = row.Code,
-            ProjectId = row.ProjectId,
-            Project = row.Project != null ? row.Project.Name : "",
-            UserId = row.UserId,
-            User = row.User != null ? row.User.FullName : "",
-            Name = row.Name,
-            Description = row.Description,
-            DeliveryType = row.DeliveryType,
-            NetworkId = row.NetworkId,
-            Network = row.Network != null ? row.Network.Name : "",
-            EventUri = row.DropUri,
-            Location = row.Location,
-            StartDate = row.StartDate,
-            EndDate = row.EndDate,
-            ExpireDate = row.ExpireDate,
-            IsPrivate = row.IsPrivate,
-            IsVirtual = row.IsVirtual
+        var result = await _uow.DropRepo.GetAll().AsNoTracking()
+            .Where(x => x.UserId == userId)
+            .Select(row => new DropDto
+            {
+                Id = row.Id,
+                Code = row.Code,
+                ProjectId = row.ProjectId,
+                Project = row.Project != null ? row.Project.Name : string.Empty,
+                UserId = row.UserId,
+                User = row.User != null ? row.User.FullName : string.Empty,
+                Name = row.Name,
+                Description = row.Description,
+                DeliveryType = row.DeliveryType,
+                NetworkId = row.NetworkId,
+                Network = row.Network != null ? row.Network.Name : "",
+                DropUri = row.DropUri,
+                Location = row.Location,
+                StartDate = row.StartDate,
+                EndDate = row.EndDate,
+                ExpireDate = row.ExpireDate,
+                IsPrivate = row.IsPrivate,
+                IsVirtual = row.IsVirtual
 
-        }).ToListAsync(cancellationToken);
-        return new ActionResponse<IEnumerable<EventDto>>(result);
+            }).ToListAsync(cancellationToken);
+        return new ActionResponse<IEnumerable<DropDto>>(result);
 
     }
 
-    public async Task<IActionResponse<Guid>> CreateAsync(CreateEventDto item, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<Guid>> CreateAsync(CreateDropDto item, CancellationToken cancellationToken = default)
     {
         var model = new Drop { };
 
-        await _uow.EventRepo.AddAsync(model, cancellationToken);
+        await _uow.DropRepo.AddAsync(model, cancellationToken);
         await _uow.SaveChangesAsync(cancellationToken);
 
         return new ActionResponse<Guid>(model.Code);
@@ -57,7 +55,7 @@ public class EventsService : IEventsService
 
     public async Task<IActionResponse<bool>> DeactiveAsync(Guid code, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.EventRepo.GetAll().FirstOrDefaultAsync(x => x.Code == code, cancellationToken);
+        var model = await _uow.DropRepo.GetAll().FirstOrDefaultAsync(x => x.Code == code, cancellationToken);
         if (model == null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
 
@@ -69,9 +67,9 @@ public class EventsService : IEventsService
     }
 
 
-    public async Task<IActionResponse<bool>> ConfirmAsync(int eventId, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<bool>> ConfirmAsync(int DropId, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.EventRepo.GetAll().FirstOrDefaultAsync(x => x.Id == eventId && x.DropStatus == DropStatus.Pending, cancellationToken);
+        var model = await _uow.DropRepo.GetAll().FirstOrDefaultAsync(x => x.Id == DropId && x.DropStatus == DropStatus.Pending, cancellationToken);
         if (model == null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
 
@@ -87,12 +85,12 @@ public class EventsService : IEventsService
         return new ActionResponse<bool>(true);
     }
 
-    public async Task<IActionResponse<bool>> RejectAsync(int eventId, CancellationToken cancellation = default)
+    public async Task<IActionResponse<bool>> RejectAsync(int DropId, CancellationToken cancellation = default)
     {
-        var model = await _uow.EventRepo.GetAll().FirstOrDefaultAsync(x => x.Id == eventId && x.DropStatus == DropStatus.Pending, cancellation);
+        var model = await _uow.DropRepo.GetAll().FirstOrDefaultAsync(x => x.Id == DropId && x.DropStatus == DropStatus.Pending, cancellation);
         if (model == null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
-        
+
         model.DropStatus = DropStatus.Rejected;
 
         await _uow.SaveChangesAsync(cancellation);

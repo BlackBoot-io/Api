@@ -1,16 +1,12 @@
 ﻿using Avn.Data.UnitofWork;
-using Avn.Domain.Dtos.Tokens;
-using Avn.Domain.Entities;
 
 namespace Avn.Services.Interfaces;
 
 public class TokensService : ITokensService
 {
-
     private readonly IAppUnitOfWork _uow;
 
     public TokensService(IAppUnitOfWork uow) => _uow = uow;
-
 
     public async Task<IActionResponse<TokenDto>> GetAsync(string uniqueCode, CancellationToken cancellationToken = default)
     {
@@ -34,7 +30,6 @@ public class TokensService : ITokensService
 
         return new ActionResponse<string>(model.UniqueCode);
     }
-
     public async Task<IActionResponse<IEnumerable<string>>> AddRangeAsync(List<CreateTokenDto> items, CancellationToken cancellationToken = default)
     {
         var models = items.Select(row => new Token { });
@@ -44,7 +39,6 @@ public class TokensService : ITokensService
 
         return new ActionResponse<IEnumerable<string>>(models.Select(x => x.UniqueCode));
     }
-
     public async Task<IActionResponse<bool>> ConnectWalletAsync(Guid id, string walletAdress, CancellationToken cancellationToken = default)
     {
         var model = await _uow.TokenRepo.GetAll().FirstOrDefaultAsync(x => x.Id == id && x.OwerWalletAddress == null, cancellationToken);
@@ -70,7 +64,6 @@ public class TokensService : ITokensService
 
         return new ActionResponse<bool>(true);
     }
-
     public async Task<IActionResponse<bool>> BurnAsync(Guid id, int contractTokenId, CancellationToken cancellationToken = default)
     {
         var model = await _uow.TokenRepo.GetAll().FirstOrDefaultAsync(x => x.Id == id && x.OwerWalletAddress != null && x.IsMinted && x.IsBurned, cancellationToken);
