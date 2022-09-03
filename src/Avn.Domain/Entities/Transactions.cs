@@ -24,13 +24,13 @@ public class Transaction : IEntity
     /// <summary>
     /// Crypto Amount
     /// </summary>
-    [Column(TypeName = "decimal(21,9)")]
+    [Column(TypeName = ColumnType.Decimal219)]
     public decimal CryptoAmount { get; set; }
 
-    [Column(TypeName = "decimal(21,9)")]
+    [Column(TypeName = ColumnType.Decimal219)]
     public decimal DiscountUsdtAmount { get; set; }
 
-    [Column(TypeName = "decimal(21,9)")]
+    [Column(TypeName = ColumnType.Decimal219)]
     public decimal TotalEndFee { get; set; }
 
     public DateTime Date { get; set; }

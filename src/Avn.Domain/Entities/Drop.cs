@@ -55,7 +55,7 @@ public class Drop : IEntity
     public Guid Code { get; set; }
 
     [Required]
-    [Column(TypeName = "decimal(21,9)")]
+    [Column(TypeName = ColumnType.Decimal219)]
     public decimal Wages { get; set; }
 
     [MaxLength(500)]

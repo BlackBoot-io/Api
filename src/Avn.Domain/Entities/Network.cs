@@ -14,11 +14,11 @@ public class Network : IEntity
     public NetworkType Type { get; set; }
 
     [Required]
-    [Column(TypeName = "decimal(21,9)")]
+    [Column(TypeName = ColumnType.Decimal219)]
     public decimal GasFee { get; set; }
 
     [Required]
-    [Column(TypeName = "decimal(21,9)")]
+    [Column(TypeName = ColumnType.Decimal219)]
     public decimal Wages { get; set; }
 
     [Required]
