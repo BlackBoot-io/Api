@@ -129,4 +129,12 @@ public class JwtTokensService : IJwtTokensService
 
         return new ActionResponse();
     }
+
+    public async Task<UserJwtToken> GetRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
+    {
+        var refresheTokenHashed = HashGenerator.Hash(refreshToken);
+        return await _uow.UserJwtTokenRepo.GetAll()
+                                          .AsNoTracking()
+                                          .FirstOrDefaultAsync(X => X.RefreshTokenHash == refresheTokenHashed, cancellationToken);
+    }
 }
