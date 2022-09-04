@@ -132,5 +132,4 @@ public class UsersService : IUsersService
         return await _jwtTokensService.GenerateUserTokenAsync(user, refreshToken, cancellationToken: cancellationToken);
     }
 
-
 }

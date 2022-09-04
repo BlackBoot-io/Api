@@ -51,4 +51,11 @@ public interface IUsersService : IScopedDependency
     /// <returns></returns>
     Task<IActionResponse<bool>> ActivateEmailAsync(Guid userId, string uniqueCode, CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// send refresh token in order to renew a new one
+    /// </summary>
+    /// <param name="refreshToken"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<IActionResponse<UserTokenDto>> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default);
 }
