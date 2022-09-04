@@ -1,10 +1,10 @@
-﻿using Avn.Shared.Core;
+﻿using Avn.Domain.Dtos.Externals.NftStorage;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Avn.Services.External.Implementations;
+namespace Avn.Services.External.Interfaces;
 
-public interface INftStorageAdapter: IScopedDependency
+public interface INftStorageAdapter : ITransientDependency
 {
-    Task<object> Upload(object item, CancellationToken cancellationToken = default);
+    Task<IActionResponse<UploadResponseDto>> Upload(UploadRequestDto item, CancellationToken cancellationToken = default);
 }

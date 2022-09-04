@@ -1,4 +1,5 @@
 ﻿using Avn.Data.UnitofWork;
+using Avn.Domain.Dtos.Externals.NftStorage;
 using Avn.Services.External.Implementations;
 
 namespace Avn.Services.Interfaces;
@@ -79,7 +80,10 @@ public class DropsService : IDropsService
         var result = await _uow.SaveChangesAsync(cancellationToken);
         if (result.ToSaveChangeResult())
         {
-            await _nftStorageAdaptar.Upload(new object(), cancellationToken);
+            await _nftStorageAdaptar.Upload(new UploadRequestDto(model.Name, model.Description, null, new
+            {
+                Project = model.Project.Name,
+            }), cancellationToken);
             //ToDo:Should do The Strategy
         }
         return new ActionResponse<bool>(true);
