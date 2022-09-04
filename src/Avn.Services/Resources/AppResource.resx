@@ -138,4 +138,13 @@
   <data name="TransactionFailed" xml:space="preserve">
     <value>Current Transaction is failed! Please try again later.</value>
   </data>
+  <data name="InvalidUsernameOrPassword" xml:space="preserve">
+    <value>Invalid Username Or Password!</value>
+  </data>
+  <data name="AccountIsDeActive" xml:space="preserve">
+    <value>Account is deactive</value>
+  </data>
+  <data name="InvalidPrameter" xml:space="preserve">
+    <value>Invalid Prameter!</value>
+  </data>
 </root>

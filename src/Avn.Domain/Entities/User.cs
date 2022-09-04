@@ -33,7 +33,7 @@ public class User : IEntity
    
     [Required]
     [MaxLength(256)]
-    public string WalletAdress { get; set; }
+    public string WalletAddress { get; set; }
 
     public bool IsActive { get; set; }
 

@@ -2,7 +2,6 @@
 
 public enum VerificationType : byte
 {
-    Verification = 1,
-    Registration = 2,
+    EmailVerification = 2,
     ForgetPassword = 3
 }

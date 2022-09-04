@@ -61,6 +61,15 @@ namespace Avn.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account is deactive.
+        /// </summary>
+        public static string AccountIsDeActive {
+            get {
+                return ResourceManager.GetString("AccountIsDeActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AddProjectOperationFail.
         /// </summary>
         public static string AddProjectOperationFail {
@@ -70,11 +79,29 @@ namespace Avn.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid Prameter!.
+        /// </summary>
+        public static string InvalidPrameter {
+            get {
+                return ResourceManager.GetString("InvalidPrameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to InvalidUser.
         /// </summary>
         public static string InvalidUser {
             get {
                 return ResourceManager.GetString("InvalidUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Username Or Password!.
+        /// </summary>
+        public static string InvalidUsernameOrPassword {
+            get {
+                return ResourceManager.GetString("InvalidUsernameOrPassword", resourceCulture);
             }
         }
         
