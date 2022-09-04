@@ -130,6 +130,12 @@ public class JwtTokensService : IJwtTokensService
         return new ActionResponse();
     }
 
+    /// <summary>
+    /// get jwt record from refresh token
+    /// </summary>
+    /// <param name="refreshToken"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task<UserJwtToken> GetRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
     {
         var refresheTokenHashed = HashGenerator.Hash(refreshToken);

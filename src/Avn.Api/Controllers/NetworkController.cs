@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿namespace Avn.Api.Controllers;
 
-namespace Avn.Api.Controllers
+public class NetworkController : Controller
 {
-    public class NetworkController : Controller
+    private readonly INetworkService _networkService;
+    public NetworkController(INetworkService networkService)
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        _networkService = networkService;
+
     }
+    public async Task<IActionResult> AllAvailableAsync()
+        => Ok(await _networkService.GetAllAvailableAsync());
 }

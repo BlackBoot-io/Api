@@ -56,8 +56,16 @@ public class UsersService : IUsersService
         return new ActionResponse<Guid>(user.UserId);
     }
 
-    public async Task<IActionResponse<Guid>> UpdateProfileAsync(User user, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<Guid>> UpdateProfileAsync(Guid userId, UserDto userDto, CancellationToken cancellationToken = default)
     {
+        var user = await _uow.UserRepo.FindAsync(userId, cancellationToken);
+        if (user == null)
+            return new ActionResponse<Guid>(ActionResponseStatusCode.BadRequest, AppResource.InvalidUser);
+
+        user.WalletAddress = userDto.WalletAddress;
+        user.FullName = userDto.FullName;
+        user.OrganizationName = userDto.OrganizationName;
+
         _uow.UserRepo.Update(user);
 
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);

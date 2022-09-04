@@ -33,7 +33,7 @@ public interface IUsersService : IScopedDependency
     /// <param name="user"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IActionResponse<Guid>> UpdateProfileAsync(User user, CancellationToken cancellationToken = default);
+    Task<IActionResponse<Guid>> UpdateProfileAsync(Guid userId, UserDto userDto, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Get current user data with userId
