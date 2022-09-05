@@ -5,10 +5,9 @@ namespace Avn.Shared.Extentions;
 
 public static class HashGenerator
 {
-    private static string secretKey = "Bl@ckb00t";
+    private static readonly string secretKey = "Bl@ckb00t";
     public static string Hash(string key)
     {
-
         byte[] bytes = Encoding.Unicode.GetBytes(key);
         byte[] bytes2 = Encoding.Unicode.GetBytes(secretKey);
         byte[] array = new byte[bytes2.Length + bytes.Length];
