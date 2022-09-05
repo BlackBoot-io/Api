@@ -1,8 +1,6 @@
-﻿namespace Avn.Domain.Enums
+﻿namespace Avn.Domain.Enums;
+public enum NetworkType : byte
 {
-    public enum NetworkType : byte
-    {
-        MainNet = 1,
-        TestNet = 2
-    }
+    MainNet = 1,
+    TestNet = 2
 }
