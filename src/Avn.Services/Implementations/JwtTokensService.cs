@@ -53,7 +53,6 @@ internal abstract class JwtTokensFactory
         var encryptionkey = Encoding.UTF8.GetBytes(_jwtSettings.EncryptionKey);
         var tokenDecryptionKey = new SymmetricSecurityKey(encryptionkey);
 
-
         var tokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -76,6 +75,7 @@ internal abstract class JwtTokensFactory
         return new ActionResponse<ClaimsPrincipal>(principal);
     }
 }
+
 
 /// <summary>
 /// Internal Api
@@ -217,4 +217,3 @@ internal class JwtTokensService : JwtTokensFactory, IJwtTokensService
                                           .FirstOrDefaultAsync(X => X.RefreshTokenHash == refresheTokenHashed, cancellationToken);
     }
 }
-

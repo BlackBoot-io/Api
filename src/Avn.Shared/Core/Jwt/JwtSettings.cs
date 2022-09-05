@@ -1,7 +1,7 @@
 ﻿#nullable disable
 namespace Avn.Shared.Core;
 
-public class JwtSettings
+public record JwtSettings
 {
     public string Key { set; get; }
     public string EncryptionKey { set; get; }
