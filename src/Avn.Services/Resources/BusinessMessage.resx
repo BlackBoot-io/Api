@@ -117,34 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccountIsDeActive" xml:space="preserve">
+    <value>Account is deactive</value>
+  </data>
   <data name="AddProjectOperationFail" xml:space="preserve">
     <value>AddProjectOperationFail</value>
+  </data>
+  <data name="InvalidPrameter" xml:space="preserve">
+    <value>Invalid Prameter!</value>
   </data>
   <data name="InvalidUser" xml:space="preserve">
     <value>InvalidUser</value>
   </data>
-  <data name="RecordNotFound" xml:space="preserve">
-    <value>RecordNotFound</value>
-  </data>
-  <data name="UpdateProjectOperationFail" xml:space="preserve">
-    <value>UpdateProjectOperationFail</value>
+  <data name="InvalidUsernameOrPassword" xml:space="preserve">
+    <value>Invalid Username Or Password!</value>
   </data>
   <data name="NotFound" xml:space="preserve">
     <value>Not Found</value>
   </data>
-  <data name="UserNotFound" xml:space="preserve">
-    <value>User not found</value>
+  <data name="RecordNotFound" xml:space="preserve">
+    <value>RecordNotFound</value>
   </data>
   <data name="TransactionFailed" xml:space="preserve">
     <value>Current Transaction is failed! Please try again later.</value>
   </data>
-  <data name="InvalidUsernameOrPassword" xml:space="preserve">
-    <value>Invalid Username Or Password!</value>
+  <data name="UpdateProjectOperationFail" xml:space="preserve">
+    <value>UpdateProjectOperationFail</value>
   </data>
-  <data name="AccountIsDeActive" xml:space="preserve">
-    <value>Account is deactive</value>
-  </data>
-  <data name="InvalidPrameter" xml:space="preserve">
-    <value>Invalid Prameter!</value>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>User not found</value>
   </data>
 </root>
