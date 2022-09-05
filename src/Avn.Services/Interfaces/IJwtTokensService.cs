@@ -19,7 +19,7 @@ public interface IJwtTokensService : IScopedDependency
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<IActionResponse> RevokeUserTokensAsync(string refreshToken, CancellationToken cancellationToken = default);
-   
+
     /// <summary>
     /// get refresh token
     /// </summary>

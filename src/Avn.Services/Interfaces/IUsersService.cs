@@ -11,23 +11,6 @@ public interface IUsersService : IScopedDependency
     Task<IActionResponse<Guid>> SignUpAsync(User user, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Login into system with username and password
-    /// </summary>
-    /// <param name="userLoginDto"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    Task<IActionResponse<UserTokenDto>> LoginAsync(UserLoginDto userLoginDto, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// LogOut from system
-    /// </summary>
-    /// <param name="userId"></param>
-    /// <param name="refreshToken"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    Task<IActionResponse> LogoutAsync(string refreshToken, CancellationToken cancellationToken = default);
-
-    /// <summary>
     /// Update User Profile
     /// </summary>
     /// <param name="user"></param>
@@ -50,12 +33,4 @@ public interface IUsersService : IScopedDependency
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<IActionResponse<bool>> ActivateEmailAsync(Guid userId, string uniqueCode, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// send refresh token in order to renew a new one
-    /// </summary>
-    /// <param name="refreshToken"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    Task<IActionResponse<UserTokenDto>> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default);
 }

@@ -2,19 +2,19 @@
 
 public class AuthController : BaseController
 {
-    private readonly IUsersService _userService;
+    private readonly IAuthService _authService;
 
-    public AuthController(IUsersService userService) => _userService = userService;
+    public AuthController(IAuthService authService) => _authService = authService;
 
     [HttpPost, AllowAnonymous]
     public async Task<IActionResult> LoginAsync(UserLoginDto userLoginDto, CancellationToken cancellationToken)
-        => Ok(await _userService.LoginAsync(userLoginDto, cancellationToken));
+        => Ok(await _authService.LoginAsync(userLoginDto, cancellationToken));
 
-    [HttpPost, AllowAnonymous]
+    [HttpPost]
     public async Task<IActionResult> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
-        => Ok(await _userService.RefreshTokenAsync(refreshToken, cancellationToken));
+        => Ok(await _authService.RefreshTokenAsync(refreshToken, cancellationToken));
 
     [HttpDelete]
-    public async Task<IActionResult> LogoutAsync(Guid userId, string refreshToken, CancellationToken cancellationToken)
-        => Ok(await _userService.LogoutAsync(userId, refreshToken, cancellationToken));
+    public async Task<IActionResult> LogoutAsync(string refreshToken, CancellationToken cancellationToken)
+        => Ok(await _authService.LogoutAsync(refreshToken, cancellationToken));
 }

@@ -1,6 +1,6 @@
 ﻿namespace Avn.Domain.Dtos;
 
-public class UserTokenDto
+public record UserTokenDto
 {
     public string AccessToken { get; set; }
     public DateTimeOffset AccessTokenExpireTime { get; set; }
