@@ -24,8 +24,8 @@ public class AuthService : IAuthService
         var user = await _uow.UserRepo.GetAll()
                                       .FirstOrDefaultAsync(X => X.Email == item.Email, cancellationToken);
 
-        if (user is null || user.Password != HashGenerator.Hash(item.Password, user.PasswordSalt)) return new ActionResponse<UserTokenDto> { Message = AppResource.InvalidUsernameOrPassword };
-        if (!user.IsActive) return new ActionResponse<UserTokenDto> { Message = AppResource.AccountIsDeActive };
+        if (user is null || user.Password != HashGenerator.Hash(item.Password, user.PasswordSalt)) return new ActionResponse<UserTokenDto> { Message = BusinessMessage.InvalidUsernameOrPassword };
+        if (!user.IsActive) return new ActionResponse<UserTokenDto> { Message = BusinessMessage.AccountIsDeActive };
 
         return await _jwtTokensService.GenerateUserTokenAsync(user, cancellationToken: cancellationToken);
     }
@@ -37,13 +37,13 @@ public class AuthService : IAuthService
     {
         var refreshTokenModel = await _jwtTokensService.GetRefreshTokenAsync(refreshToken, cancellationToken);
         if (refreshTokenModel is null)
-            return new ActionResponse<UserTokenDto>(ActionResponseStatusCode.NotFound, AppResource.InvalidUser);
+            return new ActionResponse<UserTokenDto>(ActionResponseStatusCode.NotFound, BusinessMessage.InvalidUser);
 
         var user = await _uow.UserRepo.GetAll()
                                       .AsNoTracking()
                                       .FirstOrDefaultAsync(X => X.UserId == refreshTokenModel.UserId, cancellationToken);
         if (user is null)
-            return new ActionResponse<UserTokenDto>(ActionResponseStatusCode.NotFound, AppResource.InvalidUser);
+            return new ActionResponse<UserTokenDto>(ActionResponseStatusCode.NotFound, BusinessMessage.InvalidUser);
 
         return await _jwtTokensService.GenerateUserTokenAsync(user, refreshToken, cancellationToken: cancellationToken);
     }

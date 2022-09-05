@@ -24,7 +24,7 @@ public class UsersService : IUsersService
     {
         var user = await _uow.UserRepo.GetAll().FirstOrDefaultAsync(X => X.UserId == userId, cancellationToken);
         if (user is null)
-            return new ActionResponse<UserDto>(ActionResponseStatusCode.BadRequest, AppResource.InvalidUser);
+            return new ActionResponse<UserDto>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidUser);
 
         return new ActionResponse<UserDto>(new UserDto
         {
@@ -58,7 +58,7 @@ public class UsersService : IUsersService
     {
         var user = await _uow.UserRepo.FindAsync(userId, cancellationToken);
         if (user == null)
-            return new ActionResponse<Guid>(ActionResponseStatusCode.BadRequest, AppResource.InvalidUser);
+            return new ActionResponse<Guid>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidUser);
 
         user.WalletAddress = userDto.WalletAddress;
         user.FullName = userDto.FullName;
@@ -93,7 +93,7 @@ public class UsersService : IUsersService
 
         var result = await _uow.UserRepo.FindAsync(userId, cancellationToken);
         if (result is null)
-            return new ActionResponse<bool>(ActionResponseStatusCode.BadRequest, AppResource.InvalidPrameter);
+            return new ActionResponse<bool>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidPrameter);
 
         result.EmailIsApproved = true;
         var dbResult = await _uow.SaveChangesAsync();

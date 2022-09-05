@@ -58,7 +58,7 @@ public class DropsService : IDropsService
     {
         var model = await _uow.DropRepo.GetAll().FirstOrDefaultAsync(x => x.Code == code, cancellationToken);
         if (model == null)
-            return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
+            return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
         model.IsActive = false;
 
@@ -72,7 +72,7 @@ public class DropsService : IDropsService
     {
         var model = await _uow.DropRepo.GetAll().FirstOrDefaultAsync(x => x.Id == DropId && x.DropStatus == DropStatus.Pending, cancellationToken);
         if (model == null)
-            return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
+            return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
         model.DropStatus = DropStatus.Confirmed;
 
@@ -93,7 +93,7 @@ public class DropsService : IDropsService
     {
         var model = await _uow.DropRepo.GetAll().FirstOrDefaultAsync(x => x.Id == DropId && x.DropStatus == DropStatus.Pending, cancellation);
         if (model == null)
-            return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
+            return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
         model.DropStatus = DropStatus.Rejected;
 

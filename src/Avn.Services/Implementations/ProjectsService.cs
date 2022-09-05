@@ -25,7 +25,7 @@ public class ProjectsService : IProjectsService
         var dbResult = await _uow.SaveChangesAsync();
 
         if (!dbResult.ToSaveChangeResult())
-            return new ActionResponse<Project>(ActionResponseStatusCode.ServerError, AppResource.AddProjectOperationFail);
+            return new ActionResponse<Project>(ActionResponseStatusCode.ServerError, BusinessMessage.AddProjectOperationFail);
 
 
         return new ActionResponse<Project>(new Project
@@ -42,7 +42,7 @@ public class ProjectsService : IProjectsService
     {
         var project = await _uow.ProjectRepo.GetAll().FirstOrDefaultAsync(x => x.Id == item.Id);
         if (project == null)
-            return new ActionResponse<Project>(ActionResponseStatusCode.NotFound, AppResource.RecordNotFound);
+            return new ActionResponse<Project>(ActionResponseStatusCode.NotFound, BusinessMessage.RecordNotFound);
 
         project.Name = item.Name;
         project.Website = item.Website;
@@ -53,7 +53,7 @@ public class ProjectsService : IProjectsService
         var dbResult = await _uow.SaveChangesAsync();
 
         if (!dbResult.ToSaveChangeResult())
-            return new ActionResponse<Project>(ActionResponseStatusCode.ServerError, AppResource.AddProjectOperationFail);
+            return new ActionResponse<Project>(ActionResponseStatusCode.ServerError, BusinessMessage.AddProjectOperationFail);
 
         return new ActionResponse<Project>(new Project
         {

@@ -190,7 +190,7 @@ internal class JwtTokensService : JwtTokensFactory, IJwtTokensService
     public async Task<IActionResponse> RevokeUserTokensAsync(string refreshToken, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrEmpty(refreshToken))
-            return new ActionResponse(ActionResponseStatusCode.BadRequest, AppResource.InvalidPrameter);
+            return new ActionResponse(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidPrameter);
 
         var hashedRefreshToken = HashGenerator.Hash(refreshToken);
         var tokens = await _uow.UserJwtTokenRepo.GetAll()

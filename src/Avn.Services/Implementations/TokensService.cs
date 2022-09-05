@@ -16,7 +16,7 @@ public class TokensService : ITokensService
         }).FirstOrDefaultAsync(cancellationToken);
 
         if (result == null)
-            return new ActionResponse<TokenDto>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
+            return new ActionResponse<TokenDto>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
         return new ActionResponse<TokenDto>(result);
 
@@ -43,7 +43,7 @@ public class TokensService : ITokensService
     {
         var model = await _uow.TokenRepo.GetAll().FirstOrDefaultAsync(x => x.Id == id && x.OwerWalletAddress == null, cancellationToken);
         if (model == null)
-            return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
+            return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
         model.OwerWalletAddress = walletAdress;
 
@@ -55,7 +55,7 @@ public class TokensService : ITokensService
     {
         var model = await _uow.TokenRepo.GetAll().FirstOrDefaultAsync(x => x.Id == id && x.OwerWalletAddress != null && !x.IsMinted, cancellationToken);
         if (model == null)
-            return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
+            return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
         model.IsMinted = true;
         model.ContractTokenId = contractTokenId;
@@ -68,7 +68,7 @@ public class TokensService : ITokensService
     {
         var model = await _uow.TokenRepo.GetAll().FirstOrDefaultAsync(x => x.Id == id && x.OwerWalletAddress != null && x.IsMinted && x.IsBurned, cancellationToken);
         if (model == null)
-            return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, AppResource.NotFound);
+            return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
         model.IsBurned = true;
         model.ContractTokenId = contractTokenId;
