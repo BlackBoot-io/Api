@@ -12,11 +12,6 @@ public static class ServiceCollectionExtentions
         services.RegisterScopedServices(assembly);
         services.RegisterSingletonServices(assembly);
         services.RegisterTransientServices(assembly);
-
-
-
-
         services.RegisterApplicatioinExternalServices();
     }
 }
-

@@ -1,6 +1,5 @@
 ﻿using Avn.Data.UnitofWork;
 using Avn.Domain.Dtos.Externals.NftStorage;
-using Avn.Services.External.Implementations;
 
 namespace Avn.Services.Interfaces;
 
