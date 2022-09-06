@@ -13,6 +13,8 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<User>().HasIndex(X => X.Email).IsUnique();
+
         modelBuilder.RegisterAllEntities<IEntity>(typeof(User).Assembly);
         modelBuilder.AddPluralizingTableNameConvention();
     }
