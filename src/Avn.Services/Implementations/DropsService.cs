@@ -88,15 +88,15 @@ public class DropsService : IDropsService
         return new ActionResponse<bool>(true);
     }
 
-    public async Task<IActionResponse<bool>> RejectAsync(int DropId, CancellationToken cancellation = default)
+    public async Task<IActionResponse<bool>> RejectAsync(int DropId, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.DropRepo.GetAll().FirstOrDefaultAsync(x => x.Id == DropId && x.DropStatus == DropStatus.Pending, cancellation);
+        var model = await _uow.DropRepo.GetAll().FirstOrDefaultAsync(x => x.Id == DropId && x.DropStatus == DropStatus.Pending, cancellationToken);
         if (model == null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
         model.DropStatus = DropStatus.Rejected;
 
-        await _uow.SaveChangesAsync(cancellation);
+        await _uow.SaveChangesAsync(cancellationToken);
 
         return new ActionResponse<bool>(true);
     }
