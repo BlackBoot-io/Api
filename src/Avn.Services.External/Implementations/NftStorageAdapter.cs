@@ -67,7 +67,7 @@ public class NftStorageAdapter : INftStorageAdapter
     /// <summary>
     /// Get Specific Uploaded File In IPFS
     /// </summary>
-    /// <param name="cid">Content Id</param>
+    /// <param name="contentId">Content Id</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public async Task<IActionResponse<UploadResponseDto>> GetAsync(string contentId, CancellationToken cancellationToken = default)

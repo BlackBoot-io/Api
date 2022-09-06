@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Avn.Services.External.Interfaces;
 
+
+/// <summary>
+/// Ineteract With IPFS Through NftStorage
+/// </summary>
 public interface INftStorageAdapter : ITransientDependency
 {
     /// <summary>
@@ -19,7 +23,7 @@ public interface INftStorageAdapter : ITransientDependency
     /// <summary>
     /// Get Specific Uploaded File In IPFS
     /// </summary>
-    /// <param name="cid">Content Id</param>
+    /// <param name="contentId">Content Id</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<IActionResponse<UploadResponseDto>> GetAsync(string contentId, CancellationToken cancellationToken = default);

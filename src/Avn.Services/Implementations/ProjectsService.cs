@@ -60,7 +60,7 @@ public class ProjectsService : IProjectsService
     public async Task<IActionResponse<Guid>> UpdateAsync(UpdateProjectDto item, CancellationToken cancellationToken = default)
     {
         var model = await _uow.ProjectRepo.GetAll().FirstOrDefaultAsync(x => x.Id == item.Id && x.UserId == item.UserId, cancellationToken);
-        if (model == null)
+        if (model is null)
             return new ActionResponse<Guid>(ActionResponseStatusCode.NotFound, BusinessMessage.RecordNotFound);
 
         model.Name = item.Name;
