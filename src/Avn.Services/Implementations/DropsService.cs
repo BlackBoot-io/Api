@@ -79,7 +79,7 @@ public class DropsService : IDropsService
         var result = await _uow.SaveChangesAsync(cancellationToken);
         if (result.ToSaveChangeResult())
         {
-            await _nftStorageAdaptar.Upload(new UploadRequestDto(model.Name, model.Description, null, new
+            await _nftStorageAdaptar.UploadAsync(new UploadRequestDto(model.Name, model.Description, null, new
             {
                 Project = model.Project.Name,
             }), cancellationToken);

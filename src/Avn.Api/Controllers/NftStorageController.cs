@@ -13,5 +13,5 @@ public class NftStorageController : BaseController
 
     [HttpPost, AllowAnonymous]
     public async Task<IActionResult> UploadNftAsync(UploadRequestDto item, CancellationToken cancellationToken)
-    => Ok(await _nftStorageAdapter.Upload(item, cancellationToken));
+    => Ok(await _nftStorageAdapter.UploadAsync(item, cancellationToken));
 }

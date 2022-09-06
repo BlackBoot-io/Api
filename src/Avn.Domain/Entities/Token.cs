@@ -7,7 +7,7 @@ public class Token : IEntity
 
     [Key]
     public Guid Id { get; set; }
-   
+
     [ForeignKey(nameof(DropId))]
     public virtual Drop Drop { get; set; }
     public int DropId { get; set; }

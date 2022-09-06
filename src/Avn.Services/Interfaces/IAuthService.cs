@@ -1,7 +1,7 @@
 ﻿namespace Avn.Services.Interfaces;
 public interface IAuthService : IScopedDependency
 {
- 
+
     /// <summary>
     /// Login into system with username and password
     /// </summary>

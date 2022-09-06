@@ -64,8 +64,6 @@ public class UsersService : IUsersService
         user.FullName = userDto.FullName;
         user.OrganizationName = userDto.OrganizationName;
 
-        _uow.UserRepo.Update(user);
-
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.ToSaveChangeResult())
             return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError);

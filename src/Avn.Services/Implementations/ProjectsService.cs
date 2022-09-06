@@ -27,7 +27,7 @@ public class ProjectsService : IProjectsService
     /// <returns></returns>
     public async Task<IActionResponse<Project>> CreateAsync(Project model, CancellationToken cancellationToken = default)
     {
-        model.ApiKey = (new Guid()).ToString();
+        model.ApiKey = Guid.NewGuid().ToString();
         await _uow.ProjectRepo.AddAsync(model, cancellationToken);
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.ToSaveChangeResult())
@@ -47,7 +47,6 @@ public class ProjectsService : IProjectsService
         project.SourceIp = item.SourceIp;
         project.ApiKey = item.ApiKey;
 
-        await UpdateAsync(project);
         var dbResult = await _uow.SaveChangesAsync();
 
         if (!dbResult.ToSaveChangeResult())

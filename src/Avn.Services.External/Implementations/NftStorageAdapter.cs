@@ -1,7 +1,11 @@
 ﻿using Avn.Domain.Dtos.Externals.NftStorage;
 using Avn.Services.External.Interfaces;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
@@ -20,45 +24,72 @@ public class NftStorageAdapter : INftStorageAdapter
     {
         _configuration = configuration;
         _httpClient = httpClientFactory.CreateClient();
-        _httpClient.BaseAddress = new System.Uri(Url);
-        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", ApiKey);
+        _httpClient.BaseAddress = new Uri(Url);
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiKey);
     }
 
+    #region Private
     private string Url => _configuration["NftStorage:Url"];
     private string ApiKey => _configuration["NftStorage:ApiKey"];
 
+    private async Task<NftStorageActionResponse> UploadInternalAsync(byte[] data, CancellationToken cancellationToken = default)
+    {
+        var request = await _httpClient.PostAsync("Upload", new ByteArrayContent(data), cancellationToken);
+        var response = await request.Content.ReadFromJsonAsync<NftStorageActionResponse>();
+        return response;
+    }
+    #endregion
 
+    public async Task<IActionResponse<IEnumerable<UploadResponseDto>>> GetAllAsync(DateTime startDate, int limit, CancellationToken cancellationToken = default)
+    {
+        var response = await _httpClient.GetFromJsonAsync<NftStorageActionResponse<IEnumerable<NftStorageUploadResponseValue>>>($"?before={startDate}&limit={limit}", cancellationToken);
+        if (!response.Ok)
+            return new ActionResponse<IEnumerable<UploadResponseDto>>(ActionResponseStatusCode.ServerError, response.Error.Name + ":" + response.Error.Message);
 
+        return new ActionResponse<IEnumerable<UploadResponseDto>>(response.Value.Select(row => new UploadResponseDto(row.CId)));
+    }
 
-    public async Task<IActionResponse<UploadResponseDto>> Upload(UploadRequestDto item, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<UploadResponseDto>> GetAsync(string cid, CancellationToken cancellationToken = default)
+    {
+        var response = await _httpClient.GetFromJsonAsync<NftStorageActionResponse>($"{cid}", cancellationToken);
+        if (!response.Ok)
+            return new ActionResponse<UploadResponseDto>(ActionResponseStatusCode.ServerError, response.Error.Name + ":" + response.Error.Message);
+
+        return new ActionResponse<UploadResponseDto>(new UploadResponseDto(response.Value.CId));
+    }
+
+    public async Task<IActionResponse<UploadResponseDto>> UploadAsync(UploadRequestDto item, CancellationToken cancellationToken = default)
     {
 
-        var imageResult = await UploadInternalAsync(item.Image, cancellationToken);
-        if (!imageResult.ok)
-            return new ActionResponse<UploadResponseDto>(ActionResponseStatusCode.ServerError, imageResult.error.Name + ":" + imageResult.error.Message);
+        var imageResponse = await UploadInternalAsync(item.Image, cancellationToken);
+        if (!imageResponse.Ok)
+            return new ActionResponse<UploadResponseDto>(ActionResponseStatusCode.ServerError, imageResponse.Error.Name + ":" + imageResponse.Error.Message);
 
-        var drop = new
+        var model = new
         {
             Name = item.Name,
             Description = item.Description,
-            Image = imageResult.value.Cid,
+            Image = imageResponse.Value.CId,
             Properties = item.MetaData
         };
 
-        var dropRequest = JsonSerializer.Serialize(drop);
-        var dropResult = await UploadInternalAsync(Encoding.UTF8.GetBytes(dropRequest), cancellationToken);
-        if (!dropResult.ok)
-            return new ActionResponse<UploadResponseDto>(ActionResponseStatusCode.ServerError, dropResult.error.Name + ":" + dropResult.error.Message);
 
-        return new ActionResponse<UploadResponseDto>(new UploadResponseDto(dropResult.value.Cid));
+        var response = await UploadInternalAsync(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(model)), cancellationToken);
+        if (!response.Ok)
+            return new ActionResponse<UploadResponseDto>(ActionResponseStatusCode.ServerError, response.Error.Name + ":" + response.Error.Message);
+
+        return new ActionResponse<UploadResponseDto>(new UploadResponseDto(response.Value.Cid));
     }
 
 
-
-    private async Task<NftStorageUploadResponseDto> UploadInternalAsync(byte[] data, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse> DeleteAsync(string cid, CancellationToken cancellationToken = default)
     {
-        var request = await _httpClient.PostAsync("Upload", new ByteArrayContent(data), cancellationToken);
-        var response = await request.Content.ReadFromJsonAsync<NftStorageUploadResponseDto>();
-        return response;
+        var request = await _httpClient.DeleteAsync($"{cid}", cancellationToken);
+        var response = await request.Content.ReadFromJsonAsync<NftStorageActionResponse>();
+        if (!response.Ok)
+            return new ActionResponse(ActionResponseStatusCode.ServerError, response.Error.Name + ":" + response.Error.Message);
+
+        return new ActionResponse();
     }
+
 }
