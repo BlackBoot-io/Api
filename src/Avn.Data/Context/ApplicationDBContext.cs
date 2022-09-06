@@ -1,7 +1,4 @@
-﻿using Avn.Data.Extensions;
-using Avn.Domain.Entities;
-
-namespace Avn.Data.Context;
+﻿namespace Avn.Data.Context;
 
 public class ApplicationDbContext : DbContext
 {
@@ -20,4 +17,3 @@ public class ApplicationDbContext : DbContext
         modelBuilder.AddPluralizingTableNameConvention();
     }
 }
-
