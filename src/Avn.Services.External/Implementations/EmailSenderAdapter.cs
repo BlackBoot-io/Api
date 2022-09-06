@@ -66,7 +66,6 @@ public class EmailSenderAdapter : IEmailSenderAdapter
 
     public async Task<IActionResponse> Send(EmailRequestDto email)
     {
-
         try
         {
             var sendResult = await SendWithSendinBlue(email);
