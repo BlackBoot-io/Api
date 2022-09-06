@@ -50,7 +50,7 @@ public class EmailSenderAdapter : IEmailSenderAdapter
 
             var sendMailResult = await apiInstance.SendTransacEmailAsync(smtpEmail);
             if (!string.IsNullOrEmpty(sendMailResult.MessageId))
-                return new(true, sendMailResult.MessageId?.Split("@")[0]?.Substring(1));
+                return new(true, sendMailResult.MessageId?.Split("@")[0]?[1..]);
             else
                 return new(false, string.Empty);
         }

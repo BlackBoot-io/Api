@@ -48,7 +48,15 @@ public class UsersService : IUsersService
         if (!dbResult.ToSaveChangeResult())
             return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError);
 
-        await _verificationService.SendOtpAsync(user, VerificationType.EmailVerification, cancellationToken);
+        await _verificationService.SendOtpAsync(new UserDto
+        {
+            Email = user.Email,
+            FullName = user.FullName,
+            UserType = user.Type,
+            OrganizationName = user.OrganizationName,
+            WalletAddress = user.WalletAddress,
+            EmailIsApproved = user.EmailIsApproved
+        }, VerificationType.EmailVerification, cancellationToken);
         return new ActionResponse<Guid>(user.UserId);
     }
 
