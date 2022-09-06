@@ -13,34 +13,32 @@ public class DropsService : IDropsService
     }
 
     public async Task<IActionResponse<IEnumerable<DropDto>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default)
-    {
-        var result = await _uow.DropRepo.GetAll().AsNoTracking()
-            .Where(x => x.UserId == userId)
-            .Select(row => new DropDto
-            {
-                Id = row.Id,
-                Code = row.Code,
-                ProjectId = row.ProjectId,
-                Project = row.Project != null ? row.Project.Name : string.Empty,
-                UserId = row.UserId,
-                User = row.User != null ? row.User.FullName : string.Empty,
-                Name = row.Name,
-                Description = row.Description,
-                DeliveryType = row.DeliveryType,
-                NetworkId = row.NetworkId,
-                Network = row.Network != null ? row.Network.Name : "",
-                DropUri = row.DropUri,
-                Location = row.Location,
-                StartDate = row.StartDate,
-                EndDate = row.EndDate,
-                ExpireDate = row.ExpireDate,
-                IsPrivate = row.IsPrivate,
-                IsVirtual = row.IsVirtual
+        => new ActionResponse<IEnumerable<DropDto>>( await _uow.DropRepo.GetAll().AsNoTracking()
+                .Where(x => x.UserId == userId)
+                .Select(row => new DropDto
+                {
+                    Id = row.Id,
+                    Code = row.Code,
+                    ProjectId = row.ProjectId,
+                    Project = row.Project != null ? row.Project.Name : string.Empty,
+                    UserId = row.UserId,
+                    User = row.User != null ? row.User.FullName : string.Empty,
+                    Name = row.Name,
+                    Description = row.Description,
+                    DeliveryType = row.DeliveryType,
+                    NetworkId = row.NetworkId,
+                    Network = row.Network != null ? row.Network.Name : "",
+                    DropUri = row.DropUri,
+                    Location = row.Location,
+                    StartDate = row.StartDate,
+                    EndDate = row.EndDate,
+                    ExpireDate = row.ExpireDate,
+                    IsPrivate = row.IsPrivate,
+                    IsVirtual = row.IsVirtual
 
-            }).ToListAsync(cancellationToken);
-        return new ActionResponse<IEnumerable<DropDto>>(result);
+                }).ToListAsync(cancellationToken));
 
-    }
+
 
     public async Task<IActionResponse<Guid>> CreateAsync(CreateDropDto item, CancellationToken cancellationToken = default)
     {
@@ -55,7 +53,7 @@ public class DropsService : IDropsService
     public async Task<IActionResponse<bool>> DeactiveAsync(Guid code, CancellationToken cancellationToken = default)
     {
         var model = await _uow.DropRepo.GetAll().FirstOrDefaultAsync(x => x.Code == code, cancellationToken);
-        if (model == null)
+        if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
         model.IsActive = false;
@@ -69,7 +67,7 @@ public class DropsService : IDropsService
     public async Task<IActionResponse<bool>> ConfirmAsync(int DropId, CancellationToken cancellationToken = default)
     {
         var model = await _uow.DropRepo.GetAll().FirstOrDefaultAsync(x => x.Id == DropId && x.DropStatus == DropStatus.Pending, cancellationToken);
-        if (model == null)
+        if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
         model.DropStatus = DropStatus.Confirmed;
@@ -90,7 +88,7 @@ public class DropsService : IDropsService
     public async Task<IActionResponse<bool>> RejectAsync(int DropId, CancellationToken cancellationToken = default)
     {
         var model = await _uow.DropRepo.GetAll().FirstOrDefaultAsync(x => x.Id == DropId && x.DropStatus == DropStatus.Pending, cancellationToken);
-        if (model == null)
+        if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
         model.DropStatus = DropStatus.Rejected;
