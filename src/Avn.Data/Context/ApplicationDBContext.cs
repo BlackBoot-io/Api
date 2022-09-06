@@ -1,7 +1,4 @@
-﻿using Avn.Data.Extensions;
-using Avn.Domain.Entities;
-
-namespace Avn.Data.Context;
+﻿namespace Avn.Data.Context;
 
 public class ApplicationDbContext : DbContext
 {
@@ -16,8 +13,9 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<User>().HasIndex(X => X.Email).IsUnique();
+
         modelBuilder.RegisterAllEntities<IEntity>(typeof(User).Assembly);
         modelBuilder.AddPluralizingTableNameConvention();
     }
 }
-

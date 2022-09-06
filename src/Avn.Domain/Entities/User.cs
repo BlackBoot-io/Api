@@ -14,6 +14,7 @@ public class User : IEntity
 
     [Required]
     [MaxLength(128)]
+    [EmailAddress]
     public string Email { get; set; }
 
     [Required]
@@ -21,12 +22,10 @@ public class User : IEntity
 
     [Required]
     [MaxLength(256)]
-    [Column(TypeName = "varchar")]
     public string Password { get; set; }
 
     [Required]
     [MaxLength(256)]
-    [Column(TypeName = "varchar")]
     public string PasswordSalt { get; set; }
 
     public UserType Type { get; set; }

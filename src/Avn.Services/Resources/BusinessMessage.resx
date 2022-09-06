@@ -138,6 +138,9 @@
   <data name="RecordNotFound" xml:space="preserve">
     <value>RecordNotFound</value>
   </data>
+  <data name="ServerError" xml:space="preserve">
+    <value>Oops!  Server Error.</value>
+  </data>
   <data name="TransactionFailed" xml:space="preserve">
     <value>Current Transaction is failed! Please try again later.</value>
   </data>

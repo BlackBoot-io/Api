@@ -15,7 +15,7 @@ public class VerificationCode : IEntity
 
     [Required]
     [MaxLength(200)]
-    public string PinCode { get; set; }
+    public string UniqueCode { get; set; }
 
     public bool IsUsed { get; set; }
 

@@ -16,6 +16,7 @@ public interface IAppUnitOfWork : IDisposable, IAsyncDisposable
     #region Auth
     public IGenericRepo<User> UserRepo { get; }
     public IGenericRepo<UserJwtToken> UserJwtTokenRepo { get; }
+    public IGenericRepo<VerificationCode> VerificationCodeRepo { get; }
     #endregion
     #region Base
     public IGenericRepo<Drop> DropRepo { get; }

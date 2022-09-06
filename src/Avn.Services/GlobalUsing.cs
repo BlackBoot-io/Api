@@ -1,4 +1,5 @@
-﻿global using Avn.Domain.Dtos;
+﻿global using Avn.Data.UnitofWork;
+global using Avn.Domain.Dtos;
 global using Avn.Domain.Entities;
 global using Avn.Domain.Enums;
 global using Avn.Services.External.Interfaces;

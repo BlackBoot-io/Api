@@ -22,8 +22,7 @@ public class Project : IEntity
     public string SourceIp { get; set; }
 
     [Required]
-    [MaxLength(50)]
-    public string ApiKey { get; set; }
+    public Guid ApiKey { get; set; }
 
     [MaxLength(50)]
     [Column(TypeName = "varchar")]

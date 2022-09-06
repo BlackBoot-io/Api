@@ -1,5 +1,4 @@
 ﻿#nullable disable
-using Avn.Data.UnitofWork;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -8,7 +7,7 @@ using System.Text;
 
 namespace BlackBoot.Services.Implementations;
 
-internal abstract class JwtTokensFactory
+public abstract class JwtTokensFactory
 {
     private readonly JwtSettings _jwtSettings;
     protected JwtTokensFactory(IConfiguration configuration) => _jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
@@ -80,7 +79,7 @@ internal abstract class JwtTokensFactory
 /// <summary>
 /// Internal Api
 /// </summary>
-internal class JwtTokensService : JwtTokensFactory, IJwtTokensService
+public class JwtTokensService : JwtTokensFactory, IJwtTokensService
 {
     private readonly JwtSettings _jwtSettings;
     private readonly IAppUnitOfWork _uow;

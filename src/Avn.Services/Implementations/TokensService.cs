@@ -1,6 +1,4 @@
-﻿using Avn.Data.UnitofWork;
-
-namespace Avn.Services.Interfaces;
+﻿namespace Avn.Services.Interfaces;
 
 public class TokensService : ITokensService
 {

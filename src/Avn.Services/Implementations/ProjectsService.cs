@@ -1,6 +1,5 @@
-﻿using Avn.Data.UnitofWork;
+﻿namespace Avn.Services.Implementations;
 
-namespace Avn.Services.Implementations;
 public class ProjectsService : IProjectsService
 {
     private readonly IAppUnitOfWork _uow;
@@ -27,7 +26,7 @@ public class ProjectsService : IProjectsService
     /// <returns></returns>
     public async Task<IActionResponse<Project>> CreateAsync(Project model, CancellationToken cancellationToken = default)
     {
-        model.ApiKey = Guid.NewGuid().ToString();
+        model.ApiKey = Guid.NewGuid();
         await _uow.ProjectRepo.AddAsync(model, cancellationToken);
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.ToSaveChangeResult())
