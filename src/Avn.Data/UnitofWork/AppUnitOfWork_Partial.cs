@@ -9,6 +9,7 @@ public partial class AppUnitOfWork
     #region Auth
     public IGenericRepo<User> UserRepo => _dbContext.GetService<IGenericRepo<User>>();
     public IGenericRepo<UserJwtToken> UserJwtTokenRepo => _dbContext.GetService<IGenericRepo<UserJwtToken>>();
+    public IGenericRepo<VerificationCode> VerificationCodeRepo => _dbContext.GetService<IGenericRepo<VerificationCode>>();
     #endregion
     #region Base
     public IGenericRepo<Drop> DropRepo => _dbContext.GetService<IGenericRepo<Drop>>();
