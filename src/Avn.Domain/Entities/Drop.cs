@@ -29,6 +29,8 @@ public class Drop : IEntity
 
     public DeliveryType DeliveryType { get; set; }
 
+    public DropCategoryType CategoryType { get; set; }
+
     public DropStatus DropStatus { get; set; } = DropStatus.Pending;
 
     [MaxLength(100)]

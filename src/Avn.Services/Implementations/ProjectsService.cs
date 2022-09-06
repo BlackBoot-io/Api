@@ -7,7 +7,7 @@ public class ProjectsService : IProjectsService
     public ProjectsService(IAppUnitOfWork uow) => _uow = uow;
 
     /// <summary>
-    /// Get all user's project
+    /// Get all user's project in order
     /// </summary>
     /// <param name="userid">userId which automatic binded to apis</param>
     /// <param name="cancellationToken"></param>
