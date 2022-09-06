@@ -5,6 +5,9 @@ public class Project : IEntity
 {
     public Project() => Id = Guid.NewGuid();
 
+    /// <summary>
+    /// Use this field as an Api-Key
+    /// </summary>
     [Key]
     public Guid Id { get; set; }
 
@@ -18,15 +21,12 @@ public class Project : IEntity
 
     [Required]
     [MaxLength(15)]
-    [Column(TypeName = "varchar")]
     public string SourceIp { get; set; }
 
-    [Required]
-    public Guid ApiKey { get; set; }
-
     [MaxLength(50)]
-    [Column(TypeName = "varchar")]
     public string Website { get; set; }
+
+    public bool IsActive { get; set; }
 
     public DateTime InsertDate { get; set; }
     public ICollection<Drop> Drops { get; set; }

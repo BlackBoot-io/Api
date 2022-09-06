@@ -25,4 +25,13 @@ public interface IProjectsService : IScopedDependency
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<IActionResponse<Guid>> UpdateAsync(UpdateProjectDto item, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Disable/Enable a project by user
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="projectId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<IActionResponse<Guid>> ChangeStateAsync(Guid userId, Guid projectId, CancellationToken cancellationToken = default);
 }

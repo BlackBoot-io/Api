@@ -23,8 +23,7 @@ public class ProjectsService : IProjectsService
                User = s.User != null ? s.User.FullName : "",
                Name = s.Name,
                SourceIp = s.SourceIp,
-               Website = s.Website,
-               ApiKey = s.ApiKey
+               Website = s.Website
            }).ToListAsync(cancellationToken));
 
     /// <summary>
@@ -41,8 +40,7 @@ public class ProjectsService : IProjectsService
             Name = item.Name,
             SourceIp = item.SourceIp,
             Website = item.Website,
-            InsertDate = DateTime.Now,
-            ApiKey = item.ApiKey
+            InsertDate = DateTime.Now
         };
         await _uow.ProjectRepo.AddAsync(model, cancellationToken);
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
@@ -66,6 +64,28 @@ public class ProjectsService : IProjectsService
         model.Name = item.Name;
         model.Website = item.Website;
         model.SourceIp = item.SourceIp;
+
+        var dbResult = await _uow.SaveChangesAsync(cancellationToken);
+        if (!dbResult.ToSaveChangeResult())
+            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.AddProjectOperationFail);
+
+        return new ActionResponse<Guid>(model.Id);
+    }
+
+    /// <summary>
+    /// Disable/Enable a project by user
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="projectId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public async Task<IActionResponse<Guid>> ChangeStateAsync(Guid userId, Guid projectId, CancellationToken cancellationToken = default)
+    {
+        var model = await _uow.ProjectRepo.GetAll().FirstOrDefaultAsync(x => x.Id == projectId && x.UserId == userId, cancellationToken);
+        if (model is null)
+            return new ActionResponse<Guid>(ActionResponseStatusCode.NotFound, BusinessMessage.RecordNotFound);
+
+        model.IsActive = !model.IsActive;
 
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.ToSaveChangeResult())

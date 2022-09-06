@@ -7,5 +7,4 @@ public record ProjectDto
     public string Name { get; init; }
     public string SourceIp { get; init; }
     public string Website { get; init; }
-    public Guid ApiKey { get; init; }
 }

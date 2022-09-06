@@ -2,7 +2,9 @@
 
 public enum DropStatus : byte
 {
-    Pending = 1,
-    Rejected = 2,
-    Confirmed = 10
+
+
+    Pending = 10,
+    Rejected = 15,
+    Confirmed = 20
 }
