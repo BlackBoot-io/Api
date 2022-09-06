@@ -9,7 +9,7 @@ public interface IProjectsService : IScopedDependency
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<IActionResponse<IEnumerable<Project>>> GetAllAsync(Guid userid, CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Add new project for users
     /// </summary>

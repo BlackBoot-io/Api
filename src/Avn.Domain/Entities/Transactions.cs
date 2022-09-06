@@ -1,4 +1,6 @@
-﻿namespace Avn.Domain.Entities;
+﻿using System.Text.Json.Serialization;
+
+namespace Avn.Domain.Entities;
 
 [Table(nameof(Transaction), Schema = nameof(EntitySchema.Payment))]
 public class Transaction : IEntity

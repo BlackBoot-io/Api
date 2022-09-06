@@ -14,7 +14,7 @@ public partial class AppUnitOfWork
     public IGenericRepo<Drop> DropRepo => _dbContext.GetService<IGenericRepo<Drop>>();
     public IGenericRepo<Token> TokenRepo => _dbContext.GetService<IGenericRepo<Token>>();
     public IGenericRepo<Project> ProjectRepo => _dbContext.GetService<IGenericRepo<Project>>();
-    public IGenericRepo<Network> NetworkRepo =>_dbContext.GetService<IGenericRepo<Network>>();
+    public IGenericRepo<Network> NetworkRepo => _dbContext.GetService<IGenericRepo<Network>>();
     #endregion
 }
 

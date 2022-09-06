@@ -11,7 +11,7 @@ namespace BlackBoot.Services.Implementations;
 internal abstract class JwtTokensFactory
 {
     private readonly JwtSettings _jwtSettings;
-    public JwtTokensFactory(IConfiguration configuration) => _jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
+    protected JwtTokensFactory(IConfiguration configuration) => _jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
 
     protected IActionResponse<(string Token, int TokenExpirationMinutes)> CreateToken(List<Claim> claims, JwtTokenType tokenType)
     {

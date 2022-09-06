@@ -30,7 +30,7 @@ public class User : IEntity
     public string PasswordSalt { get; set; }
 
     public UserType Type { get; set; }
-   
+
     [Required]
     [MaxLength(256)]
     public string WalletAddress { get; set; }
