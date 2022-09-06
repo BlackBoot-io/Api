@@ -8,15 +8,15 @@ public interface IProjectsService : IScopedDependency
     /// <param name="userid">userId which automatic binded to apis</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IActionResponse<IEnumerable<Project>>> GetAllAsync(Guid userid, CancellationToken cancellationToken = default);
+    Task<IActionResponse<IEnumerable<ProjectDto>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Add new project for users
     /// </summary>
-    /// <param name="model">data that provided by Users</param>
+    /// <param name="model">data that provided by Users</param> 
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IActionResponse<Project>> CreateAsync(Project model, CancellationToken cancellationToken = default);
+    Task<IActionResponse<Guid>> CreateAsync(CreateProjectDto item, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// update existing project by user
@@ -24,5 +24,5 @@ public interface IProjectsService : IScopedDependency
     /// <param name="model"> new data that provided by users</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IActionResponse<Project>> UpdateAsync(Project model, CancellationToken cancellationToken = default);
+    Task<IActionResponse<Guid>> UpdateAsync(UpdateProjectDto item, CancellationToken cancellationToken = default);
 }

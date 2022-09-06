@@ -12,11 +12,20 @@ public class ProjectsService : IProjectsService
     /// <param name="userid">userId which automatic binded to apis</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<IActionResponse<IEnumerable<Project>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default)
-       => new ActionResponse<IEnumerable<Project>>(await _uow.ProjectRepo.GetAll()
+    public async Task<IActionResponse<IEnumerable<ProjectDto>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default)
+       => new ActionResponse<IEnumerable<ProjectDto>>(await _uow.ProjectRepo.GetAll()
            .Where(X => X.UserId == userId)
            .AsNoTracking()
-           .ToListAsync(cancellationToken));
+           .Select(s => new ProjectDto
+           {
+               Id = s.Id,
+               UserId = s.UserId,
+               User = s.User != null ? s.User.FullName : "",
+               Name = s.Name,
+               SourceIp = s.SourceIp,
+               Website = s.Website,
+               ApiKey = s.ApiKey
+           }).ToListAsync(cancellationToken));
 
     /// <summary>
     /// Create a new project
@@ -24,40 +33,44 @@ public class ProjectsService : IProjectsService
     /// <param name="model"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<IActionResponse<Project>> CreateAsync(Project model, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<Guid>> CreateAsync(CreateProjectDto item, CancellationToken cancellationToken = default)
     {
-        model.ApiKey = Guid.NewGuid();
+        var model = new Project
+        {
+            UserId = item.UserId,
+            Name = item.Name,
+            SourceIp = item.SourceIp,
+            Website = item.Website,
+            InsertDate = DateTime.Now,
+            ApiKey = item.ApiKey
+        };
         await _uow.ProjectRepo.AddAsync(model, cancellationToken);
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.ToSaveChangeResult())
-            return new ActionResponse<Project>(ActionResponseStatusCode.ServerError, BusinessMessage.AddProjectOperationFail);
-        return new ActionResponse<Project>(model);
+            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.AddProjectOperationFail);
+
+        return new ActionResponse<Guid>(model.Id);
     }
-
-
-    public async Task<IActionResponse<Project>> UpdateAsync(Project item, CancellationToken cancellationToken = default)
+    /// <summary>
+    /// update existing project by user
+    /// </summary>
+    /// <param name="model"> new data that provided by users</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public async Task<IActionResponse<Guid>> UpdateAsync(UpdateProjectDto item, CancellationToken cancellationToken = default)
     {
-        var project = await _uow.ProjectRepo.GetAll().FirstOrDefaultAsync(x => x.Id == item.Id);
-        if (project == null)
-            return new ActionResponse<Project>(ActionResponseStatusCode.NotFound, BusinessMessage.RecordNotFound);
+        var model = await _uow.ProjectRepo.GetAll().FirstOrDefaultAsync(x => x.Id == item.Id && x.UserId == item.UserId, cancellationToken);
+        if (model == null)
+            return new ActionResponse<Guid>(ActionResponseStatusCode.NotFound, BusinessMessage.RecordNotFound);
 
-        project.Name = item.Name;
-        project.Website = item.Website;
-        project.SourceIp = item.SourceIp;
-        project.ApiKey = item.ApiKey;
+        model.Name = item.Name;
+        model.Website = item.Website;
+        model.SourceIp = item.SourceIp;
 
         var dbResult = await _uow.SaveChangesAsync();
-
         if (!dbResult.ToSaveChangeResult())
-            return new ActionResponse<Project>(ActionResponseStatusCode.ServerError, BusinessMessage.AddProjectOperationFail);
+            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.AddProjectOperationFail);
 
-        return new ActionResponse<Project>(new Project
-        {
-            Name = project.Name,
-            SourceIp = project.SourceIp,
-            UserId = project.UserId,
-            Website = project.Website,
-            ApiKey = project.ApiKey,
-        });
+        return new ActionResponse<Guid>(model.Id);
     }
 }
