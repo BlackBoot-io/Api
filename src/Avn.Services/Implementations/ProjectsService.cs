@@ -15,6 +15,7 @@ public class ProjectsService : IProjectsService
     public async Task<IActionResponse<IEnumerable<ProjectDto>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default)
        => new ActionResponse<IEnumerable<ProjectDto>>(await _uow.ProjectRepo.GetAll()
            .Where(X => X.UserId == userId)
+           .OrderBy(X => X.InsertDate)
            .AsNoTracking()
            .Select(s => new ProjectDto
            {
