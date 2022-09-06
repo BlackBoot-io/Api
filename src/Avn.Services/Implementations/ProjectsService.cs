@@ -67,7 +67,7 @@ public class ProjectsService : IProjectsService
         model.Website = item.Website;
         model.SourceIp = item.SourceIp;
 
-        var dbResult = await _uow.SaveChangesAsync();
+        var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.ToSaveChangeResult())
             return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.AddProjectOperationFail);
 

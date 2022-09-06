@@ -20,7 +20,7 @@ public class EmailSenderAdapter : IEmailSenderAdapter
     {
         try
         {
-            var apiInstance = new TransactionalEmailsApi();
+            TransactionalEmailsApi apiInstance = new();
             if (!Configuration.Default.ApiKey.ContainsKey("api-key"))
                 Configuration.Default.ApiKey.Add("api-key", _configuration["EmailSettings:SendinBlueApiKey"]);
 

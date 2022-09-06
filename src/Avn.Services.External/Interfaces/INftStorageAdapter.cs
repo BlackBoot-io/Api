@@ -20,6 +20,7 @@ public interface INftStorageAdapter : ITransientDependency
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<IActionResponse<IEnumerable<UploadResponseDto>>> GetAllAsync(DateTime endDate, int limit, CancellationToken cancellationToken = default);
+
     /// <summary>
     /// Get Specific Uploaded File In IPFS
     /// </summary>
@@ -27,6 +28,7 @@ public interface INftStorageAdapter : ITransientDependency
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<IActionResponse<UploadResponseDto>> GetAsync(string contentId, CancellationToken cancellationToken = default);
+
     /// <summary>
     /// Upload File In IPFS
     /// </summary>
@@ -34,6 +36,7 @@ public interface INftStorageAdapter : ITransientDependency
     /// <param name="cancellationToken">cancellationToken</param>
     /// <returns></returns>
     Task<IActionResponse<UploadResponseDto>> UploadAsync(UploadRequestDto item, CancellationToken cancellationToken = default);
+
     /// <summary>
     /// Delete Uploaded File in IPFS
     /// </summary>

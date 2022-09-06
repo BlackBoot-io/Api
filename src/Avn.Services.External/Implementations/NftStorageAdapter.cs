@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -23,6 +22,9 @@ public class NftStorageAdapter : INftStorageAdapter
 {
     private readonly HttpClient _httpClient;
     private readonly IConfiguration _configuration;
+    private string Url => _configuration["NftStorage:Url"];
+    private string ApiKey => _configuration["NftStorage:ApiKey"];
+
     public NftStorageAdapter(IHttpClientFactory httpClientFactory, IConfiguration configuration)
     {
         _configuration = configuration;
@@ -32,19 +34,14 @@ public class NftStorageAdapter : INftStorageAdapter
     }
 
     #region Private
-    private string Url => _configuration["NftStorage:Url"];
-    private string ApiKey => _configuration["NftStorage:ApiKey"];
-
-
     private async Task<IActionResponse<UploadResponseDto>> UploadInternalAsync(byte[] data, CancellationToken cancellationToken = default)
     {
         var request = await _httpClient.PostAsync("Upload", new ByteArrayContent(data), cancellationToken);
-        var response = await request.Content.ReadFromJsonAsync<NftStorageActionResponse>();
+        var response = await request.Content.ReadFromJsonAsync<NftStorageActionResponse>(cancellationToken: cancellationToken);
         if (!request.IsSuccessStatusCode)
             return new ActionResponse<UploadResponseDto>((ActionResponseStatusCode)request.StatusCode, response.Error.ToString());
 
         return new ActionResponse<UploadResponseDto>(new UploadResponseDto(response.Value.CId));
-
     }
     #endregion
     /// <summary>
@@ -57,7 +54,7 @@ public class NftStorageAdapter : INftStorageAdapter
     public async Task<IActionResponse<IEnumerable<UploadResponseDto>>> GetAllAsync(DateTime endDate, int limit, CancellationToken cancellationToken = default)
     {
         var request = await _httpClient.GetAsync($"?before={endDate}&limit={limit}", cancellationToken);
-        var response = await request.Content.ReadFromJsonAsync<NftStorageActionResponse<IEnumerable<NftStorageUploadResponseValue>>>();
+        var response = await request.Content.ReadFromJsonAsync<NftStorageActionResponse<IEnumerable<NftStorageUploadResponseValue>>>(cancellationToken: cancellationToken);
         if (!request.IsSuccessStatusCode)
             return new ActionResponse<IEnumerable<UploadResponseDto>>((ActionResponseStatusCode)request.StatusCode, response.Error.ToString());
 
@@ -87,26 +84,20 @@ public class NftStorageAdapter : INftStorageAdapter
     /// <returns></returns>
     public async Task<IActionResponse<UploadResponseDto>> UploadAsync(UploadRequestDto item, CancellationToken cancellationToken = default)
     {
-
         var imageResponse = await UploadInternalAsync(item.Image, cancellationToken);
+
         if (!imageResponse.IsSuccess)
             return imageResponse;
 
-        var model = new
-        {
-            Name = item.Name,
-            Description = item.Description,
-            Image = imageResponse.Data.ContentId,
-            Properties = item.Properties
-        };
-
-
-        var response = await UploadInternalAsync(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(model)), cancellationToken);
-        if (!response.IsSuccess)
-            return response;
-
-
-        return response;
+        return await UploadInternalAsync(
+             Encoding.UTF8.GetBytes(JsonSerializer.Serialize(
+                 new
+                 {
+                     item.Name,
+                     item.Description,
+                     imageResponse.Data.ContentId,
+                     item.Properties
+                 })), cancellationToken);
     }
 
     /// <summary>
@@ -117,12 +108,11 @@ public class NftStorageAdapter : INftStorageAdapter
     /// <returns></returns>
     public async Task<IActionResponse> DeleteAsync(string contentId, CancellationToken cancellationToken = default)
     {
-        var request = await _httpClient.DeleteAsync($"{contentId}", cancellationToken);
-        var response = await request.Content.ReadFromJsonAsync<NftStorageActionResponse>();
+        var request = await _httpClient.DeleteAsync(contentId, cancellationToken);
+        var response = await request.Content.ReadFromJsonAsync<NftStorageActionResponse>(cancellationToken: cancellationToken);
         if (!request.IsSuccessStatusCode)
             return new ActionResponse((ActionResponseStatusCode)request.StatusCode, response.Error.ToString());
 
         return new ActionResponse();
     }
-
 }
