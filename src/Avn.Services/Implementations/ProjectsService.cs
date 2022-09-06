@@ -1,6 +1,4 @@
-﻿using Avn.Data.UnitofWork;
-
-namespace Avn.Services.Implementations;
+﻿namespace Avn.Services.Implementations;
 
 public class ProjectsService : IProjectsService
 {

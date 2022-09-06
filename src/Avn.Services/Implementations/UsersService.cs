@@ -1,6 +1,4 @@
 ﻿#nullable disable
-using Avn.Data.UnitofWork;
-
 namespace Avn.Services.Implementations;
 
 public class UsersService : IUsersService

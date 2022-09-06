@@ -1,5 +1,4 @@
-﻿using Avn.Data.UnitofWork;
-using Avn.Domain.Dtos.Externals.NftStorage;
+﻿using Avn.Domain.Dtos.Externals.NftStorage;
 
 namespace Avn.Services.Interfaces;
 

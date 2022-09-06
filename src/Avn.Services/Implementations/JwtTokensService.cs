@@ -1,5 +1,4 @@
 ﻿#nullable disable
-using Avn.Data.UnitofWork;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
