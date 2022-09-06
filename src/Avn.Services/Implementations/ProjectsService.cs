@@ -12,20 +12,23 @@ public class ProjectsService : IProjectsService
     /// <param name="userid">userId which automatic binded to apis</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<IActionResponse<IEnumerable<ProjectDto>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default)
-       => new ActionResponse<IEnumerable<ProjectDto>>(await _uow.ProjectRepo.GetAll()
-           .Where(X => X.UserId == userId)
-           .OrderBy(X => X.InsertDate)
-           .AsNoTracking()
-           .Select(s => new ProjectDto
-           {
-               Id = s.Id,
-               UserId = s.UserId,
-               User = s.User != null ? s.User.FullName : "",
-               Name = s.Name,
-               SourceIp = s.SourceIp,
-               Website = s.Website
-           }).ToListAsync(cancellationToken));
+    public async Task<IActionResponse<IEnumerable<object>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default)
+        => new ActionResponse<IEnumerable<object>>(await _uow.ProjectRepo.GetAll()
+                  .Where(X => X.UserId == userId)
+                  .OrderBy(X => X.InsertDate)
+                  .AsNoTracking()
+                  .Select(s => new
+                  {
+                      s.Id,
+                      s.Name,
+                      s.SourceIp,
+                      s.Website,
+                      User = new
+                      {
+                          Id = s.UserId,
+                          FullName = s.User == null ? "" : s.User.FullName
+                      },
+                  }).ToListAsync(cancellationToken));
 
     /// <summary>
     /// Create a new project

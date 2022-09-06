@@ -12,30 +12,30 @@ public class DropsService : IDropsService
         _nftStorageAdaptar = nftStorageAdaptar;
     }
 
-    public async Task<IActionResponse<IEnumerable<DropDto>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default)
-        => new ActionResponse<IEnumerable<DropDto>>(await _uow.DropRepo.GetAll().AsNoTracking()
+    public async Task<IActionResponse<IEnumerable<object>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default)
+        => new ActionResponse<IEnumerable<object>>(await _uow.DropRepo.GetAll().AsNoTracking()
                 .Where(x => x.UserId == userId)
-                .Select(row => new DropDto
+                .Select(row => new
                 {
-                    Id = row.Id,
-                    Code = row.Code,
-                    ProjectId = row.ProjectId,
+                    row.Id,
+                    row.Code,
+                    row.ProjectId,
                     Project = row.Project != null ? row.Project.Name : string.Empty,
-                    UserId = row.UserId,
+                    row.UserId,
                     User = row.User != null ? row.User.FullName : string.Empty,
-                    Name = row.Name,
-                    Description = row.Description,
-                    DeliveryType = row.DeliveryType,
-                    NetworkId = row.NetworkId,
+                    row.Name,
+                    row.Description,
+                    row.DeliveryType,
+                    row.NetworkId,
                     Network = row.Network != null ? row.Network.Name : "",
-                    DropUri = row.DropUri,
-                    Location = row.Location,
-                    StartDate = row.StartDate,
-                    EndDate = row.EndDate,
-                    ExpireDate = row.ExpireDate,
-                    IsPrivate = row.IsPrivate,
-                    IsVirtual = row.IsVirtual
-
+                    row.DropUri,
+                    row.Location,
+                    row.StartDate,
+                    row.EndDate,
+                    row.ExpireDate,
+                    row.IsPrivate,
+                    row.IsVirtual,
+                    row.CategoryType
                 }).ToListAsync(cancellationToken));
 
 

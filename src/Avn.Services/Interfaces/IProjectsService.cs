@@ -8,7 +8,7 @@ public interface IProjectsService : IScopedDependency
     /// <param name="userid">userId which automatic binded to apis</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IActionResponse<IEnumerable<ProjectDto>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default);
+    Task<IActionResponse<IEnumerable<object>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Add new project for users
