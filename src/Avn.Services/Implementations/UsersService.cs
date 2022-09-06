@@ -63,7 +63,7 @@ public class UsersService : IUsersService
     public async Task<IActionResponse<Guid>> UpdateProfileAsync(Guid userId, UserDto userDto, CancellationToken cancellationToken = default)
     {
         var user = await _uow.UserRepo.FindAsync(userId, cancellationToken);
-        if (user == null)
+        if (user is null)
             return new ActionResponse<Guid>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidUser);
 
         user.WalletAddress = userDto.WalletAddress;
@@ -74,11 +74,7 @@ public class UsersService : IUsersService
         if (!dbResult.ToSaveChangeResult())
             return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError);
 
-        return new ActionResponse<Guid>
-        {
-            IsSuccess = true,
-            Data = user.UserId
-        };
+        return new ActionResponse<Guid>(user.UserId);
     }
 
 
@@ -101,9 +97,9 @@ public class UsersService : IUsersService
 
         result.EmailIsApproved = true;
         var dbResult = await _uow.SaveChangesAsync();
-        if (dbResult.ToSaveChangeResult())
-            return new ActionResponse<bool>(ActionResponseStatusCode.Success, true);
+        if (!dbResult.ToSaveChangeResult())
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError);
 
-        return new ActionResponse<bool>(ActionResponseStatusCode.ServerError);
+        return new ActionResponse<bool>(true);
     }
 }
