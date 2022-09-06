@@ -78,7 +78,7 @@ public class NftStorageAdapter : INftStorageAdapter
         if (!response.Ok)
             return new ActionResponse<UploadResponseDto>(ActionResponseStatusCode.ServerError, response.Error.Name + ":" + response.Error.Message);
 
-        return new ActionResponse<UploadResponseDto>(new UploadResponseDto(response.Value.Cid));
+        return new ActionResponse<UploadResponseDto>(new UploadResponseDto(response.Value.CId));
     }
 
 
