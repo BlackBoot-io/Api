@@ -1,6 +1,7 @@
 ﻿using Avn.Data.UnitofWork;
 
 namespace Avn.Services.Implementations;
+
 public class ProjectsService : IProjectsService
 {
     private readonly IAppUnitOfWork _uow;
