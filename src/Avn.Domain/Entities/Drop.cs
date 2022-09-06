@@ -33,20 +33,20 @@ public class Drop : IEntity
 
     public DropStatus DropStatus { get; set; } = DropStatus.Pending;
 
-    [MaxLength(100)]
     [Required]
+    [MaxLength(100)]
     public string DropUri { get; set; }
 
-    [MaxLength(100)]
     [Required]
+    [MaxLength(100)]
     public string ContentId { get; set; }
 
-    [MaxLength(50)]
     [Required]
+    [MaxLength(50)]
     public string Location { get; set; }
 
     public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
+    public DateTime? EndDate { get; set; }
     public DateTime ExpireDate { get; set; }
 
     public bool IsVirtual { get; set; }
@@ -63,6 +63,9 @@ public class Drop : IEntity
     [MaxLength(500)]
     public string Description { get; set; }
 
+    [MaxLength(500)]
+    public string ReviewMessage { get; set; }
+    
     public DateTime InsertDate { get; set; }
     public ICollection<Token> Tokens { get; set; }
 

@@ -13,7 +13,7 @@ public class DropsService : IDropsService
     }
 
     public async Task<IActionResponse<IEnumerable<DropDto>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default)
-        => new ActionResponse<IEnumerable<DropDto>>( await _uow.DropRepo.GetAll().AsNoTracking()
+        => new ActionResponse<IEnumerable<DropDto>>(await _uow.DropRepo.GetAll().AsNoTracking()
                 .Where(x => x.UserId == userId)
                 .Select(row => new DropDto
                 {
@@ -50,6 +50,12 @@ public class DropsService : IDropsService
         return new ActionResponse<Guid>(model.Code);
     }
 
+    /// <summary>
+    /// Deactive a drop with a code
+    /// </summary>
+    /// <param name="code"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task<IActionResponse<bool>> DeactiveAsync(Guid code, CancellationToken cancellationToken = default)
     {
         var model = await _uow.DropRepo.GetAll().FirstOrDefaultAsync(x => x.Code == code, cancellationToken);
@@ -58,7 +64,9 @@ public class DropsService : IDropsService
 
         model.IsActive = false;
 
-        await _uow.SaveChangesAsync(cancellationToken);
+        var result = await _uow.SaveChangesAsync(cancellationToken);
+        if (!result.ToSaveChangeResult())
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         return new ActionResponse<bool>(true);
     }
@@ -71,30 +79,38 @@ public class DropsService : IDropsService
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
         model.DropStatus = DropStatus.Confirmed;
-
-
         var result = await _uow.SaveChangesAsync(cancellationToken);
-        if (result.ToSaveChangeResult())
+        if (!result.ToSaveChangeResult())
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+
+        await _nftStorageAdaptar.UploadAsync(new UploadRequestDto(model.Name, model.Description, null, new
         {
-            await _nftStorageAdaptar.UploadAsync(new UploadRequestDto(model.Name, model.Description, null, new
-            {
-                Project = model.Project.Name,
-            }), cancellationToken);
-            //ToDo:Should do The Strategy
-        }
+            Project = model.Project.Name,
+        }), cancellationToken);
+        //ToDo:Should do The Strategy
+
         return new ActionResponse<bool>(true);
     }
 
-    public async Task<IActionResponse<bool>> RejectAsync(int DropId, CancellationToken cancellationToken = default)
+    /// <summary>
+    /// this method called by admin, and rejects a drop for a resean
+    /// </summary>
+    /// <param name="dropId">primaryKey of drop entity</param>
+    /// <param name="reviewMessage">reason</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public async Task<IActionResponse<bool>> RejectAsync(int dropId, string reviewMessage, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.DropRepo.GetAll().FirstOrDefaultAsync(x => x.Id == DropId && x.DropStatus == DropStatus.Pending, cancellationToken);
+        var model = await _uow.DropRepo.GetAll().FirstOrDefaultAsync(x => x.Id == dropId && x.DropStatus == DropStatus.Pending, cancellationToken);
         if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
-
         model.DropStatus = DropStatus.Rejected;
+        model.ReviewMessage = reviewMessage;
+        var result = await _uow.SaveChangesAsync(cancellationToken);
+        if (!result.ToSaveChangeResult())
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
-        await _uow.SaveChangesAsync(cancellationToken);
-
+        //TODO: Send an email to user with resean
         return new ActionResponse<bool>(true);
     }
 }

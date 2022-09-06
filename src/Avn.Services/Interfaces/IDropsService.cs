@@ -3,6 +3,13 @@
 public interface IDropsService : IScopedDependency
 {
     /// <summary>
+    /// Upload a file into IPFS network then returns CID
+    /// </summary>
+    /// <param name="file"></param>
+    /// <returns></returns>
+    Task<IActionResponse<string>> UploadFile(byte[] file);
+
+    /// <summary>
     /// Create a drop with Ui/Api
     /// </summary>
     /// <param name="item"></param>

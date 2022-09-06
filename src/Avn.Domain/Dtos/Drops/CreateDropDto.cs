@@ -7,6 +7,8 @@ public record CreateDropDto
     public string Name { get; set; }
     public string Description { get; set; }
     public DeliveryType DeliveryType { get; set; }
+    public DropCategoryType CategotyType { get; set; }
+    public string ContentId { get; set; }
     public int NetworkId { get; set; }
     public string Location { get; set; }
     public DateTime StartDate { get; set; }
