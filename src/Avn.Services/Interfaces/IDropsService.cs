@@ -25,6 +25,13 @@ public interface IDropsService : IScopedDependency
     /// <returns></returns>
     Task<IActionResponse<IEnumerable<object>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// update a drop by user such as disable drop or change name and description
+    /// but this method is not executed when drop is confirmed
+    /// </summary>
+    /// <param name="code"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     Task<IActionResponse<bool>> UpdateAsync(UpdateDropDto code, CancellationToken cancellationToken = default);
 
     Task<IActionResponse<bool>> DeactiveAsync(Guid code, CancellationToken cancellationToken = default);
