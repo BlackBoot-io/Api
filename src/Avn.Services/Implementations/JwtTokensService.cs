@@ -215,4 +215,17 @@ public class JwtTokensService : JwtTokensFactory, IJwtTokensService
                                           .AsNoTracking()
                                           .FirstOrDefaultAsync(X => X.RefreshTokenHash == refresheTokenHashed, cancellationToken);
     }
+    /// <summary>
+    /// Check If User Own This Token or Not
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="accessToken"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public async Task<IActionResponse<bool>> VerifyTokenAsync(Guid userId, string accessToken, CancellationToken cancellationToken = default)
+    {
+        var hashesAccessToken = HashGenerator.Hash(accessToken);
+        var token = await _uow.UserJwtTokenRepo.GetAll().AsNoTracking().FirstOrDefaultAsync(x => x.UserId == userId && x.AccessTokenHash == hashesAccessToken, cancellationToken);
+        return new ActionResponse<bool>(token != null && token.AccessTokenExpiresTime >= DateTime.Now);
+    }
 }

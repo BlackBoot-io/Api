@@ -32,8 +32,8 @@ builder.Services.AddCors(options =>
     });
 });
 builder.Services.AddHttpClient();
-
 builder.Services.RegisterApplicatioinServices();
+builder.Services.AddApplicationAuthentication(configuration);
 #endregion
 
 #region Application

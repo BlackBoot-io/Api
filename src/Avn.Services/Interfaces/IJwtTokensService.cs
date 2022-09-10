@@ -27,4 +27,14 @@ public interface IJwtTokensService : IScopedDependency
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<UserJwtToken> GetRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken);
+
+
+    /// <summary>
+    /// Check If User Own This Token or Not
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="accessToken"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<IActionResponse<bool>> VerifyTokenAsync(Guid userId, string accessToken, CancellationToken cancellationToken = default);
 }
