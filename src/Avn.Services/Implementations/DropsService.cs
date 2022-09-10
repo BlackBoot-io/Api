@@ -113,4 +113,14 @@ public class DropsService : IDropsService
         //TODO: Send an email to user with resean
         return new ActionResponse<bool>(true);
     }
+
+    public Task<IActionResponse<string>> UploadFile(byte[] file)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IActionResponse<bool>> UpdateAsync(UpdateDropDto code, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
 }
