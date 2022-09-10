@@ -38,8 +38,6 @@ public class DropsService : IDropsService
                     row.CategoryType
                 }).ToListAsync(cancellationToken));
 
-
-
     public async Task<IActionResponse<Guid>> CreateAsync(CreateDropDto item, CancellationToken cancellationToken = default)
     {
         var model = new Drop { };

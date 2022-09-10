@@ -21,6 +21,10 @@ public class Drop : IEntity
     public Network Network { get; set; }
     public int NetworkId { get; set; }
 
+    [ForeignKey(nameof(AttachmentId))]
+    public Attachment Attachment { get; set; }
+    public int AttachmentId { get; set; }
+
     [MaxLength(50)]
     [Required]
     public string Name { get; set; }
