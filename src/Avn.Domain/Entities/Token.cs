@@ -25,5 +25,7 @@ public class Token : IEntity
     [MaxLength(15)]
     public string UniqueCode { get; set; }
 
+    public int Number { get; set; }
+
     public DateTime InsertDate { get; set; }
 }
