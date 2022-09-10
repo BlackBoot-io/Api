@@ -26,12 +26,13 @@ public class Pricing
     [Required]
     public int TokenPerDay { get; set; }
 
-    public bool IsActive { get; set; }
-
     public bool PublicDocumentation { get; set; }
 
     public bool TicketsSupport { get; set; }
 
     public bool PriorityTicketsSupport { get; set; }
 
+    public bool HasTransactionWages { get; set; }
+
+    public bool IsActive { get; set; }
 }
