@@ -3,18 +3,12 @@
 public interface IDropsService : IScopedDependency
 {
     /// <summary>
-    /// Upload a file into IPFS network then returns CID
-    /// </summary>
-    /// <param name="file"></param>
-    /// <returns></returns>
-    Task<IActionResponse<string>> UploadFile(byte[] file);
-
-    /// <summary>
-    /// Create a drop with Ui/Api
+    /// Store File into Attachment table
+    /// Create a drop for user
+    /// Send a notification to user
     /// </summary>
     /// <param name="item"></param>
     /// <param name="cancellationToken"></param>
-    /// <returns></returns>
     Task<IActionResponse<Guid>> CreateAsync(CreateDropDto item, CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -26,21 +20,26 @@ public interface IDropsService : IScopedDependency
     Task<IActionResponse<IEnumerable<object>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// update a drop by user such as disable drop or change name and description
-    /// but this method is not executed when drop is confirmed
+    /// Disable a drop with a code
     /// </summary>
     /// <param name="code"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IActionResponse<bool>> UpdateAsync(UpdateDropDto code, CancellationToken cancellationToken = default);
-
     Task<IActionResponse<bool>> DeactiveAsync(Guid code, CancellationToken cancellationToken = default);
 
-
+    /// <summary>
+    /// Confirm a drop by admin then store file (Image + Metadata) in IPFS
+    /// Then update cid
+    /// Execute Delivery Strategy (link or Qr)
+    /// </summary>
+    /// <param name="DropId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     Task<IActionResponse<bool>> ConfirmAsync(int DropId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Reject a drop by admin for a resean
+    /// Then notify the user
     /// </summary>
     /// <param name="dropId">PrimaryKey of drop entity</param>
     /// <param name="reviewMessage">resean message</param>

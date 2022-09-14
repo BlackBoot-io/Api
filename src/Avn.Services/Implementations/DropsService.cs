@@ -12,6 +12,49 @@ public class DropsService : IDropsService
         _nftStorageAdaptar = nftStorageAdaptar;
     }
 
+    /// <summary>
+    /// Store File into Attachment table
+    /// Create a drop for user
+    /// Send a notification to user
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public async Task<IActionResponse<Guid>> CreateAsync(CreateDropDto item, CancellationToken cancellationToken = default)
+    {
+        Drop model = new()
+        {
+            InsertDate = DateTime.Now,
+            DropStatus = DropStatus.Pending,
+            Description = item.Description,
+            IsActive = true,
+            IsPrivate = item.IsPrivate,
+            AttachmentId = item.AttachmentId,
+            CategoryType = item.CategotyType,
+            Code = Guid.NewGuid(),
+            Count = item.Count,
+            DeliveryType = item.DeliveryType,
+            EndDate = item.EndDate,
+            Name = item.Name,
+            NetworkId = item.NetworkId,
+            ProjectId = item.ProjectId,
+            UserId = item.UserId,
+            ExpireDate = item.ExpireDate,
+            IsVirtual = item.IsVirtual,
+            Location = item.Location,
+            StartDate = item.StartDate,
+            Wages =,
+        };
+
+        await _uow.DropRepo.AddAsync(model, cancellationToken);
+        await _uow.SaveChangesAsync(cancellationToken);
+
+        return new ActionResponse<Guid>(model.Code);
+    }
+
+
+
+
     public async Task<IActionResponse<IEnumerable<object>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default)
         => new ActionResponse<IEnumerable<object>>(await _uow.DropRepo.GetAll().AsNoTracking()
                 .Where(x => x.UserId == userId)
@@ -38,15 +81,6 @@ public class DropsService : IDropsService
                     row.CategoryType
                 }).ToListAsync(cancellationToken));
 
-    public async Task<IActionResponse<Guid>> CreateAsync(CreateDropDto item, CancellationToken cancellationToken = default)
-    {
-        var model = new Drop { };
-
-        await _uow.DropRepo.AddAsync(model, cancellationToken);
-        await _uow.SaveChangesAsync(cancellationToken);
-
-        return new ActionResponse<Guid>(model.Code);
-    }
 
     /// <summary>
     /// Deactive a drop with a code
