@@ -43,7 +43,7 @@ public class DropsService : IDropsService
             IsVirtual = item.IsVirtual,
             Location = item.Location,
             StartDate = item.StartDate,
-            Wages =,
+            Wages = 1.0M
         };
 
         await _uow.DropRepo.AddAsync(model, cancellationToken);
@@ -147,11 +147,6 @@ public class DropsService : IDropsService
     }
 
     public Task<IActionResponse<string>> UploadFile(byte[] file)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<IActionResponse<bool>> UpdateAsync(UpdateDropDto code, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
