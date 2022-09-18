@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Avn.Data.UnitofWork;
 
-public interface IAppUnitOfWork : IDisposable, IAsyncDisposable
+public interface IAppUnitOfWork //: IDisposable, IAsyncDisposable
 {
     public ChangeTracker ChangeTracker { get; }
     public DatabaseFacade Database { get; }

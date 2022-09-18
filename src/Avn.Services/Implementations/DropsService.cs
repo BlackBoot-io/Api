@@ -5,11 +5,15 @@ namespace Avn.Services.Interfaces;
 public class DropsService : IDropsService
 {
     private readonly IAppUnitOfWork _uow;
-    private readonly INftStorageAdapter _nftStorageAdaptar;
-    public DropsService(IAppUnitOfWork uow, INftStorageAdapter nftStorageAdaptar)
+    private readonly Lazy<INftStorageAdapter> _nftStorageAdaptar;
+    private readonly Lazy<ITokensService> _tokensService;
+    public DropsService(IAppUnitOfWork uow,
+                        Lazy<INftStorageAdapter> nftStorageAdaptar,
+                        Lazy<ITokensService> tokensService)
     {
         _uow = uow;
         _nftStorageAdaptar = nftStorageAdaptar;
+        _tokensService = tokensService;
     }
 
     /// <summary>
@@ -29,10 +33,10 @@ public class DropsService : IDropsService
             Description = item.Description,
             IsActive = true,
             IsPrivate = item.IsPrivate,
-            AttachmentId = item.AttachmentId,
+            //AttachmentId = item.AttachmentId,
             CategoryType = item.CategotyType,
             Code = Guid.NewGuid(),
-            Count = item.Count,
+            //Count = item.Count,
             DeliveryType = item.DeliveryType,
             EndDate = item.EndDate,
             Name = item.Name,
@@ -115,11 +119,30 @@ public class DropsService : IDropsService
         if (!result.ToSaveChangeResult())
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
-        await _nftStorageAdaptar.UploadAsync(new UploadRequestDto(model.Name, model.Description, null, new
+        var nftStorageResult = await _nftStorageAdaptar.Value.UploadAsync(new UploadRequestDto(model.Name, model.Description, null, new
         {
             Project = model.Project.Name,
         }), cancellationToken);
-        //ToDo:Should do The Strategy
+
+        if (!nftStorageResult.IsSuccess)
+            return new ActionResponse<bool>(nftStorageResult.StatusCode, nftStorageResult.Message);
+
+        switch (model.DeliveryType)
+        {
+            case DeliveryType.Link:
+                var tokens = Enumerable.Repeat(model, model.Count).Select(row => new CreateTokenDto
+                {
+                    DropId = model.Id
+                }).ToList();
+                var tokenResult = await _tokensService.Value.AddRangeAsync(tokens, cancellationToken);
+                if (!tokenResult.IsSuccess)
+                    return new ActionResponse<bool>(tokenResult.StatusCode, tokenResult.Message);
+                break;
+            case DeliveryType.QR:
+                break;
+            default:
+                break;
+        }
 
         return new ActionResponse<bool>(true);
     }
