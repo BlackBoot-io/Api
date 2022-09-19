@@ -185,19 +185,23 @@ public class DropsService : IDropsService
         if (!result.ToSaveChangeResult())
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
-
         switch (drop.DeliveryType)
         {
             case DeliveryType.Link:
                 var tokens = Enumerable.Repeat(drop, drop.Count).Select(row => new CreateTokenDto
                 {
                     DropId = drop.Id
+                     
                 }).ToList();
+
                 var tokenResult = await _tokensService.Value.AddRangeAsync(tokens, cancellationToken);
                 if (!tokenResult.IsSuccess)
                     return new ActionResponse<bool>(tokenResult.StatusCode, tokenResult.Message);
+
                 break;
             case DeliveryType.QR:
+                //generate a url for claim and generate Qr from it
+                //then send this qr to users
                 break;
             default:
                 break;
