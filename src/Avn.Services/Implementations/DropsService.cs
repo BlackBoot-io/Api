@@ -156,10 +156,6 @@ public class DropsService : IDropsService
         if (drop is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
-        drop.DropStatus = DropStatus.Confirmed;
-        var result = await _uow.SaveChangesAsync(cancellationToken);
-        if (!result.ToSaveChangeResult())
-            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         var attachment = await _attachmentService.Value.GetFile(drop.AttachmentId);
 
@@ -181,6 +177,14 @@ public class DropsService : IDropsService
 
         if (!nftStorageResult.IsSuccess)
             return new ActionResponse<bool>(nftStorageResult.StatusCode, nftStorageResult.Message);
+
+        drop.DropStatus = DropStatus.Confirmed;
+        drop.DropUri = nftStorageResult.Data.ContentId;
+
+        var result = await _uow.SaveChangesAsync(cancellationToken);
+        if (!result.ToSaveChangeResult())
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+
 
         switch (drop.DeliveryType)
         {
