@@ -22,7 +22,6 @@ public static class ServiceCollectionExtentions
         services.RegisterTransientServices(assembly);
         services.AddTransient(typeof(Lazy<>), typeof(Lazier<>));
 
-
         services.RegisterApplicatioinExternalServices();
     }
 }

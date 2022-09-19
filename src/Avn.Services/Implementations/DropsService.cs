@@ -8,20 +8,24 @@ public class DropsService : IDropsService
     private readonly Lazy<INftStorageAdapter> _nftStorageAdaptar;
     private readonly Lazy<ITokensService> _tokensService;
     private readonly Lazy<IAttachmentService> _attachmentService;
+    private readonly Lazy<ISubscriptionService> _subscriptionService;
 
     public DropsService(IAppUnitOfWork uow,
                         Lazy<INftStorageAdapter> nftStorageAdaptar,
                         Lazy<ITokensService> tokensService,
-                        Lazy<IAttachmentService> attachmentService)
+                        Lazy<IAttachmentService> attachmentService,
+                        Lazy<ISubscriptionService> subscriptionService)
     {
         _uow = uow;
         _nftStorageAdaptar = nftStorageAdaptar;
         _tokensService = tokensService;
         _attachmentService = attachmentService;
+        _subscriptionService = subscriptionService;
     }
 
     /// <summary>
     /// Store File into Attachment table
+    /// Find Network Wages
     /// Create a drop for user
     /// Send a notification to user
     /// </summary>
@@ -31,9 +35,10 @@ public class DropsService : IDropsService
     public async Task<IActionResponse<Guid>> CreateAsync(CreateDropDto item, CancellationToken cancellationToken = default)
     {
         var fileResult = await _attachmentService.Value.UploadFileAsync(item.File, cancellationToken);
+        if (!fileResult.IsSuccess)
+            return new ActionResponse<Guid>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidFileContent);
 
-
-
+        _subscriptionService.Value.
         Drop model = new()
         {
             InsertDate = DateTime.Now,
@@ -41,10 +46,10 @@ public class DropsService : IDropsService
             Description = item.Description,
             IsActive = true,
             IsPrivate = item.IsPrivate,
-            //AttachmentId = item.AttachmentId,
+            AttachmentId = fileResult.Data,
             CategoryType = item.CategotyType,
             Code = Guid.NewGuid(),
-            //Count = item.Count,
+            Count = item.Count,
             DeliveryType = item.DeliveryType,
             EndDate = item.EndDate,
             Name = item.Name,

@@ -21,7 +21,7 @@ public static class ServiceCollectionExtentions
             options.UseMemoryCacheProvider();
             options.CacheAllQueries(CacheExpirationMode.Absolute, TimeSpan.FromMinutes(30));
             options.DisableLogging(true);
-            options.UseCacheKeyPrefix("Ava_");
+            options.UseCacheKeyPrefix("Avn_");
         });
 
 

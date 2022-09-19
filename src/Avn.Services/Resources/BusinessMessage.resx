@@ -123,6 +123,9 @@
   <data name="AddProjectOperationFail" xml:space="preserve">
     <value>AddProjectOperationFail</value>
   </data>
+  <data name="InvalidFileContent" xml:space="preserve">
+    <value>InvalidFileContent</value>
+  </data>
   <data name="InvalidPrameter" xml:space="preserve">
     <value>Invalid Prameter!</value>
   </data>

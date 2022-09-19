@@ -27,4 +27,5 @@ public class Network : IEntity
     public bool IsActive { get; set; }
 
     public ICollection<Drop> Drops { get; set; }
+    public ICollection<NetworkInPricing> NetworkInPricings { get; set; }
 }

@@ -35,4 +35,6 @@ public class Pricing
     public bool HasTransactionWages { get; set; }
 
     public bool IsActive { get; set; }
+
+    public ICollection<NetworkInPricing> NetworkInPricings { get; set; }
 }

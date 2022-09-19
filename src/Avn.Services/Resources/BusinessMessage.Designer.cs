@@ -79,6 +79,15 @@ namespace Avn.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to InvalidFileContent.
+        /// </summary>
+        public static string InvalidFileContent {
+            get {
+                return ResourceManager.GetString("InvalidFileContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid Prameter!.
         /// </summary>
         public static string InvalidPrameter {
