@@ -100,7 +100,8 @@ public class DropsService : IDropsService
 
 
     public async Task<IActionResponse<IEnumerable<object>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default)
-        => new ActionResponse<IEnumerable<object>>(await _uow.DropRepo.GetAll().AsNoTracking()
+        => new ActionResponse<IEnumerable<object>>(await _uow.DropRepo.Queryable()
+                .AsNoTracking()
                 .Where(x => x.UserId == userId)
                 .Select(row => new
                 {
@@ -134,7 +135,7 @@ public class DropsService : IDropsService
     /// <returns></returns>
     public async Task<IActionResponse<bool>> DeactiveAsync(Guid code, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.DropRepo.GetAll().FirstOrDefaultAsync(x => x.Code == code, cancellationToken);
+        var model = await _uow.DropRepo.Queryable().FirstOrDefaultAsync(x => x.Code == code, cancellationToken);
         if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
@@ -150,7 +151,7 @@ public class DropsService : IDropsService
 
     public async Task<IActionResponse<bool>> ConfirmAsync(int DropId, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.DropRepo.GetAll().FirstOrDefaultAsync(x => x.Id == DropId && x.DropStatus == DropStatus.Pending, cancellationToken);
+        var model = await _uow.DropRepo.Queryable().FirstOrDefaultAsync(x => x.Id == DropId && x.DropStatus == DropStatus.Pending, cancellationToken);
         if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
@@ -196,7 +197,7 @@ public class DropsService : IDropsService
     /// <returns></returns>
     public async Task<IActionResponse<bool>> RejectAsync(int dropId, string reviewMessage, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.DropRepo.GetAll().FirstOrDefaultAsync(x => x.Id == dropId && x.DropStatus == DropStatus.Pending, cancellationToken);
+        var model = await _uow.DropRepo.Queryable().FirstOrDefaultAsync(x => x.Id == dropId && x.DropStatus == DropStatus.Pending, cancellationToken);
         if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
         model.DropStatus = DropStatus.Rejected;

@@ -20,7 +20,7 @@ public class UsersService : IUsersService
     /// <returns></returns>
     public async Task<IActionResponse<UserDto>> GetCurrentUserAsync(Guid userId, CancellationToken cancellationToken = default)
     {
-        var user = await _uow.UserRepo.GetAll().FirstOrDefaultAsync(X => X.UserId == userId, cancellationToken);
+        var user = await _uow.UserRepo.Queryable().FirstOrDefaultAsync(X => X.UserId == userId, cancellationToken);
         if (user is null)
             return new ActionResponse<UserDto>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidUser);
 
@@ -56,7 +56,7 @@ public class UsersService : IUsersService
             OrganizationName = user.OrganizationName,
             WalletAddress = user.WalletAddress,
             EmailIsApproved = user.EmailIsApproved
-        }, VerificationType.EmailVerification, cancellationToken);
+        }, TemplateType.EmailVerification, cancellationToken);
         return new ActionResponse<Guid>(user.UserId);
     }
 

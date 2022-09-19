@@ -2,7 +2,7 @@
 
 public interface IGenericRepo<TEntity> where TEntity : class
 {
-    public IQueryable<TEntity> GetAll();
+    public IQueryable<TEntity> Queryable();
     public Task<TEntity> FindAsync(object key, CancellationToken token = default);
     public Task<TEntity> FindAsync(object[] keyValues, CancellationToken token = default);
     public Task AddAsync(TEntity entity, CancellationToken token = default);

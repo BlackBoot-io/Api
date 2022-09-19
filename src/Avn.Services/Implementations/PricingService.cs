@@ -6,4 +6,3 @@ public class PricingService : IPricingService
         throw new NotImplementedException();
     }
 }
-

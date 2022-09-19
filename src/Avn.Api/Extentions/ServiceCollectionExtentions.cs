@@ -24,7 +24,6 @@ public static class ServiceCollectionExtentions
             options.UseCacheKeyPrefix("Avn_");
         });
 
-
         services.AddScoped(typeof(IGenericRepo<>), typeof(GenericRepo<>));
         services.AddScoped<IAppUnitOfWork, AppUnitOfWork>();
         services.AddDbContext<ApplicationDbContext>((IServiceProvider serviceProvider, DbContextOptionsBuilder options) =>

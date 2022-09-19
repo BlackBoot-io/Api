@@ -18,7 +18,7 @@ public interface IVerificationService : IScopedDependency
     /// <param name="type"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IActionResponse<bool>> SendOtpAsync(UserDto user, VerificationType type, CancellationToken cancellationToken = default);
+    Task<IActionResponse<bool>> SendOtpAsync(UserDto user, TemplateType type, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// send otp to users by channels (verificationType)
@@ -27,5 +27,5 @@ public interface IVerificationService : IScopedDependency
     /// <param name="type"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IActionResponse<bool>> SendOtpAsync(Guid userId, VerificationType type, CancellationToken cancellationToken = default);
+    Task<IActionResponse<bool>> SendOtpAsync(Guid userId, TemplateType type, CancellationToken cancellationToken = default);
 }

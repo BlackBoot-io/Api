@@ -13,7 +13,7 @@ public class ProjectsService : IProjectsService
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public async Task<IActionResponse<IEnumerable<object>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default)
-        => new ActionResponse<IEnumerable<object>>(await _uow.ProjectRepo.GetAll()
+        => new ActionResponse<IEnumerable<object>>(await _uow.ProjectRepo.Queryable()
                   .Where(X => X.UserId == userId)
                   .OrderBy(X => X.InsertDate)
                   .AsNoTracking()
@@ -61,7 +61,7 @@ public class ProjectsService : IProjectsService
     /// <returns></returns>
     public async Task<IActionResponse<Guid>> UpdateAsync(UpdateProjectDto item, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.ProjectRepo.GetAll().FirstOrDefaultAsync(x => x.Id == item.Id && x.UserId == item.UserId, cancellationToken);
+        var model = await _uow.ProjectRepo.Queryable().FirstOrDefaultAsync(x => x.Id == item.Id && x.UserId == item.UserId, cancellationToken);
         if (model is null)
             return new ActionResponse<Guid>(ActionResponseStatusCode.NotFound, BusinessMessage.RecordNotFound);
 
@@ -85,7 +85,7 @@ public class ProjectsService : IProjectsService
     /// <returns></returns>
     public async Task<IActionResponse<Guid>> ChangeStateAsync(Guid userId, Guid projectId, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.ProjectRepo.GetAll().FirstOrDefaultAsync(x => x.Id == projectId && x.UserId == userId, cancellationToken);
+        var model = await _uow.ProjectRepo.Queryable().FirstOrDefaultAsync(x => x.Id == projectId && x.UserId == userId, cancellationToken);
         if (model is null)
             return new ActionResponse<Guid>(ActionResponseStatusCode.NotFound, BusinessMessage.RecordNotFound);
 
