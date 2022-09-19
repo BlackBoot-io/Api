@@ -38,7 +38,8 @@ public class DropsService : IDropsService
         if (!fileResult.IsSuccess)
             return new ActionResponse<Guid>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidFileContent);
 
-        _subscriptionService.Value.
+        var subscriptionModel = await _subscriptionService.Value.GetCurrentModelAsync(item.UserId);
+
         Drop model = new()
         {
             InsertDate = DateTime.Now,
