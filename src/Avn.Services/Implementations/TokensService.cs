@@ -48,7 +48,7 @@ public class TokensService : ITokensService
             DropId = item.DropId,
             UniqueCode = Guid.NewGuid().ToString(),
             InsertDate = DateTime.UtcNow,
-            //Number = ??
+            Number = (await _uow.TokenRepo.GetAll().Where(x => x.DropId == item.DropId).MaxAsync(x => x.Number)) + 1
         };
 
         await _uow.TokenRepo.AddAsync(model, cancellationToken);
@@ -65,12 +65,13 @@ public class TokensService : ITokensService
     /// <returns></returns>
     public async Task<IActionResponse<IEnumerable<string>>> AddRangeAsync(List<CreateTokenDto> items, CancellationToken cancellationToken = default)
     {
-        var models = items.Select(row => new Token
+        var models = items.Select((row, index) => new Token
         {
             DropId = row.DropId,
             UniqueCode = Guid.NewGuid().ToString(),
             InsertDate = DateTime.UtcNow,
-            //Number = ??
+            Number = index + 1,
+
         });
 
         await _uow.TokenRepo.AddRangeAsync(models, cancellationToken);
@@ -89,7 +90,7 @@ public class TokensService : ITokensService
     public async Task<IActionResponse<bool>> ConnectWalletAsync(Guid id, string walletAdress, CancellationToken cancellationToken = default)
     {
         var model = await _uow.TokenRepo.GetAll().FirstOrDefaultAsync(x => x.Id == id && x.OwerWalletAddress == null, cancellationToken);
-        if (model == null)
+        if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
         model.OwerWalletAddress = walletAdress;
@@ -109,7 +110,7 @@ public class TokensService : ITokensService
     public async Task<IActionResponse<bool>> MintAsync(Guid id, int contractTokenId, CancellationToken cancellationToken = default)
     {
         var model = await _uow.TokenRepo.GetAll().FirstOrDefaultAsync(x => x.Id == id && x.OwerWalletAddress != null && !x.IsMinted, cancellationToken);
-        if (model == null)
+        if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
         model.IsMinted = true;
@@ -130,7 +131,7 @@ public class TokensService : ITokensService
     public async Task<IActionResponse<bool>> BurnAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var model = await _uow.TokenRepo.GetAll().FirstOrDefaultAsync(x => x.Id == id && x.OwerWalletAddress != null && x.IsMinted && !x.IsBurned, cancellationToken);
-        if (model == null)
+        if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
         model.IsBurned = true;
