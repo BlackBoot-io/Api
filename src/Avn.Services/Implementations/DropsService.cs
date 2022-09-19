@@ -9,21 +9,24 @@ public class DropsService : IDropsService
     private readonly Lazy<ITokensService> _tokensService;
     private readonly Lazy<IAttachmentService> _attachmentService;
     private readonly Lazy<ISubscriptionService> _subscriptionService;
-    private readonly Lazy<IEmailSenderAdapter> _emailSenderAdapter;
+    private readonly Lazy<INotificationService> _notificationService;
+    private readonly Lazy<IUsersService> _userService;
 
     public DropsService(IAppUnitOfWork uow,
                         Lazy<INftStorageAdapter> nftStorageAdaptar,
                         Lazy<ITokensService> tokensService,
                         Lazy<IAttachmentService> attachmentService,
                         Lazy<ISubscriptionService> subscriptionService,
-                        Lazy<IEmailSenderAdapter> emailSenderAdapter)
+                        Lazy<INotificationService> notificationService,
+                        Lazy<IUsersService> usersService)
     {
         _uow = uow;
         _nftStorageAdaptar = nftStorageAdaptar;
         _tokensService = tokensService;
         _attachmentService = attachmentService;
         _subscriptionService = subscriptionService;
-        _emailSenderAdapter = emailSenderAdapter;
+        _notificationService = notificationService;
+        _userService = usersService;
     }
 
     /// <summary>
@@ -53,6 +56,8 @@ public class DropsService : IDropsService
         var networkInPricing = subscriptionModel.Data.Pricing.NetworkInPricings.FirstOrDefault(X => X.NetworkId == item.NetworkId);
         if (networkInPricing is null)
             return new ActionResponse<Guid>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidNetwork);
+
+        var currentUser = await _userService.Value.GetCurrentUserAsync(item.UserId, cancellationToken);
 
         var code = Guid.NewGuid();
         await _uow.DropRepo.AddAsync(new()
@@ -84,12 +89,10 @@ public class DropsService : IDropsService
         if (!dbResult.ToSaveChangeResult())
             return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
-        await _emailSenderAdapter.Value.SendAsync(new EmailRequestDto(
-                      Template: TemplateType.CreateDrop,
-                      Receiver: "",
-                       Subject: "",
-                       Content: "")
-           );
+        await _notificationService.Value.SendAsync(
+                       template: TemplateType.CreateDrop,
+                       receiver: currentUser.Data.Email);
+
         return new ActionResponse<Guid>(code);
     }
 

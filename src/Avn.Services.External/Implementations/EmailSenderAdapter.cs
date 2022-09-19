@@ -64,7 +64,7 @@ public class EmailSenderAdapter : IEmailSenderAdapter
         }
     }
 
-    public async Task<IActionResponse> Send(EmailRequestDto email)
+    public async Task<IActionResponse> SendAsync(EmailRequestDto email)
     {
         try
         {
