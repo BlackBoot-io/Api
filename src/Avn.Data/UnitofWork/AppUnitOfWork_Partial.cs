@@ -17,5 +17,9 @@ public partial class AppUnitOfWork
     public IGenericRepo<Project> ProjectRepo => _dbContext.GetService<IGenericRepo<Project>>();
     public IGenericRepo<Network> NetworkRepo => _dbContext.GetService<IGenericRepo<Network>>();
     #endregion
+    #region File
+    public IGenericRepo<Attachment> AttachmentRepo => _dbContext.GetService<IGenericRepo<Attachment>>();
+
+    #endregion
 }
 

@@ -2,14 +2,15 @@
 
 public interface ITokensService : IScopedDependency
 {
+
     /// <summary>
-    /// Add multiple tokens from link Delivery Type
-    /// this is an internal API for confirmation a drop
+    /// get a token via link's uniqueCode 
     /// </summary>
-    /// <param name="items"></param>
+    /// <param name="uniqueCode"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IActionResponse<IEnumerable<string>>> AddRangeAsync(List<CreateTokenDto> items, CancellationToken cancellationToken = default);
+    Task<IActionResponse<TokenDto>> GetAsync(string uniqueCode, CancellationToken cancellationToken = default);
+
 
     /// <summary>
     /// Add a token from Qr delivery Type
@@ -20,14 +21,18 @@ public interface ITokensService : IScopedDependency
     /// <returns></returns>
     Task<IActionResponse<string>> AddAsync(CreateTokenDto item, CancellationToken cancellationToken = default);
 
+
     /// <summary>
-    /// get a token via link's uniqueCode 
+    /// Add multiple tokens from link Delivery Type
+    /// this is an internal API for confirmation a drop
     /// </summary>
-    /// <param name="uniqueCode"></param>
+    /// <param name="items"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IActionResponse<TokenDto>> GetAsync(string uniqueCode, CancellationToken cancellationToken = default);
-   
+    Task<IActionResponse<IEnumerable<string>>> AddRangeAsync(List<CreateTokenDto> items, CancellationToken cancellationToken = default);
+
+
+
     /// <summary>
     /// Update user's wallet address into token
     /// </summary>
@@ -54,5 +59,5 @@ public interface ITokensService : IScopedDependency
     /// <param name="contractTokenId">contract tokenId</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IActionResponse<bool>> BurnAsync(Guid id, int contractTokenId, CancellationToken cancellationToken = default);
+    Task<IActionResponse<bool>> BurnAsync(Guid id, CancellationToken cancellationToken = default);
 }
