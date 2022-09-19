@@ -4,7 +4,6 @@ public record CreateDropDto
 {
     public Guid? ProjectId { get; set; }
     public Guid UserId { get; set; }
-    public int AttachmentId { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
     public int Count { get; set; }

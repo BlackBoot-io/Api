@@ -7,13 +7,17 @@ public class DropsService : IDropsService
     private readonly IAppUnitOfWork _uow;
     private readonly Lazy<INftStorageAdapter> _nftStorageAdaptar;
     private readonly Lazy<ITokensService> _tokensService;
+    private readonly Lazy<IAttachmentService> _attachmentService;
+
     public DropsService(IAppUnitOfWork uow,
                         Lazy<INftStorageAdapter> nftStorageAdaptar,
-                        Lazy<ITokensService> tokensService)
+                        Lazy<ITokensService> tokensService,
+                        Lazy<IAttachmentService> attachmentService)
     {
         _uow = uow;
         _nftStorageAdaptar = nftStorageAdaptar;
         _tokensService = tokensService;
+        _attachmentService = attachmentService;
     }
 
     /// <summary>
@@ -26,6 +30,10 @@ public class DropsService : IDropsService
     /// <returns></returns>
     public async Task<IActionResponse<Guid>> CreateAsync(CreateDropDto item, CancellationToken cancellationToken = default)
     {
+        var fileResult = await _attachmentService.Value.UploadFileAsync(item.File, cancellationToken);
+
+
+
         Drop model = new()
         {
             InsertDate = DateTime.Now,

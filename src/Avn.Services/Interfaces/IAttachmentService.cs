@@ -7,5 +7,5 @@ public interface IAttachmentService : IScopedDependency
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
-    Task<IActionResponse<int>> UploadFile(string fileName, byte[] file, CancellationToken cancellationToken);
+    Task<IActionResponse<int>> UploadFile(byte[] file, CancellationToken cancellationToken);
 }

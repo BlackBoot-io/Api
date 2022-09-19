@@ -12,15 +12,14 @@ public class AttachmentService : IAttachmentService
     /// <param name="file"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<IActionResponse<int>> UploadFile(string fileName, byte[] file, CancellationToken cancellationToken)
+    public async Task<IActionResponse<int>> UploadFileAsync(byte[] file, CancellationToken cancellationToken)
     {
         Attachment model = new()
         {
             Content = file,
-            InsertDate = DateTime.Now,
-            Name = fileName
+            InsertDate = DateTime.Now
         };
-        await _uow.AttachmentRepo.AddAsync(model);
+        await _uow.AttachmentRepo.AddAsync(model, cancellationToken);
         var result = await _uow.SaveChangesAsync(cancellationToken);
 
         if (!result.ToSaveChangeResult())

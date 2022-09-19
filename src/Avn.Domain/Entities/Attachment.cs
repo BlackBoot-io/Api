@@ -10,10 +10,6 @@ public class Attachment : IEntity
     [Required]
     public byte[] Content { get; set; }
 
-    [Required]
-    [MaxLength(255)]
-    public string Name { get; set; }
-
     public DateTime InsertDate { get; set; }
 
     public ICollection<Drop> Drops { get; set; }
