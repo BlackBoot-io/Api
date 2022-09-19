@@ -28,7 +28,7 @@ public class TokensService : ITokensService
             IsMinted = row.IsMinted
         }).FirstOrDefaultAsync(x => x.UniqueCode == uniqueCode, cancellationToken);
 
-        if (result == null)
+        if (result is null)
             return new ActionResponse<TokenDto>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
         return new ActionResponse<TokenDto>(result);
