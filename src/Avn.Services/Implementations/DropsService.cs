@@ -96,9 +96,12 @@ public class DropsService : IDropsService
         return new ActionResponse<Guid>(code);
     }
 
-
-
-
+    /// <summary>
+    /// Get all drops of a user by UserId
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task<IActionResponse<IEnumerable<object>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default)
         => new ActionResponse<IEnumerable<object>>(await _uow.DropRepo.Queryable()
                 .AsNoTracking()
@@ -126,7 +129,6 @@ public class DropsService : IDropsService
                     row.CategoryType
                 }).ToListAsync(cancellationToken));
 
-
     /// <summary>
     /// Deactive a drop with a code
     /// </summary>
@@ -148,32 +150,44 @@ public class DropsService : IDropsService
         return new ActionResponse<bool>(true);
     }
 
-
     public async Task<IActionResponse<bool>> ConfirmAsync(int DropId, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.DropRepo.Queryable().FirstOrDefaultAsync(x => x.Id == DropId && x.DropStatus == DropStatus.Pending, cancellationToken);
-        if (model is null)
+        var drop = await _uow.DropRepo.Queryable().FirstOrDefaultAsync(x => x.Id == DropId && x.DropStatus == DropStatus.Pending, cancellationToken);
+        if (drop is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
-        model.DropStatus = DropStatus.Confirmed;
+        drop.DropStatus = DropStatus.Confirmed;
         var result = await _uow.SaveChangesAsync(cancellationToken);
         if (!result.ToSaveChangeResult())
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
-        var nftStorageResult = await _nftStorageAdaptar.Value.UploadAsync(new UploadRequestDto(model.Name, model.Description, null, new
-        {
-            Project = model.Project.Name,
-        }), cancellationToken);
+        var attachment = await _attachmentService.Value.GetFile(drop.AttachmentId);
+
+        var nftStorageResult = await _nftStorageAdaptar.Value.UploadAsync(new UploadRequestDto(
+            drop.Name,
+            drop.Description,
+            attachment.Content,
+            new
+            {
+                drop.StartDate,
+                drop.EndDate,
+                drop.IsVirtual,
+                drop.IsPrivate,
+                drop.Location,
+                drop.ExpireDate,
+                drop.CategoryType,
+                Project = drop.Project.Name,
+            }), cancellationToken);
 
         if (!nftStorageResult.IsSuccess)
             return new ActionResponse<bool>(nftStorageResult.StatusCode, nftStorageResult.Message);
 
-        switch (model.DeliveryType)
+        switch (drop.DeliveryType)
         {
             case DeliveryType.Link:
-                var tokens = Enumerable.Repeat(model, model.Count).Select(row => new CreateTokenDto
+                var tokens = Enumerable.Repeat(drop, drop.Count).Select(row => new CreateTokenDto
                 {
-                    DropId = model.Id
+                    DropId = drop.Id
                 }).ToList();
                 var tokenResult = await _tokensService.Value.AddRangeAsync(tokens, cancellationToken);
                 if (!tokenResult.IsSuccess)
@@ -184,6 +198,8 @@ public class DropsService : IDropsService
             default:
                 break;
         }
+        var currentUser = await _userService.Value.GetCurrentUserAsync(drop.UserId, cancellationToken);
+        await _notificationService.Value.SendAsync(TemplateType.ConfirmDrop, currentUser.Data.Email);
 
         return new ActionResponse<bool>(true);
     }
@@ -200,18 +216,17 @@ public class DropsService : IDropsService
         var model = await _uow.DropRepo.Queryable().FirstOrDefaultAsync(x => x.Id == dropId && x.DropStatus == DropStatus.Pending, cancellationToken);
         if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
+
         model.DropStatus = DropStatus.Rejected;
         model.ReviewMessage = reviewMessage;
         var result = await _uow.SaveChangesAsync(cancellationToken);
+
         if (!result.ToSaveChangeResult())
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
-        //TODO: Send an email to user with resean
-        return new ActionResponse<bool>(true);
-    }
+        var currentUser = await _userService.Value.GetCurrentUserAsync(model.UserId, cancellationToken);
+        await _notificationService.Value.SendAsync(TemplateType.DropRejected, currentUser.Data.Email);
 
-    public Task<IActionResponse<string>> UploadFile(byte[] file)
-    {
-        throw new NotImplementedException();
+        return new ActionResponse<bool>(true);
     }
 }
