@@ -9,18 +9,21 @@ public class DropsService : IDropsService
     private readonly Lazy<ITokensService> _tokensService;
     private readonly Lazy<IAttachmentService> _attachmentService;
     private readonly Lazy<ISubscriptionService> _subscriptionService;
+    private readonly Lazy<IEmailSenderAdapter> _emailSenderAdapter;
 
     public DropsService(IAppUnitOfWork uow,
                         Lazy<INftStorageAdapter> nftStorageAdaptar,
                         Lazy<ITokensService> tokensService,
                         Lazy<IAttachmentService> attachmentService,
-                        Lazy<ISubscriptionService> subscriptionService)
+                        Lazy<ISubscriptionService> subscriptionService,
+                        Lazy<IEmailSenderAdapter> emailSenderAdapter)
     {
         _uow = uow;
         _nftStorageAdaptar = nftStorageAdaptar;
         _tokensService = tokensService;
         _attachmentService = attachmentService;
         _subscriptionService = subscriptionService;
+        _emailSenderAdapter = emailSenderAdapter;
     }
 
     /// <summary>
@@ -34,13 +37,25 @@ public class DropsService : IDropsService
     /// <returns></returns>
     public async Task<IActionResponse<Guid>> CreateAsync(CreateDropDto item, CancellationToken cancellationToken = default)
     {
+        #region Validations
+        //like time 
+        //count
+        //...
+        #endregion
         var fileResult = await _attachmentService.Value.UploadFileAsync(item.File, cancellationToken);
         if (!fileResult.IsSuccess)
             return new ActionResponse<Guid>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidFileContent);
 
         var subscriptionModel = await _subscriptionService.Value.GetCurrentModelAsync(item.UserId);
+        if (!subscriptionModel.IsSuccess)
+            return new ActionResponse<Guid>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidSubscriptionModel);
 
-        Drop model = new()
+        var networkInPricing = subscriptionModel.Data.Pricing.NetworkInPricings.FirstOrDefault(X => X.NetworkId == item.NetworkId);
+        if (networkInPricing is null)
+            return new ActionResponse<Guid>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidNetwork);
+
+        var code = Guid.NewGuid();
+        await _uow.DropRepo.AddAsync(new()
         {
             InsertDate = DateTime.Now,
             DropStatus = DropStatus.Pending,
@@ -49,7 +64,7 @@ public class DropsService : IDropsService
             IsPrivate = item.IsPrivate,
             AttachmentId = fileResult.Data,
             CategoryType = item.CategotyType,
-            Code = Guid.NewGuid(),
+            Code = code,
             Count = item.Count,
             DeliveryType = item.DeliveryType,
             EndDate = item.EndDate,
@@ -61,13 +76,21 @@ public class DropsService : IDropsService
             IsVirtual = item.IsVirtual,
             Location = item.Location,
             StartDate = item.StartDate,
-            Wages = 1.0M
-        };
+            Wages = networkInPricing.Network.Wages,
+            DropUri = string.Empty,
+            ReviewMessage = string.Empty,
+        }, cancellationToken);
+        var dbResult = await _uow.SaveChangesAsync(cancellationToken);
+        if (!dbResult.ToSaveChangeResult())
+            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
-        await _uow.DropRepo.AddAsync(model, cancellationToken);
-        await _uow.SaveChangesAsync(cancellationToken);
-
-        return new ActionResponse<Guid>(model.Code);
+        await _emailSenderAdapter.Value.SendAsync(new EmailRequestDto(
+                      Template: TemplateType.CreateDrop,
+                      Receiver: "",
+                       Subject: "",
+                       Content: "")
+           );
+        return new ActionResponse<Guid>(code);
     }
 
 

@@ -1,7 +1,8 @@
 ﻿namespace Avn.Domain.Enums;
 
-public enum VerificationType : byte
+public enum TemplateType : byte
 {
     EmailVerification = 2,
-    ForgetPassword = 3
+    ForgetPassword = 3,
+    CreateDrop = 4
 }

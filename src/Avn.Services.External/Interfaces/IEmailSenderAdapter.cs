@@ -9,5 +9,5 @@ public interface IEmailSenderAdapter : IScopedDependency
     /// </summary>
     /// <param name="email"></param>
     /// <returns></returns>
-    Task<IActionResponse> Send(EmailRequestDto email);
+    Task<IActionResponse> SendAsync(EmailRequestDto email);
 }

@@ -1,6 +1,6 @@
 ﻿namespace Avn.Domain.Dtos;
 
-public record EmailRequestDto(VerificationType Template,
+public record EmailRequestDto(TemplateType Template,
     string Receiver,
     string Subject,
     string Content);

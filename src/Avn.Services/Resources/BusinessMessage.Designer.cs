@@ -88,11 +88,29 @@ namespace Avn.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to InvalidNetwork.
+        /// </summary>
+        public static string InvalidNetwork {
+            get {
+                return ResourceManager.GetString("InvalidNetwork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid Prameter!.
         /// </summary>
         public static string InvalidPrameter {
             get {
                 return ResourceManager.GetString("InvalidPrameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InvalidSubscriptionModel.
+        /// </summary>
+        public static string InvalidSubscriptionModel {
+            get {
+                return ResourceManager.GetString("InvalidSubscriptionModel", resourceCulture);
             }
         }
         

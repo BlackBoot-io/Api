@@ -126,8 +126,14 @@
   <data name="InvalidFileContent" xml:space="preserve">
     <value>InvalidFileContent</value>
   </data>
+  <data name="InvalidNetwork" xml:space="preserve">
+    <value>InvalidNetwork</value>
+  </data>
   <data name="InvalidPrameter" xml:space="preserve">
     <value>Invalid Prameter!</value>
+  </data>
+  <data name="InvalidSubscriptionModel" xml:space="preserve">
+    <value>InvalidSubscriptionModel</value>
   </data>
   <data name="InvalidUser" xml:space="preserve">
     <value>InvalidUser</value>
