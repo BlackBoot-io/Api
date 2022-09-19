@@ -8,12 +8,14 @@ public class TokensService : ITokensService
 
     public async Task<IActionResponse<TokenDto>> GetAsync(string uniqueCode, CancellationToken cancellationToken = default)
     {
-        var result = await _uow.TokenRepo.GetAll().Where(x => x.UniqueCode == uniqueCode).Select(row => new TokenDto
-        {
+        var result = await _uow.TokenRepo.GetAll()
+                               .Where(x => x.UniqueCode == uniqueCode)
+                               .Select(row => new TokenDto
+                               {
 
-        }).FirstOrDefaultAsync(cancellationToken);
+                               }).FirstOrDefaultAsync(cancellationToken);
 
-        if (result == null)
+        if (result is null)
             return new ActionResponse<TokenDto>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
         return new ActionResponse<TokenDto>(result);
