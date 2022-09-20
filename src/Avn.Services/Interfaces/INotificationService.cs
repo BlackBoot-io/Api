@@ -9,5 +9,5 @@ public interface INotificationService : IScopedDependency
     /// <param name="receiver"></param>
     /// <param name="content"></param>
     /// <returns></returns>
-    Task<IActionResponse> SendAsync(TemplateType template, string receiver, string content = "");
+    Task<IActionResponse> SendAsync(Guid userId, TemplateType template, string content = "", byte[] file = null);
 }

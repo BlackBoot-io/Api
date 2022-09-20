@@ -1,4 +1,5 @@
 ﻿using Avn.Domain.Dtos.Externals.NftStorage;
+using Avn.Services.Implementations;
 
 namespace Avn.Services.Interfaces;
 
@@ -57,8 +58,6 @@ public class DropsService : IDropsService
         if (networkInPricing is null)
             return new ActionResponse<Guid>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidNetwork);
 
-        var currentUser = await _userService.Value.GetCurrentUserAsync(item.UserId, cancellationToken);
-
         var code = Guid.NewGuid();
         await _uow.DropRepo.AddAsync(new()
         {
@@ -89,9 +88,8 @@ public class DropsService : IDropsService
         if (!dbResult.ToSaveChangeResult())
             return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
-        await _notificationService.Value.SendAsync(
-                       template: TemplateType.CreateDrop,
-                       receiver: currentUser.Data.Email);
+        await _notificationService.Value.SendAsync(item.UserId,
+                       template: TemplateType.CreateDrop);
 
         return new ActionResponse<Guid>(code);
     }
@@ -152,10 +150,10 @@ public class DropsService : IDropsService
 
     public async Task<IActionResponse<bool>> ConfirmAsync(int DropId, CancellationToken cancellationToken = default)
     {
-        var drop = await _uow.DropRepo.Queryable().FirstOrDefaultAsync(x => x.Id == DropId && x.DropStatus == DropStatus.Pending, cancellationToken);
+        var drop = await _uow.DropRepo.Queryable()
+                        .FirstOrDefaultAsync(x => x.Id == DropId && x.DropStatus == DropStatus.Pending, cancellationToken);
         if (drop is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
-
 
         var attachment = await _attachmentService.Value.GetFile(drop.AttachmentId);
 
@@ -185,30 +183,11 @@ public class DropsService : IDropsService
         if (!result.ToSaveChangeResult())
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
-        switch (drop.DeliveryType)
-        {
-            case DeliveryType.Link:
-                var tokens = Enumerable.Repeat(drop, drop.Count).Select(row => new CreateTokenDto
-                {
-                    DropId = drop.Id
+        var deliveryResult = await DeliveryFactory.GetInstance(drop.DeliveryType).Execute();
+        if (!deliveryResult.IsSuccess)
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
-                }).ToList();
-
-                var tokenResult = await _tokensService.Value.AddRangeAsync(tokens, cancellationToken);
-                if (!tokenResult.IsSuccess)
-                    return new ActionResponse<bool>(tokenResult.StatusCode, tokenResult.Message);
-
-                break;
-            case DeliveryType.QR:
-                //generate a url for claim and generate Qr from it
-                //then send this qr to users
-                break;
-            default:
-                break;
-        }
-        var currentUser = await _userService.Value.GetCurrentUserAsync(drop.UserId, cancellationToken);
-        await _notificationService.Value.SendAsync(TemplateType.ConfirmDrop, currentUser.Data.Email);
-
+        await _notificationService.Value.SendAsync(drop.UserId, TemplateType.ConfirmDrop, file: deliveryResult.Data);
         return new ActionResponse<bool>(true);
     }
 
@@ -232,9 +211,7 @@ public class DropsService : IDropsService
         if (!result.ToSaveChangeResult())
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
-        var currentUser = await _userService.Value.GetCurrentUserAsync(model.UserId, cancellationToken);
-        await _notificationService.Value.SendAsync(TemplateType.DropRejected, currentUser.Data.Email);
-
+        await _notificationService.Value.SendAsync(model.UserId, TemplateType.DropRejected);
         return new ActionResponse<bool>(true);
     }
 }

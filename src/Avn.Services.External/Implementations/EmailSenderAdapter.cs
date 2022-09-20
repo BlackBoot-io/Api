@@ -41,7 +41,11 @@ public class EmailSenderAdapter : IEmailSenderAdapter
                 textContent: TextContent,
                 subject: Subject,
                 replyTo: null,
-                attachment: null,
+                attachment: new List<SendSmtpEmailAttachment>() {
+                    new SendSmtpEmailAttachment {
+                             Content = null
+                    }
+                },
                 headers: null,
                 templateId: null,
                 _params: null,
