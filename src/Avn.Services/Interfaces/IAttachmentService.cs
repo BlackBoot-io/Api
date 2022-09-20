@@ -8,5 +8,11 @@ public interface IAttachmentService : IScopedDependency
     /// <param name="file"></param>
     /// <returns></returns>
     Task<IActionResponse<int>> UploadFileAsync(byte[] file, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Get Attachment File with Id
+    /// </summary>
+    /// <param name="attachmentId"></param>
+    /// <returns></returns>
     Task<Attachment> GetFile(int attachmentId);
 }

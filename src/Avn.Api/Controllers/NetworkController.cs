@@ -13,6 +13,7 @@ public class TokenController : Controller
     /// <param name="uniqueCode"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
+    [HttpGet]
     public async Task<IActionResult> GetAsync(string uniqueCode, CancellationToken cancellationToken)
         => Ok(await _tokensService.GetAsync(uniqueCode, cancellationToken));
 
@@ -23,11 +24,10 @@ public class TokenController : Controller
     /// <param name="walletAdress"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
+    [HttpPost]
     public async Task<IActionResult> ConnectWalletAsync(Guid id, string walletAdress, CancellationToken cancellationToken)
         => Ok(await _tokensService.ConnectWalletAsync(id, walletAdress, cancellationToken));
-
-
-
+    
     /// <summary>
     /// Update user's wallet address into token
     /// </summary>
@@ -35,11 +35,9 @@ public class TokenController : Controller
     /// <param name="contractTokenId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
+    [HttpPost]
     public async Task<IActionResult> MintAsync(Guid id, int contractTokenId, CancellationToken cancellationToken)
         => Ok(await _tokensService.MintAsync(id, contractTokenId, cancellationToken));
-
-
-
 
     /// <summary>
     /// Update user's wallet address into token
@@ -47,6 +45,7 @@ public class TokenController : Controller
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
+    [HttpPost]
     public async Task<IActionResult> BurnAsync(Guid id, CancellationToken cancellationToken)
         => Ok(await _tokensService.BurnAsync(id, cancellationToken));
 }

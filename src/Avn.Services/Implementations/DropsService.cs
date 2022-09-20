@@ -191,7 +191,7 @@ public class DropsService : IDropsService
                 var tokens = Enumerable.Repeat(drop, drop.Count).Select(row => new CreateTokenDto
                 {
                     DropId = drop.Id
-                     
+
                 }).ToList();
 
                 var tokenResult = await _tokensService.Value.AddRangeAsync(tokens, cancellationToken);

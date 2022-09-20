@@ -6,6 +6,14 @@ public class AttachmentService : IAttachmentService
     public AttachmentService(IAppUnitOfWork unitOfWork) => _uow = unitOfWork;
 
     /// <summary>
+    /// Get Attachment File with Id
+    /// </summary>
+    /// <param name="attachmentId"></param>
+    /// <returns></returns>
+    public async Task<Attachment> GetFile(int attachmentId) =>
+        await _uow.AttachmentRepo.Queryable().FirstOrDefaultAsync(X => X.Id == attachmentId);
+
+    /// <summary>
     /// Add Image on data base and return primary Key
     /// </summary>
     /// <param name="fileName"></param>

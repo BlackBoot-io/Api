@@ -4,12 +4,12 @@ public class VerificationService : IVerificationService
     private readonly IAppUnitOfWork _uow;
     public VerificationService(IAppUnitOfWork uow) => _uow = uow;
 
-    public Task<IActionResponse<bool>> SendOtpAsync(UserDto user, VerificationType type, CancellationToken cancellationToken = default)
+    public Task<IActionResponse<bool>> SendOtpAsync(UserDto user, TemplateType type, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IActionResponse<bool>> SendOtpAsync(Guid userId, VerificationType type, CancellationToken cancellationToken = default)
+    public Task<IActionResponse<bool>> SendOtpAsync(Guid userId, TemplateType type, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
@@ -17,7 +17,7 @@ public class VerificationService : IVerificationService
     public async Task<IActionResponse<bool>> VerifyAsync(Guid userId, string uniqueCode, CancellationToken cancellationToken = default)
     {
         var verification = await _uow.VerificationCodeRepo
-            .GetAll()
+            .Queryable()
             .FirstOrDefaultAsync(X => X.UserId == userId &&
                                  X.UniqueCode == uniqueCode &&
                                  !X.IsUsed &&

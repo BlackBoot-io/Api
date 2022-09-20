@@ -8,7 +8,7 @@ public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity : class
     protected readonly DbSet<TEntity> _entities;
     public GenericRepo(ApplicationDbContext dbContext) => _entities = dbContext.Set<TEntity>();
 
-    public IQueryable<TEntity> GetAll() => _entities;
+    public IQueryable<TEntity> Queryable() => _entities;
 
     public async Task<TEntity> FindAsync(object[] keyValues, CancellationToken token = default) => await _entities.FindAsync(keyValues, token);
 

@@ -3,6 +3,7 @@
 using Avn.Data.Repository;
 using Avn.Data.UnitofWork;
 using Avn.Services.Resources;
+using Avn.Shared;
 using Avn.Shared.Extentions;
 using EFCoreSecondLevelCacheInterceptor;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
