@@ -3,8 +3,8 @@
 public interface IPricingService
 {
     /// <summary>
-    /// Get all available pricing model
+    /// Get all available pricing model for UI
     /// </summary>
     /// <returns></returns>
-    Task<IActionResponse<List<object>>> GetAvailablePricing();
+    Task<IActionResponse<object>> GetAvailablePricing();
 }

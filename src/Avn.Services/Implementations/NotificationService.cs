@@ -3,15 +3,24 @@
 public class NotificationService : INotificationService
 {
     private readonly IUsersService _usersService;
-    public NotificationService(IUsersService usersService)
+    private readonly IEmailSenderAdapter _emailSenderAdapter;
+    public NotificationService(IUsersService usersService, IEmailSenderAdapter emailSenderAdapter)
     {
         _usersService = usersService;
+        _emailSenderAdapter = emailSenderAdapter;
     }
 
-    public async Task<IActionResponse> SendAsync(Guid userId, TemplateType template, string content = "", byte[] file = null)
+    public async Task<IActionResponse> SendAsync(Guid userId, TemplateType template, byte[] file = null)
     {
         var currentUser = await _usersService.GetCurrentUserAsync(userId);
-
-        throw new NotImplementedException();
+        //fetch email Template then replace data then send email
+        var content = "Hi";
+        return await _emailSenderAdapter.SendAsync(new EmailRequestDto
+           (
+               Receiver: currentUser.Data.Email,
+               Subject: template.ToString(),
+               Content: content,
+               File: file
+           ));
     }
 }

@@ -43,7 +43,7 @@ public class EmailSenderAdapter : IEmailSenderAdapter
                 replyTo: null,
                 attachment: new List<SendSmtpEmailAttachment>() {
                     new SendSmtpEmailAttachment {
-                             Content = null
+                             Content = email.File
                     }
                 },
                 headers: null,

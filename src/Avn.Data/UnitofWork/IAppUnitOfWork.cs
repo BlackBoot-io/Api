@@ -23,6 +23,7 @@ public interface IAppUnitOfWork //: IDisposable, IAsyncDisposable
     public IGenericRepo<Token> TokenRepo { get; }
     public IGenericRepo<Project> ProjectRepo { get; }
     public IGenericRepo<Network> NetworkRepo { get; }
+    public IGenericRepo<Pricing> PricingRepo { get; }
     #endregion
 
     #region File
