@@ -11,7 +11,7 @@ public class VerificationCode : IEntity
     public User User { get; set; }
     public Guid UserId { get; set; }
 
-    public VerificationType VerificationType { get; set; }
+    public TemplateType Type { get; set; }
 
     [Required]
     [MaxLength(200)]

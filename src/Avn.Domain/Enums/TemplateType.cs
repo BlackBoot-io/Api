@@ -6,5 +6,6 @@ public enum TemplateType : byte
     ForgetPassword = 3,
     CreateDrop = 4,
     DropRejected = 5,
-    ConfirmDrop = 6
+    ConfirmDrop = 6,
+    ResendCode = 7
 }

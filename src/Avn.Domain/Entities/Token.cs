@@ -19,7 +19,7 @@ public class Token : IEntity
 
     [Required]
     [MaxLength(150)]
-    public string OwerWalletAddress { get; set; }
+    public string OwnerWalletAddress { get; set; }
 
     [Required]
     [MaxLength(15)]

@@ -23,7 +23,7 @@ public class TokensService : ITokensService
             EndDate = row.Drop.EndDate,
             ExpireDate = row.Drop.ExpireDate,
             UniqueCode = row.UniqueCode,
-            OwerWalletAddress = row.OwerWalletAddress,
+            OwerWalletAddress = row.OwnerWalletAddress,
             IsBurned = row.IsBurned,
             IsMinted = row.IsMinted
         }).FirstOrDefaultAsync(x => x.UniqueCode == uniqueCode, cancellationToken);
@@ -49,11 +49,15 @@ public class TokensService : ITokensService
             DropId = item.DropId,
             UniqueCode = Guid.NewGuid().ToString(),
             InsertDate = DateTime.UtcNow,
-            Number = (await _uow.TokenRepo.Queryable().Where(x => x.DropId == item.DropId).MaxAsync(x => x.Number)) + 1
+            Number = (await _uow.TokenRepo.Queryable()
+                                          .Where(x => x.DropId == item.DropId)
+                                          .MaxAsync(x => x.Number, cancellationToken: cancellationToken)) + 1
         };
 
         await _uow.TokenRepo.AddAsync(model, cancellationToken);
-        await _uow.SaveChangesAsync(cancellationToken);
+        var result = await _uow.SaveChangesAsync(cancellationToken);
+        if (!result.ToSaveChangeResult())
+            return new ActionResponse<string>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         return new ActionResponse<string>(model.UniqueCode);
     }
@@ -92,16 +96,19 @@ public class TokensService : ITokensService
     /// <returns></returns>
     public async Task<IActionResponse<bool>> ConnectWalletAsync(Guid id, string walletAdress, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.TokenRepo.Queryable().FirstOrDefaultAsync(x => x.Id == id && x.OwerWalletAddress == null, cancellationToken);
+        var model = await _uow.TokenRepo.Queryable().FirstOrDefaultAsync(x => x.Id == id && x.OwnerWalletAddress == null, cancellationToken);
         if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
-        model.OwerWalletAddress = walletAdress;
+        model.OwnerWalletAddress = walletAdress;
 
-        await _uow.SaveChangesAsync(cancellationToken);
+        var result = await _uow.SaveChangesAsync(cancellationToken);
+        if (!result.ToSaveChangeResult())
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         return new ActionResponse<bool>(true);
     }
+
     /// <summary>
     /// update token which is minted by user
     /// then update contract tokenId
@@ -112,14 +119,17 @@ public class TokensService : ITokensService
     /// <returns></returns>
     public async Task<IActionResponse<bool>> MintAsync(Guid id, int contractTokenId, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.TokenRepo.Queryable().FirstOrDefaultAsync(x => x.Id == id && x.OwerWalletAddress != null && !x.IsMinted, cancellationToken);
+        var model = await _uow.TokenRepo.Queryable().FirstOrDefaultAsync(x => x.Id == id && x.OwnerWalletAddress != null && !x.IsMinted, cancellationToken);
         if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
         model.IsMinted = true;
         model.ContractTokenId = contractTokenId;
 
-        await _uow.SaveChangesAsync(cancellationToken);
+        var result = await _uow.SaveChangesAsync(cancellationToken);
+        if (!result.ToSaveChangeResult())
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+
 
         return new ActionResponse<bool>(true);
     }
@@ -133,13 +143,15 @@ public class TokensService : ITokensService
     /// <returns></returns>
     public async Task<IActionResponse<bool>> BurnAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.TokenRepo.Queryable().FirstOrDefaultAsync(x => x.Id == id && x.OwerWalletAddress != null && x.IsMinted && !x.IsBurned, cancellationToken);
+        var model = await _uow.TokenRepo.Queryable().FirstOrDefaultAsync(x => x.Id == id && x.OwnerWalletAddress != null && x.IsMinted && !x.IsBurned, cancellationToken);
         if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
         model.IsBurned = true;
 
-        await _uow.SaveChangesAsync(cancellationToken);
+        var result = await _uow.SaveChangesAsync(cancellationToken);
+        if (!result.ToSaveChangeResult())
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         return new ActionResponse<bool>(true);
     }

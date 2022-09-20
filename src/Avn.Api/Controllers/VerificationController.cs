@@ -9,6 +9,6 @@ public class VerificationController : BaseController
         => _verificationService = verificationService;
 
     [HttpPost]
-    public async Task<IActionResult> ResendCode(Guid userId, VerificationType type)
-     => Ok(await _verificationService.SendOtpAsync(userId, type));
+    public async Task<IActionResult> ResendCode(Guid userId)
+     => Ok(await _verificationService.SendOtpAsync(userId, TemplateType.ResendCode));
 }
