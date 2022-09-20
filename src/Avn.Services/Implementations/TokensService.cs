@@ -34,6 +34,7 @@ public class TokensService : ITokensService
         return new ActionResponse<TokenDto>(result);
 
     }
+
     /// <summary>
     /// Add a token from Qr delivery Type
     /// this is an internal API
@@ -56,6 +57,7 @@ public class TokensService : ITokensService
 
         return new ActionResponse<string>(model.UniqueCode);
     }
+
     /// <summary>
     /// Add multiple tokens from link Delivery Type
     /// this is an internal API for confirmation a drop
@@ -71,11 +73,12 @@ public class TokensService : ITokensService
             UniqueCode = Guid.NewGuid().ToString(),
             InsertDate = DateTime.UtcNow,
             Number = index + 1,
-
         });
 
         await _uow.TokenRepo.AddRangeAsync(models, cancellationToken);
-        await _uow.SaveChangesAsync(cancellationToken);
+        var result = await _uow.SaveChangesAsync(cancellationToken);
+        if (!result.ToSaveChangeResult())
+            return new ActionResponse<IEnumerable<string>>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         return new ActionResponse<IEnumerable<string>>(models.Select(x => x.UniqueCode));
     }

@@ -12,6 +12,7 @@ public class DropsService : IDropsService
     private readonly Lazy<ISubscriptionService> _subscriptionService;
     private readonly Lazy<INotificationService> _notificationService;
     private readonly Lazy<IUsersService> _userService;
+    private readonly Lazy<IDeliveryFactory> _deliveryFactory;
 
     public DropsService(IAppUnitOfWork uow,
                         Lazy<INftStorageAdapter> nftStorageAdaptar,
@@ -19,7 +20,8 @@ public class DropsService : IDropsService
                         Lazy<IAttachmentService> attachmentService,
                         Lazy<ISubscriptionService> subscriptionService,
                         Lazy<INotificationService> notificationService,
-                        Lazy<IUsersService> usersService)
+                        Lazy<IUsersService> usersService,
+                        Lazy<IDeliveryFactory> deliveryFactory)
     {
         _uow = uow;
         _nftStorageAdaptar = nftStorageAdaptar;
@@ -28,6 +30,7 @@ public class DropsService : IDropsService
         _subscriptionService = subscriptionService;
         _notificationService = notificationService;
         _userService = usersService;
+        _deliveryFactory = deliveryFactory;
     }
 
     /// <summary>
@@ -183,7 +186,9 @@ public class DropsService : IDropsService
         if (!result.ToSaveChangeResult())
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
-        var deliveryResult = await DeliveryFactory.GetInstance(drop.DeliveryType).Execute();
+        var deliveryResult = await _deliveryFactory.Value.GetInstance(drop.DeliveryType)
+                                   .ExecuteAsync(drop.Id, drop.Count, cancellationToken);
+
         if (!deliveryResult.IsSuccess)
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
