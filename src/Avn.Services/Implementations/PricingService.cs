@@ -16,7 +16,7 @@ public class PricingService : IPricingService
                         .AsNoTracking()
                         .Select(X => new
                         {
-                          
+                           
                         })
                         .ToListAsync()
            };
