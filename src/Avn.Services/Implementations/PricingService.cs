@@ -5,6 +5,10 @@ public class PricingService : IPricingService
     public PricingService(IAppUnitOfWork uow)
            => _uow = uow;
 
+    /// <summary>
+    /// Get all available pricing model for UI
+    /// </summary>
+    /// <returns></returns>
     public async Task<IActionResponse<object>> GetAvailablePricing()
            => new ActionResponse<object>
            {
