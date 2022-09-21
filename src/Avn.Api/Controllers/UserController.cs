@@ -22,8 +22,8 @@ public class UserController : BaseController
         => Ok(await _userService.ActivateEmailAsync(userId, uniqueCode, cancellationToken));
 
     [HttpGet]
-    public async Task<IActionResult> GetCurrentUserAsync(Guid userId, CancellationToken cancellationToken)
-        => Ok(await _userService.GetCurrentUserAsync(userId, cancellationToken));
+    public async Task<IActionResult> GetCurrentUserAsync(CancellationToken cancellationToken)
+        => Ok(await _userService.GetCurrentUserAsync(CurrentUserId, cancellationToken));
 
     /// <summary>
     /// update user's profile such as walletAddress , fullname  and organization's name

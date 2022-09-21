@@ -1,4 +1,4 @@
-﻿namespace Avn.Shared;
+﻿namespace Avn.Shared.Core;
 
 public interface IGenericRepo<TEntity> where TEntity : class
 {

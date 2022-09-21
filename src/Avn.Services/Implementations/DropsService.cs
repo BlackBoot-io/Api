@@ -1,5 +1,5 @@
 ﻿using Avn.Domain.Dtos.Externals.NftStorage;
-using Avn.Services.Implementations;
+using Avn.Services.Interfaces.DeliveryStrategies;
 
 namespace Avn.Services.Interfaces;
 
@@ -158,7 +158,7 @@ public class DropsService : IDropsService
         if (drop is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
-        var attachment = await _attachmentService.Value.GetFile(drop.AttachmentId);
+        var attachment = await _attachmentService.Value.GetFile(drop.AttachmentId, cancellationToken);
 
         var nftStorageResult = await _nftStorageAdaptar.Value.UploadAsync(new UploadRequestDto(
             drop.Name,

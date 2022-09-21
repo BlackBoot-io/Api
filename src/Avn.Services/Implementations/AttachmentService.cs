@@ -10,8 +10,8 @@ public class AttachmentService : IAttachmentService
     /// </summary>
     /// <param name="attachmentId"></param>
     /// <returns></returns>
-    public async Task<Attachment> GetFile(int attachmentId) =>
-        await _uow.AttachmentRepo.Queryable().FirstOrDefaultAsync(X => X.Id == attachmentId);
+    public async Task<Attachment> GetFile(int attachmentId, CancellationToken cancellationToken) =>
+        await _uow.AttachmentRepo.Queryable().FirstOrDefaultAsync(X => X.Id == attachmentId, cancellationToken);
 
     /// <summary>
     /// Add Image on data base and return primary Key

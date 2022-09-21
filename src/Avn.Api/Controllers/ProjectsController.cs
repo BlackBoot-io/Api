@@ -12,9 +12,9 @@ public class ProjectsController : BaseController
     /// <param name="item"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> AddAsync(Guid userId, [FromBody] CreateProjectDto item)
+    public async Task<IActionResult> AddAsync([FromBody] CreateProjectDto item)
     {
-        item.UserId = userId;
+        item.UserId = CurrentUserId;
         return Ok(await _projectService.CreateAsync(item));
     }
 
@@ -25,9 +25,9 @@ public class ProjectsController : BaseController
     /// <param name="item"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> UpdateAsync(Guid userId, [FromBody] UpdateProjectDto item)
+    public async Task<IActionResult> UpdateAsync([FromBody] UpdateProjectDto item)
     {
-        item.UserId = userId;
+        item.UserId = CurrentUserId;
         return Ok(await _projectService.UpdateAsync(item));
     }
 
@@ -37,6 +37,6 @@ public class ProjectsController : BaseController
     /// <param name="userId">Primary key of a user</param>
     /// <returns></returns>
     [HttpGet]
-    public async Task<IActionResult> GetAllAsync(Guid userId)
-        => Ok(await _projectService.GetAllAsync(userId));
+    public async Task<IActionResult> GetAllAsync()
+        => Ok(await _projectService.GetAllAsync(CurrentUserId));
 }
