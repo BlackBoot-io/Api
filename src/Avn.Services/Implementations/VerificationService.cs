@@ -6,12 +6,12 @@ public class VerificationService : IVerificationService
 
     public Task<IActionResponse<bool>> SendOtpAsync(UserDto user, TemplateType type, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+         
     }
 
     public Task<IActionResponse<bool>> SendOtpAsync(Guid userId, TemplateType type, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        
     }
 
     public async Task<IActionResponse<bool>> VerifyAsync(Guid userId, string uniqueCode, CancellationToken cancellationToken = default)

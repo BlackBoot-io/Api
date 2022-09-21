@@ -13,14 +13,19 @@ public class UserController : BaseController
     /// <summary>
     /// Activate user's email via activation link that has been sent in signUp phase
     /// </summary>
-    /// <param name="userId">automatic binded</param>
     /// <param name="uniqueCode">fill from query string</param>
     /// <param name="cancellationToken"></param>
     /// <returns>true/false</returns>
     [HttpPost]
-    public async Task<IActionResult> ActivateEmailAsync(Guid userId, string uniqueCode, CancellationToken cancellationToken)
-        => Ok(await _userService.ActivateEmailAsync(userId, uniqueCode, cancellationToken));
+    public async Task<IActionResult> ActivateEmailAsync(string uniqueCode, CancellationToken cancellationToken)
+        => Ok(await _userService.ActivateEmailAsync(CurrentUserId, uniqueCode, cancellationToken));
 
+
+    /// <summary>
+    /// Get Current User Data
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<IActionResult> GetCurrentUserAsync(CancellationToken cancellationToken)
         => Ok(await _userService.GetCurrentUserAsync(CurrentUserId, cancellationToken));
@@ -28,11 +33,10 @@ public class UserController : BaseController
     /// <summary>
     /// update user's profile such as walletAddress , fullname  and organization's name
     /// </summary>
-    /// <param name="userId">automatic binded</param>
     /// <param name="user">sent by client</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> UpdateProfileAsync(Guid userId, UserDto user, CancellationToken cancellationToken)
-      => Ok(await _userService.UpdateProfileAsync(userId, user, cancellationToken));
+    public async Task<IActionResult> UpdateProfileAsync(UserDto user, CancellationToken cancellationToken)
+      => Ok(await _userService.UpdateProfileAsync(CurrentUserId, user, cancellationToken));
 }
