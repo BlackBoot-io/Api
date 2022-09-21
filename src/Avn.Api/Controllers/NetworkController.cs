@@ -9,6 +9,7 @@ public class NetworkController : Controller
     /// Get all available Blockchain networks which we are support
     /// </summary>
     /// <returns></returns>
+    [HttpGet]
     public async Task<IActionResult> AllAvailableAsync()
         => Ok(await _networkService.GetAllAvailableAsync());
 }

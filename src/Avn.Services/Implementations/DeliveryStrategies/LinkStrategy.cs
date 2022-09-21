@@ -6,12 +6,14 @@ public class LinkStrategy : IDeliveryStrategy
 {
     private readonly ITokensService _tokensService;
     public LinkStrategy(ITokensService tokensService) => _tokensService = tokensService;
+
     public async Task<IActionResponse<byte[]>> ExecuteAsync(int dropId, int count, CancellationToken cancellationToken)
     {
-        var tokens = Enumerable.Range(0, count).Select(row => new CreateTokenDto
-        {
-            DropId = dropId
-        }).ToList();
+        var tokens = Enumerable.Range(0, count)
+            .Select(row => new CreateTokenDto
+            {
+                DropId = dropId
+            }).ToList();
 
         var tokenResult = await _tokensService.AddRangeAsync(tokens, cancellationToken);
         if (!tokenResult.IsSuccess)

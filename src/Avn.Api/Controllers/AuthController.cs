@@ -32,7 +32,7 @@ public class AuthController : BaseController
     /// <param name="refreshToken"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpDelete]
+    [HttpPost]
     public async Task<IActionResult> LogoutAsync(string refreshToken, CancellationToken cancellationToken)
         => Ok(await _authService.LogoutAsync(refreshToken, cancellationToken));
 }
