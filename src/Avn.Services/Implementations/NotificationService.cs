@@ -10,6 +10,13 @@ public class NotificationService : INotificationService
         _emailSenderAdapter = emailSenderAdapter;
     }
 
+    /// <summary>
+    /// send a notification to user such as sms or email or etc.
+    /// </summary>
+    /// <param name="template"></param>
+    /// <param name="receiver"></param>
+    /// <param name="content"></param>
+    /// <returns></returns>
     public async Task<IActionResponse> SendAsync(Guid userId, TemplateType template, byte[] file = null)
     {
         var currentUser = await _usersService.GetCurrentUserAsync(userId);
