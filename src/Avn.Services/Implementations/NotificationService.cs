@@ -1,4 +1,6 @@
-﻿namespace Avn.Services.Implementations;
+﻿using System.Text;
+
+namespace Avn.Services.Implementations;
 
 public class NotificationService : INotificationService
 {
@@ -20,13 +22,16 @@ public class NotificationService : INotificationService
     public async Task<IActionResponse> SendAsync(Guid userId, Dictionary<string, string> extraData, TemplateType template, byte[] file = null)
     {
         var currentUser = await _usersService.GetCurrentUserAsync(userId);
-        //fetch email Template then replace data then send email
-        var content = "Hi";
+
+        StringBuilder content = new();
+        content.Append(File.ReadAllText($"{Environment.CurrentDirectory}\\wwwroot\\templates\\{template}.html"));
+        foreach (var item in extraData)
+            content.Append(content.Replace($"${item.Key}$", item.Value));
         return await _emailSenderAdapter.SendAsync(new EmailRequestDto
            (
                Receiver: currentUser.Data.Email,
                Subject: template.ToString(),
-               Content: content,
+               Content: content.ToString(),
                File: file
            ));
     }

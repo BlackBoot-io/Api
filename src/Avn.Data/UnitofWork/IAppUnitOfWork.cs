@@ -24,6 +24,7 @@ public interface IAppUnitOfWork //: IDisposable, IAsyncDisposable
     public IGenericRepo<Project> ProjectRepo { get; }
     public IGenericRepo<Network> NetworkRepo { get; }
     public IGenericRepo<Pricing> PricingRepo { get; }
+    public IGenericRepo<NetworkInPricing> NetworkInPricingRepo { get; }
     #endregion
 
     #region File

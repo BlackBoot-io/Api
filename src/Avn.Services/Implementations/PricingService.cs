@@ -13,14 +13,26 @@ public class PricingService : IPricingService
            => new ActionResponse<object>
            {
                IsSuccess = true,
-               Data = await _uow.PricingRepo.Queryable()
-                        .Include(X => X.NetworkInPricings)
-                        .ThenInclude(X => X.Network)
-                        .Where(X => X.IsActive)
+               Data = await _uow.NetworkInPricingRepo.Queryable()
+                        .Include(X => X.Pricing)
+                        .Include(X => X.Network)
+                        .Where(X => X.Pricing.IsActive)
                         .AsNoTracking()
                         .Select(X => new
                         {
-
+                            X.Pricing.Name,
+                            X.Pricing.PriorityTicketsSupport,
+                            X.Pricing.PublicDocumentation,
+                            X.Pricing.RequestsPerDay,
+                            X.Pricing.RequestsPerSecond,
+                            X.Pricing.UsdtAmount,
+                            X.Pricing.DiscountForYearlySubscription,
+                            X.Pricing.HasTransactionWages,
+                            Networks = new
+                            {
+                                X.Network.Name,
+                                X.Network.Type
+                            }
                         })
                         .ToListAsync()
            };

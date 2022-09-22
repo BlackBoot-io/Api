@@ -35,7 +35,6 @@ public class VerificationService : IVerificationService
         if (!dbResult.ToSaveChangeResult())
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
-
         await _notificationService.Value.SendAsync(userId,
                                                    new()
                                                    {
