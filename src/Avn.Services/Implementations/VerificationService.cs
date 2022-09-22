@@ -11,6 +11,13 @@ public class VerificationService : IVerificationService
         _notificationService = notificationService;
     }
 
+    /// <summary>
+    /// send otp to users by channels (verificationType)
+    /// </summary>
+    /// <param name="user"></param>
+    /// <param name="type"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task<IActionResponse<bool>> SendOtpAsync(Guid userId, TemplateType type, CancellationToken cancellationToken = default)
     {
         VerificationCode verification = new()
