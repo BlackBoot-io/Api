@@ -1,6 +1,6 @@
 ﻿namespace Avn.Api.Controllers;
 
-public class NetworkController : Controller
+public class NetworkController : BaseController
 {
     private readonly INetworkService _networkService;
     public NetworkController(INetworkService networkService) => _networkService = networkService;
