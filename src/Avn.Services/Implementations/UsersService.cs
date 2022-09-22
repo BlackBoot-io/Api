@@ -48,15 +48,7 @@ public class UsersService : IUsersService
         if (!dbResult.ToSaveChangeResult())
             return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError);
 
-        await _verificationService.SendOtpAsync(new UserDto
-        {
-            Email = user.Email,
-            FullName = user.FullName,
-            UserType = user.Type,
-            OrganizationName = user.OrganizationName,
-            WalletAddress = user.WalletAddress,
-            EmailIsApproved = user.EmailIsApproved
-        }, TemplateType.EmailVerification, cancellationToken);
+        await _verificationService.SendOtpAsync(user.UserId, TemplateType.EmailVerification, cancellationToken);
 
         return new ActionResponse<Guid>(user.UserId);
     }
@@ -73,7 +65,7 @@ public class UsersService : IUsersService
 
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.ToSaveChangeResult())
-            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError,BusinessMessage.ServerError);
+            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         return new ActionResponse<Guid>(user.UserId);
     }
@@ -99,7 +91,7 @@ public class UsersService : IUsersService
         result.EmailIsApproved = true;
         var dbResult = await _uow.SaveChangesAsync();
         if (!dbResult.ToSaveChangeResult())
-            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError,BusinessMessage.ServerError);
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         return new ActionResponse<bool>(true);
     }

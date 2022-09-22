@@ -1,18 +1,43 @@
-﻿namespace Avn.Services.Implementations;
+﻿using Avn.Shared.Utilities;
+
+namespace Avn.Services.Implementations;
 public class VerificationService : IVerificationService
 {
     private readonly IAppUnitOfWork _uow;
-    public VerificationService(IAppUnitOfWork uow) => _uow = uow;
-
-    public Task<IActionResponse<bool>> SendOtpAsync(UserDto user, TemplateType type, CancellationToken cancellationToken = default)
+    private readonly Lazy<INotificationService> _notificationService;
+    public VerificationService(IAppUnitOfWork uow, Lazy<INotificationService> notificationService)
     {
-        throw new NotImplementedException();
+        _uow = uow;
+        _notificationService = notificationService;
     }
 
-    public Task<IActionResponse<bool>> SendOtpAsync(Guid userId, TemplateType type, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<bool>> SendOtpAsync(Guid userId, TemplateType type, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        VerificationCode verification = new()
+        {
+            ExpirationTime = DateTime.UtcNow.AddHours(24),
+            InsertDateMi = DateTime.UtcNow,
+            IsUsed = false,
+            Type = type,
+            UniqueCode = RandomStringGenerator.Generate(25),
+            UserId = userId,
+        };
+
+        await _uow.VerificationCodeRepo.AddAsync(verification, cancellationToken);
+        var dbResult = await _uow.SaveChangesAsync(cancellationToken);
+        if (!dbResult.ToSaveChangeResult())
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+
+        Dictionary<string, string> extraData = new()
+        {
+             
+
+        };
+
+        await _notificationService.Value.SendAsync(userId, extraData, type);
+        return new ActionResponse<bool>(ActionResponseStatusCode.Success);
     }
+
 
     public async Task<IActionResponse<bool>> VerifyAsync(Guid userId, string uniqueCode, CancellationToken cancellationToken = default)
     {

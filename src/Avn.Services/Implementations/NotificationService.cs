@@ -17,7 +17,7 @@ public class NotificationService : INotificationService
     /// <param name="receiver"></param>
     /// <param name="content"></param>
     /// <returns></returns>
-    public async Task<IActionResponse> SendAsync(Guid userId, TemplateType template, byte[] file = null)
+    public async Task<IActionResponse> SendAsync(Guid userId, Dictionary<string, string> extraData, TemplateType template, byte[] file = null)
     {
         var currentUser = await _usersService.GetCurrentUserAsync(userId);
         //fetch email Template then replace data then send email

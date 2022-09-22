@@ -2,6 +2,7 @@
 
 public record UserDto
 {
+    public Guid UserId { get; set; }
     public string Email { get; set; }
     public bool EmailIsApproved { get; set; }
     public string FullName { get; set; } = default!;
