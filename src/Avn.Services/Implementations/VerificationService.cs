@@ -28,17 +28,22 @@ public class VerificationService : IVerificationService
         if (!dbResult.ToSaveChangeResult())
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
-        Dictionary<string, string> extraData = new()
-        {
-             
 
-        };
-
-        await _notificationService.Value.SendAsync(userId, extraData, type);
+        await _notificationService.Value.SendAsync(userId,
+                                                   new()
+                                                   {
+                                                       { "UniqueCode", verification.UniqueCode },
+                                                   }, type);
         return new ActionResponse<bool>(ActionResponseStatusCode.Success);
     }
 
-
+    /// <summary>
+    /// Verify uniqueCode
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="uniqueCode"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task<IActionResponse<bool>> VerifyAsync(Guid userId, string uniqueCode, CancellationToken cancellationToken = default)
     {
         var verification = await _uow.VerificationCodeRepo
