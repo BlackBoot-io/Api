@@ -1,6 +1,6 @@
 ﻿namespace Avn.Api.Controllers;
 
-public class TokenController : Controller
+public class TokenController : BaseController
 {
     private readonly ITokensService _tokensService;
 

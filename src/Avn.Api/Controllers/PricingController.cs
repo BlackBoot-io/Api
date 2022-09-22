@@ -1,6 +1,6 @@
 ﻿namespace Avn.Api.Controllers
 {
-    public class PricingController : Controller
+    public class PricingController : BaseController
     {
         private readonly IPricingService _pricingService;
         public PricingController(IPricingService pricingService) => _pricingService = pricingService;

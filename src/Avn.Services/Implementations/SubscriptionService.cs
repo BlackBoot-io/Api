@@ -9,6 +9,6 @@ public class SubscriptionService : ISubscriptionService
     /// <returns></returns>
     public Task<IActionResponse<Subscription>> GetCurrentModelAsync(Guid userId)
     {
-      
+        throw new NotImplementedException();
     }
 }
