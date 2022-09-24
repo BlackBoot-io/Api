@@ -7,5 +7,5 @@ public interface ISubscriptionService : IScopedDependency
     /// </summary>
     /// <param name="userId"></param>
     /// <returns></returns>
-    Task<IActionResponse<Subscription>> GetCurrentModelAsync(Guid userId);
+    Task<IActionResponse<Subscription>> GetCurrentModelAsync(Guid userId, CancellationToken cancellationToken = default);
 }
