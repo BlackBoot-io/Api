@@ -53,7 +53,7 @@ public class DropsService : IDropsService
         if (!fileResult.IsSuccess)
             return new ActionResponse<Guid>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidFileContent);
 
-        var subscriptionModel = await _subscriptionService.Value.GetCurrentModelAsync(item.UserId);
+        var subscriptionModel = await _subscriptionService.Value.GetCurrentModelAsync(item.UserId, cancellationToken);
         if (!subscriptionModel.IsSuccess)
             return new ActionResponse<Guid>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidSubscriptionModel);
 
@@ -92,7 +92,13 @@ public class DropsService : IDropsService
             return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         await _notificationService.Value.SendAsync(item.UserId,
-                       template: TemplateType.CreateDrop);
+             new()
+             {
+                 { nameof(item.Name), item.Name },
+                 { nameof(item.Description), item.Description },
+                 { nameof(item.StartDate), item.StartDate.ToString() },
+                 { nameof(item.EndDate), item.EndDate.ToString() }
+             }, template: TemplateType.CreateDrop);
 
         return new ActionResponse<Guid>(code);
     }
@@ -192,7 +198,15 @@ public class DropsService : IDropsService
         if (!deliveryResult.IsSuccess)
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
-        await _notificationService.Value.SendAsync(drop.UserId, TemplateType.ConfirmDrop, file: deliveryResult.Data);
+        await _notificationService.Value.SendAsync(drop.UserId,
+             new()
+             {
+                 { nameof(drop.Name), drop.Name },
+                 { nameof(drop.Description), drop.Description },
+                 { nameof(drop.StartDate), drop.StartDate.ToString() },
+                 { nameof(drop.EndDate), drop.EndDate.ToString() }
+             }
+            , TemplateType.ConfirmDrop, file: deliveryResult.Data);
         return new ActionResponse<bool>(true);
     }
 
@@ -205,18 +219,25 @@ public class DropsService : IDropsService
     /// <returns></returns>
     public async Task<IActionResponse<bool>> RejectAsync(int dropId, string reviewMessage, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.DropRepo.Queryable().FirstOrDefaultAsync(x => x.Id == dropId && x.DropStatus == DropStatus.Pending, cancellationToken);
-        if (model is null)
+        var drop = await _uow.DropRepo.Queryable().FirstOrDefaultAsync(x => x.Id == dropId && x.DropStatus == DropStatus.Pending, cancellationToken);
+        if (drop is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
-        model.DropStatus = DropStatus.Rejected;
-        model.ReviewMessage = reviewMessage;
+        drop.DropStatus = DropStatus.Rejected;
+        drop.ReviewMessage = reviewMessage;
         var result = await _uow.SaveChangesAsync(cancellationToken);
 
         if (!result.ToSaveChangeResult())
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
-        await _notificationService.Value.SendAsync(model.UserId, TemplateType.DropRejected);
+        await _notificationService.Value.SendAsync(drop.UserId,
+             new()
+             {
+                 { nameof(drop.Name), drop.Name },
+                 { nameof(drop.Description), drop.Description },
+                 { nameof(drop.StartDate), drop.StartDate.ToString() },
+                 { nameof(drop.EndDate), drop.EndDate.ToString() }
+             }, TemplateType.DropRejected);
         return new ActionResponse<bool>(true);
     }
 }
