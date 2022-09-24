@@ -119,7 +119,9 @@ public class TokensService : ITokensService
     /// <returns></returns>
     public async Task<IActionResponse<bool>> MintAsync(Guid id, int contractTokenId, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.TokenRepo.Queryable().FirstOrDefaultAsync(x => x.Id == id && x.OwnerWalletAddress != null && !x.IsMinted, cancellationToken);
+        var model = await _uow.TokenRepo.Queryable()
+                              .FirstOrDefaultAsync(x => x.Id == id && x.OwnerWalletAddress != null && !x.IsMinted, cancellationToken);
+    
         if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
@@ -129,7 +131,6 @@ public class TokensService : ITokensService
         var result = await _uow.SaveChangesAsync(cancellationToken);
         if (!result.ToSaveChangeResult())
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
-
 
         return new ActionResponse<bool>(true);
     }
@@ -143,7 +144,9 @@ public class TokensService : ITokensService
     /// <returns></returns>
     public async Task<IActionResponse<bool>> BurnAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.TokenRepo.Queryable().FirstOrDefaultAsync(x => x.Id == id && x.OwnerWalletAddress != null && x.IsMinted && !x.IsBurned, cancellationToken);
+        var model = await _uow.TokenRepo.Queryable()
+                              .FirstOrDefaultAsync(x => x.Id == id && x.OwnerWalletAddress != null && x.IsMinted && !x.IsBurned, cancellationToken);
+
         if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
