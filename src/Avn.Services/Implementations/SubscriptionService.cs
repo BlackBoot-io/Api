@@ -3,11 +3,8 @@
 public class SubscriptionService : ISubscriptionService
 {
     private readonly IAppUnitOfWork _uow;
-    public SubscriptionService(IAppUnitOfWork unitOfWork)
-    {
-        _uow = unitOfWork;
-
-    }
+    public SubscriptionService(IAppUnitOfWork unitOfWork)=> _uow = unitOfWork;
+    
     /// <summary>
     /// Get current subscription model for a user
     /// </summary>
