@@ -44,7 +44,8 @@ public class ProjectsService : IProjectsService
             Name = item.Name,
             SourceIp = item.SourceIp,
             Website = item.Website,
-            InsertDate = DateTime.Now
+            InsertDate = DateTime.Now,
+            IsActive = true
         };
         await _uow.ProjectRepo.AddAsync(model, cancellationToken);
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);

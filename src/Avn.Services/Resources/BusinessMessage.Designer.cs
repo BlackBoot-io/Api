@@ -79,6 +79,15 @@ namespace Avn.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DouplicateEmail.
+        /// </summary>
+        public static string DouplicateEmail {
+            get {
+                return ResourceManager.GetString("DouplicateEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to InvalidFileContent.
         /// </summary>
         public static string InvalidFileContent {

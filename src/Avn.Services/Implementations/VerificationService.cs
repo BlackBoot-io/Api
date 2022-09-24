@@ -40,7 +40,7 @@ public class VerificationService : IVerificationService
                                                    {
                                                        { "UniqueCode", verification.UniqueCode },
                                                    }, type);
-        return new ActionResponse<bool>(ActionResponseStatusCode.Success);
+        return new ActionResponse<bool>(ActionResponseStatusCode.Success,true);
     }
 
     /// <summary>

@@ -26,6 +26,7 @@ public class AuthController : BaseController
     public async Task<IActionResult> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
         => Ok(await _authService.RefreshTokenAsync(refreshToken, cancellationToken));
     
+
     /// <summary>
     /// logout from system with refresh token
     /// </summary>

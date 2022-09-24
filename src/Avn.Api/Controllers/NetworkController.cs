@@ -6,7 +6,7 @@ public class NetworkController : BaseController
     public NetworkController(INetworkService networkService) => _networkService = networkService;
 
     /// <summary>
-    /// Get all available Blockchain networks which we are support
+    /// Get all available Blockchain networks which we are support.
     /// </summary>
     /// <returns></returns>
     [HttpGet]

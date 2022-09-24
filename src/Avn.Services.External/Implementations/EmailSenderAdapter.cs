@@ -41,7 +41,7 @@ public class EmailSenderAdapter : IEmailSenderAdapter
                 textContent: TextContent,
                 subject: Subject,
                 replyTo: null,
-                attachment: new List<SendSmtpEmailAttachment>() {
+                attachment:email.File is null ? null:  new List<SendSmtpEmailAttachment>() {
                     new SendSmtpEmailAttachment {
                              Content = email.File
                     }

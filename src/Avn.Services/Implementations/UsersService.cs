@@ -45,27 +45,34 @@ public class UsersService : IUsersService
     /// <returns>User Id </returns>
     public async Task<IActionResponse<Guid>> SignUpAsync(UserSignUpDto user, CancellationToken cancellationToken = default)
     {
-        var passwordSalt = RandomStringGenerator.Generate(10);
-        User model = new()
+        try
         {
-            Email = user.Email,
-            FullName = user.FullName,
-            IsActive = true,
-            OrganizationName = user.OrganizationName,
-            Password = HashGenerator.Hash(user.Password, passwordSalt),
-            PasswordSalt = passwordSalt,
-            Type = user.UserType,
-            WalletAddress = user.WalletAddress,
-            EmailIsApproved = false
-        };
-        await _uow.UserRepo.AddAsync(model, cancellationToken);
-        var dbResult = await _uow.SaveChangesAsync(cancellationToken);
-        if (!dbResult.ToSaveChangeResult())
-            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError);
+            var passwordSalt = RandomStringGenerator.Generate(10);
+            User model = new()
+            {
+                Email = user.Email,
+                FullName = user.FullName,
+                IsActive = true,
+                OrganizationName = user.OrganizationName,
+                Password = HashGenerator.Hash(user.Password, passwordSalt),
+                PasswordSalt = passwordSalt,
+                Type = user.UserType,
+                WalletAddress = user.WalletAddress,
+                EmailIsApproved = false
+            };
+            await _uow.UserRepo.AddAsync(model, cancellationToken);
+            var dbResult = await _uow.SaveChangesAsync(cancellationToken);
+            if (!dbResult.ToSaveChangeResult())
+                return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError);
 
-        await _verificationService.SendOtpAsync(model.UserId, TemplateType.EmailVerification, cancellationToken);
+            await _verificationService.SendOtpAsync(model.UserId, TemplateType.EmailVerification, cancellationToken);
 
-        return new ActionResponse<Guid>(model.UserId);
+            return new ActionResponse<Guid>(model.UserId);
+        }
+        catch (DbUpdateException ex)
+        {
+            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError,BusinessMessage.DouplicateEmail);
+        }
     }
 
     public async Task<IActionResponse<Guid>> UpdateProfileAsync(Guid userId, UserDto userDto, CancellationToken cancellationToken = default)

@@ -1,6 +1,6 @@
 ﻿namespace Avn.Services.Interfaces;
 
-public interface IPricingService
+public interface IPricingService:IScopedDependency
 {
     /// <summary>
     /// Get all available pricing model for UI
