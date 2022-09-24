@@ -7,7 +7,7 @@ public class UserController : BaseController
     public UserController(IUsersService userService) => _userService = userService;
 
     [HttpPost, AllowAnonymous]
-    public async Task<IActionResult> SignupAsync(User user, CancellationToken cancellationToken)
+    public async Task<IActionResult> SignupAsync([FromBody] UserSignUpDto user, CancellationToken cancellationToken)
         => Ok(await _userService.SignUpAsync(user, cancellationToken));
 
     /// <summary>

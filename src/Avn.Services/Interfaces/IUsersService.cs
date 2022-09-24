@@ -8,7 +8,7 @@ public interface IUsersService : IScopedDependency
     /// <param name="user"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IActionResponse<Guid>> SignUpAsync(User user, CancellationToken cancellationToken = default);
+    Task<IActionResponse<Guid>> SignUpAsync(UserSignUpDto user, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Update User Profile

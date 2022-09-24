@@ -1,4 +1,6 @@
 ﻿#nullable disable
+using Avn.Shared.Utilities;
+
 namespace Avn.Services.Implementations;
 
 public class UsersService : IUsersService
@@ -41,16 +43,29 @@ public class UsersService : IUsersService
     /// <param name="user">user Model</param>
     /// <param name="cancellationToken"></param>
     /// <returns>User Id </returns>
-    public async Task<IActionResponse<Guid>> SignUpAsync(User user, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<Guid>> SignUpAsync(UserSignUpDto user, CancellationToken cancellationToken = default)
     {
-        await _uow.UserRepo.AddAsync(user, cancellationToken);
+        var passwordSalt = RandomStringGenerator.Generate(10);
+        User model = new()
+        {
+            Email = user.Email,
+            FullName = user.FullName,
+            IsActive = true,
+            OrganizationName = user.OrganizationName,
+            Password = HashGenerator.Hash(user.Password, passwordSalt),
+            PasswordSalt = passwordSalt,
+            Type = user.UserType,
+            WalletAddress = user.WalletAddress,
+            EmailIsApproved = false
+        };
+        await _uow.UserRepo.AddAsync(model, cancellationToken);
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.ToSaveChangeResult())
             return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError);
 
-        await _verificationService.SendOtpAsync(user.UserId, TemplateType.EmailVerification, cancellationToken);
+        await _verificationService.SendOtpAsync(model.UserId, TemplateType.EmailVerification, cancellationToken);
 
-        return new ActionResponse<Guid>(user.UserId);
+        return new ActionResponse<Guid>(model.UserId);
     }
 
     public async Task<IActionResponse<Guid>> UpdateProfileAsync(Guid userId, UserDto userDto, CancellationToken cancellationToken = default)

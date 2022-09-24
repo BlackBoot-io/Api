@@ -10,3 +10,8 @@ public record UserDto
     public string OrganizationName { get; set; } = default!;
     public string WalletAddress { get; set; }
 }
+
+public record UserSignUpDto : UserDto
+{
+    public string Password { get; set; }
+}
