@@ -12,10 +12,10 @@ public class ProjectsController : BaseController
     /// <param name="item"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> AddAsync([FromBody] CreateProjectDto item)
+    public async Task<IActionResult> AddAsync([FromBody] CreateProjectDto item, CancellationToken cancellationToken)
     {
         item.UserId = CurrentUserId;
-        return Ok(await _projectService.CreateAsync(item));
+        return Ok(await _projectService.CreateAsync(item, cancellationToken));
     }
 
     /// <summary>
@@ -25,10 +25,10 @@ public class ProjectsController : BaseController
     /// <param name="item"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> UpdateAsync([FromBody] UpdateProjectDto item)
+    public async Task<IActionResult> UpdateAsync([FromBody] UpdateProjectDto item, CancellationToken cancellationToken)
     {
         item.UserId = CurrentUserId;
-        return Ok(await _projectService.UpdateAsync(item));
+        return Ok(await _projectService.UpdateAsync(item, cancellationToken));
     }
 
     /// <summary>
@@ -37,6 +37,16 @@ public class ProjectsController : BaseController
     /// <param name="userId">Primary key of a user</param>
     /// <returns></returns>
     [HttpGet]
-    public async Task<IActionResult> GetAllAsync()
-        => Ok(await _projectService.GetAllAsync(CurrentUserId));
+    public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken)
+        => Ok(await _projectService.GetAllAsync(CurrentUserId, cancellationToken));
+
+    /// <summary>
+    /// Change State of a project
+    /// </summary>
+    /// <param name="projectId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<IActionResult> ChangeStateAsync([FromBody] UpdateProjectDto project, CancellationToken cancellationToken)
+        => Ok(await _projectService.ChangeStateAsync(CurrentUserId, project.Id, cancellationToken));
 }

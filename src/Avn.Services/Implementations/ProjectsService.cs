@@ -23,11 +23,7 @@ public class ProjectsService : IProjectsService
                       s.Name,
                       s.SourceIp,
                       s.Website,
-                      User = new
-                      {
-                          Id = s.UserId,
-                          FullName = s.User == null ? "" : s.User.FullName
-                      },
+                      s.IsActive
                   }).ToListAsync(cancellationToken));
 
     /// <summary>
