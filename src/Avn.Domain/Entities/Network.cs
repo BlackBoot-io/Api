@@ -1,4 +1,6 @@
-﻿namespace Avn.Domain.Entities;
+﻿using System.Text.Json.Serialization;
+
+namespace Avn.Domain.Entities;
 
 [Table(nameof(Network), Schema = nameof(EntitySchema.Base))]
 public class Network : IEntity
@@ -26,6 +28,9 @@ public class Network : IEntity
 
     public bool IsActive { get; set; }
 
+    [JsonIgnore]
     public ICollection<Drop> Drops { get; set; }
+
+    [JsonIgnore]
     public ICollection<NetworkInPricing> NetworkInPricings { get; set; }
 }
