@@ -4,7 +4,7 @@ public class SubscriptionService : ISubscriptionService
 {
     private readonly IAppUnitOfWork _uow;
     public SubscriptionService(IAppUnitOfWork unitOfWork) => _uow = unitOfWork;
-    
+
     /// <summary>
     /// Get current subscription model for a user
     /// </summary>
@@ -15,6 +15,7 @@ public class SubscriptionService : ISubscriptionService
         var subscription = await _uow.SubscriptionRepo.Queryable()
               .Include(X => X.Pricing)
               .Include(X => X.Pricing.NetworkInPricings)
+              .ThenInclude(X => X.Network)
               .FirstOrDefaultAsync(X => X.To >= DateTime.Now, cancellationToken);
 
         if (subscription is null)

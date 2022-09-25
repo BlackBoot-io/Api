@@ -68,7 +68,7 @@ public class DropsService : IDropsService
             return new ActionResponse<Guid>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidNetwork);
 
         var code = Guid.NewGuid();
-        await _uow.DropRepo.AddAsync(new()
+        Drop model = new()
         {
             InsertDate = DateTime.Now,
             DropStatus = DropStatus.Pending,
@@ -92,7 +92,8 @@ public class DropsService : IDropsService
             Wages = networkInPricing.Network.Wages,
             DropUri = string.Empty,
             ReviewMessage = string.Empty,
-        }, cancellationToken);
+        };
+        await _uow.DropRepo.AddAsync(model, cancellationToken);
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.ToSaveChangeResult())
             return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
