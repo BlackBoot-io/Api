@@ -33,4 +33,11 @@ public interface IUsersService : IScopedDependency
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<IActionResponse<bool>> ActivateEmailAsync(Guid userId, string uniqueCode, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Resend Code fot email activation
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    Task<IActionResponse<bool>> ResendEmailActivationCode(Guid userId, CancellationToken cancellationToken = default);
 }

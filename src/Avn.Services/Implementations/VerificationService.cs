@@ -40,7 +40,7 @@ public class VerificationService : IVerificationService
                                                    {
                                                        { "UniqueCode", verification.UniqueCode },
                                                    }, type);
-        return new ActionResponse<bool>(ActionResponseStatusCode.Success,true);
+        return new ActionResponse<bool>(ActionResponseStatusCode.Success, true);
     }
 
     /// <summary>
@@ -50,14 +50,15 @@ public class VerificationService : IVerificationService
     /// <param name="uniqueCode"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<IActionResponse<bool>> VerifyAsync(Guid userId, string uniqueCode, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<bool>> VerifyAsync(Guid userId, string uniqueCode, TemplateType type, CancellationToken cancellationToken = default)
     {
         var verification = await _uow.VerificationCodeRepo
-            .Queryable()
-            .FirstOrDefaultAsync(X => X.UserId == userId &&
-                                 X.UniqueCode == uniqueCode &&
-                                 !X.IsUsed &&
-                                 X.ExpirationTime > DateTime.Now, cancellationToken);
+                                .Queryable()
+                                .FirstOrDefaultAsync(X => X.UserId == userId &&
+                                                     X.UniqueCode == uniqueCode &&
+                                                     !X.IsUsed &&
+                                                     X.Type == type &&
+                                                     X.ExpirationTime > DateTime.Now, cancellationToken);
 
         if (verification is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidPrameter);

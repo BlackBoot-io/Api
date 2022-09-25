@@ -9,8 +9,8 @@ public interface IVerificationService : IScopedDependency
     /// <param name="uniqueCode"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IActionResponse<bool>> VerifyAsync(Guid userId, string uniqueCode, CancellationToken cancellationToken = default);
-   
+    Task<IActionResponse<bool>> VerifyAsync(Guid userId, string uniqueCode, TemplateType type, CancellationToken cancellationToken = default);
+
     /// <summary>
     /// send otp to users by channels (verificationType)
     /// </summary>

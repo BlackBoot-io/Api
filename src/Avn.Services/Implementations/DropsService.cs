@@ -55,7 +55,7 @@ public class DropsService : IDropsService
             fileBytes = ms.ToArray();
         }
 
-        var fileResult = await _attachmentService.Value.UploadFileAsync(item.UserId,fileBytes, cancellationToken);
+        var fileResult = await _attachmentService.Value.UploadFileAsync(item.UserId, fileBytes, cancellationToken);
         if (!fileResult.IsSuccess)
             return new ActionResponse<Guid>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidFileContent);
 
@@ -68,7 +68,8 @@ public class DropsService : IDropsService
             return new ActionResponse<Guid>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidNetwork);
 
         var code = Guid.NewGuid();
-        Drop model = new()
+
+        await _uow.DropRepo.AddAsync(new()
         {
             InsertDate = DateTime.Now,
             DropStatus = DropStatus.Pending,
@@ -92,8 +93,8 @@ public class DropsService : IDropsService
             Wages = networkInPricing.Network.Wages,
             DropUri = string.Empty,
             ReviewMessage = string.Empty,
-        };
-        await _uow.DropRepo.AddAsync(model, cancellationToken);
+            ContentId = String.Empty
+        }, cancellationToken);
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.ToSaveChangeResult())
             return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
@@ -124,15 +125,9 @@ public class DropsService : IDropsService
                 {
                     row.Id,
                     row.Code,
-                    row.ProjectId,
-                    Project = row.Project != null ? row.Project.Name : string.Empty,
-                    row.UserId,
-                    User = row.User != null ? row.User.FullName : string.Empty,
                     row.Name,
                     row.Description,
-                    row.DeliveryType,
-                    row.NetworkId,
-                    Network = row.Network != null ? row.Network.Name : "",
+                    DeliveryType = row.DeliveryType.ToString(),
                     row.DropUri,
                     row.Location,
                     row.StartDate,
@@ -140,22 +135,35 @@ public class DropsService : IDropsService
                     row.ExpireDate,
                     row.IsPrivate,
                     row.IsVirtual,
-                    row.CategoryType
+                    CategoryType = row.CategoryType.ToString(),
+                    row.Count,
+                    row.IsActive,
+                    DropStatus = row.DropStatus.ToString(),
+                    Project = new
+                    {
+                        Id = row.ProjectId,
+                        Name = row.Project != null ? row.Project.Name : "",
+                    },
+                    Network = new
+                    {
+                        Id = row.NetworkId,
+                        Name = row.Network != null ? row.Network.Name : "",
+                    }
                 }).ToListAsync(cancellationToken));
 
     /// <summary>
-    /// Deactive a drop with a code
+    /// Deactive/Activate a drop with a code
     /// </summary>
     /// <param name="code"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<IActionResponse<bool>> DeactiveAsync(Guid code, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<bool>> ChangeStateAsync(Guid code, CancellationToken cancellationToken = default)
     {
         var model = await _uow.DropRepo.Queryable().FirstOrDefaultAsync(x => x.Code == code, cancellationToken);
         if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
-        model.IsActive = false;
+        model.IsActive = !model.IsActive;
 
         var result = await _uow.SaveChangesAsync(cancellationToken);
         if (!result.ToSaveChangeResult())

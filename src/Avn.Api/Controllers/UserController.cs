@@ -22,10 +22,18 @@ public class UserController : BaseController
     /// <param name="uniqueCode">fill from query string</param>
     /// <param name="cancellationToken"></param>
     /// <returns>true/false</returns>
-    [HttpPost]
+    [HttpGet]
     public async Task<IActionResult> ActivateEmailAsync(string uniqueCode, CancellationToken cancellationToken)
         => Ok(await _userService.ActivateEmailAsync(CurrentUserId, uniqueCode, cancellationToken));
 
+
+    /// <summary>
+    /// Resend Verification Code
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<IActionResult> ResendEmailActivationCode()
+        => Ok(await _userService.ResendEmailActivationCode(CurrentUserId));
 
     /// <summary>
     /// Get Current User Data

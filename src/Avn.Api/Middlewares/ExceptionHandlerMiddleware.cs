@@ -21,6 +21,7 @@ public class ExceptionHandlerMiddleware
     }
 
     public async Task Invoke(HttpContext context)
+    
     {
         string message = string.Empty;
         HttpStatusCode httpStatusCode = HttpStatusCode.InternalServerError;

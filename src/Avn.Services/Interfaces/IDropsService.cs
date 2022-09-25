@@ -20,12 +20,12 @@ public interface IDropsService : IScopedDependency
     Task<IActionResponse<IEnumerable<object>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Disable a drop with a code
+    /// Disable/Active a drop with a code
     /// </summary>
     /// <param name="code"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IActionResponse<bool>> DeactiveAsync(Guid code, CancellationToken cancellationToken = default);
+    Task<IActionResponse<bool>> ChangeStateAsync(Guid code, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Confirm a drop by admin then store file (Image + Metadata) in IPFS
@@ -45,5 +45,5 @@ public interface IDropsService : IScopedDependency
     /// <param name="reviewMessage">resean message</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IActionResponse<bool>> RejectAsync(int dropId, string reviewMessage,CancellationToken cancellationToken = default);
+    Task<IActionResponse<bool>> RejectAsync(int dropId, string reviewMessage, CancellationToken cancellationToken = default);
 }

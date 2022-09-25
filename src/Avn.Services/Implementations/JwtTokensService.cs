@@ -170,7 +170,7 @@ public class JwtTokensService : JwtTokensFactory, IJwtTokensService
             EmailIsApproved = user.EmailIsApproved,
             FullName = user.FullName,
             OrganizationName = user.OrganizationName,
-            UserType = user.Type,
+            Type = user.Type.ToString(),
             WalletAddress = user.WalletAddress,
         };
         return new ActionResponse<UserTokenDto>

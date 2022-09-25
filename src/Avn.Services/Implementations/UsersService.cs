@@ -1,5 +1,6 @@
 ﻿#nullable disable
 using Avn.Shared.Utilities;
+using System.Linq;
 
 namespace Avn.Services.Implementations;
 
@@ -22,19 +23,23 @@ public class UsersService : IUsersService
     /// <returns></returns>
     public async Task<IActionResponse<UserDto>> GetCurrentUserAsync(Guid userId, CancellationToken cancellationToken = default)
     {
-        var user = await _uow.UserRepo.Queryable().FirstOrDefaultAsync(X => X.UserId == userId, cancellationToken);
+        var user = await _uow.UserRepo.Queryable()
+                        .Where(X => X.UserId == userId)
+                        .Select(X => new UserDto
+                        {
+                            Email = X.Email,
+                            EmailIsApproved = X.EmailIsApproved,
+                            Type = X.Type.ToString(),
+                            OrganizationName = X.OrganizationName,
+                            IsActive = X.IsActive,
+                            WalletAddress = X.WalletAddress,
+                            FullName = X.FullName
+                        })
+                        .FirstOrDefaultAsync(cancellationToken);
         if (user is null)
             return new ActionResponse<UserDto>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidUser);
 
-        return new ActionResponse<UserDto>(new UserDto
-        {
-            Email = user.Email,
-            FullName = user.FullName,
-            UserType = user.Type,
-            OrganizationName = user.OrganizationName,
-            WalletAddress = user.WalletAddress,
-            EmailIsApproved = user.EmailIsApproved,
-        });
+        return new ActionResponse<UserDto>(user);
     }
 
     /// <summary>
@@ -71,7 +76,7 @@ public class UsersService : IUsersService
         }
         catch (DbUpdateException ex)
         {
-            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError,BusinessMessage.DouplicateEmail);
+            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.DouplicateEmail);
         }
     }
 
@@ -102,7 +107,7 @@ public class UsersService : IUsersService
     /// <returns></returns>
     public async Task<IActionResponse<bool>> ActivateEmailAsync(Guid userId, string uniqueCode, CancellationToken cancellationToken = default)
     {
-        var verificationResult = await _verificationService.VerifyAsync(userId, uniqueCode, cancellationToken);
+        var verificationResult = await _verificationService.VerifyAsync(userId, uniqueCode, TemplateType.EmailVerification, cancellationToken);
         if (!verificationResult.IsSuccess)
             return verificationResult;
 
@@ -111,10 +116,25 @@ public class UsersService : IUsersService
             return new ActionResponse<bool>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidPrameter);
 
         result.EmailIsApproved = true;
-        var dbResult = await _uow.SaveChangesAsync();
+        var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.ToSaveChangeResult())
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         return new ActionResponse<bool>(true);
+    }
+
+    /// <summary>
+    /// Resend Code fot email activation
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    public async Task<IActionResponse<bool>> ResendEmailActivationCode(Guid userId, CancellationToken cancellationToken = default)
+    {
+        var user = await GetCurrentUserAsync(userId, cancellationToken);
+
+        if (user is null || user.Data.EmailIsApproved)
+            return new ActionResponse<bool>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidPrameter);
+
+        return await _verificationService.SendOtpAsync(userId, TemplateType.EmailVerification, cancellationToken);
     }
 }

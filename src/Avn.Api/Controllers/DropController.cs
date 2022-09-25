@@ -30,14 +30,14 @@ public class DropController : BaseController
         => Ok(await _dropsService.GetAllAsync(CurrentUserId, cancellationToken));
 
     /// <summary>
-    /// Disable a drop with a code
+    /// Deactive/Active a drop with a code
     /// </summary>
     /// <param name="code"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> DeactiveAsync(Guid code, CancellationToken cancellationToken = default)
-         => Ok(await _dropsService.DeactiveAsync(code, cancellationToken));
+    public async Task<IActionResult> ChangeStateAsync(Guid code, CancellationToken cancellationToken = default)
+         => Ok(await _dropsService.ChangeStateAsync(code, cancellationToken));
 
     /// <summary>
     /// Confirm a drop by admin then store file (Image + Metadata) in IPFS
