@@ -2,7 +2,6 @@
 
 public record UserDto
 {
-
     public string Email { get; set; }
     public bool EmailIsApproved { get; set; }
     public string FullName { get; set; } = default!;

@@ -80,7 +80,7 @@ public class UsersService : IUsersService
         }
     }
 
-    public async Task<IActionResponse<Guid>> UpdateProfileAsync(Guid userId, UserDto userDto, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<Guid>> UpdateProfileAsync(Guid userId, UpdateUserDto userDto, CancellationToken cancellationToken = default)
     {
         var user = await _uow.UserRepo.FindAsync(userId, cancellationToken);
         if (user is null)
@@ -89,6 +89,7 @@ public class UsersService : IUsersService
         user.WalletAddress = userDto.WalletAddress;
         user.FullName = userDto.FullName;
         user.OrganizationName = userDto.OrganizationName;
+        user.Type = userDto.Type;
 
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.ToSaveChangeResult())

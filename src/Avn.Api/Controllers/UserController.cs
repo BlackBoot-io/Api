@@ -51,6 +51,6 @@ public class UserController : BaseController
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> UpdateProfileAsync(UserDto user, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateProfileAsync([FromBody] UpdateUserDto user, CancellationToken cancellationToken)
       => Ok(await _userService.UpdateProfileAsync(CurrentUserId, user, cancellationToken));
 }
