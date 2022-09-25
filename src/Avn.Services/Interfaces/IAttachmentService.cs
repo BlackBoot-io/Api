@@ -7,7 +7,7 @@ public interface IAttachmentService : IScopedDependency
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
-    Task<IActionResponse<int>> UploadFileAsync(byte[] file, CancellationToken cancellationToken);
+    Task<IActionResponse<int>> UploadFileAsync(Guid userId,byte[] file, CancellationToken cancellationToken);
 
     /// <summary>
     /// Get Attachment File with Id

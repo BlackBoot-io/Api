@@ -1,4 +1,6 @@
-﻿namespace Avn.Domain.Dtos;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Avn.Domain.Dtos;
 
 public record CreateDropDto
 {
@@ -16,5 +18,5 @@ public record CreateDropDto
     public DateTime ExpireDate { get; set; }
     public bool IsVirtual { get; set; }
     public bool IsPrivate { get; set; }
-    public byte[] File { get; set; }
+    public IFormFile? File { get; set; }
 }
