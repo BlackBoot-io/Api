@@ -3,10 +3,7 @@
 public class DropController : BaseController
 {
     private readonly IDropsService _dropsService;
-    public DropController(IDropsService dropsService)
-    {
-        _dropsService = dropsService;
-    }
+    public DropController(IDropsService dropsService) => _dropsService = dropsService;
 
     /// <summary>
     /// Store File into Attachment table
