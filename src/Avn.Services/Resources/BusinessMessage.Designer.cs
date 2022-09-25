@@ -187,6 +187,15 @@ namespace Avn.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to UserIsActive.
+        /// </summary>
+        public static string UserIsActive {
+            get {
+                return ResourceManager.GetString("UserIsActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User not found.
         /// </summary>
         public static string UserNotFound {

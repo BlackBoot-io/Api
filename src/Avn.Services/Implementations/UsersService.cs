@@ -133,7 +133,7 @@ public class UsersService : IUsersService
         var user = await GetCurrentUserAsync(userId, cancellationToken);
 
         if (user is null || user.Data.EmailIsApproved)
-            return new ActionResponse<bool>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidPrameter);
+            return new ActionResponse<bool>(ActionResponseStatusCode.BadRequest, BusinessMessage.UserIsActive);
 
         return await _verificationService.SendOtpAsync(userId, TemplateType.EmailVerification, cancellationToken);
     }
