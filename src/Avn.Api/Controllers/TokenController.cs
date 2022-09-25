@@ -6,7 +6,6 @@ public class TokenController : BaseController
 
     public TokenController(ITokensService tokensService) => _tokensService = tokensService;
 
-
     /// <summary>
     /// Get Token By Token UniqueCode
     /// </summary>
