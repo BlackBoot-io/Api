@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
+    <UserSecretsId>24dba520-3666-42d6-af23-d7d5fd1e4df9</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,32 +12,28 @@
     <PackageReference Include="MailKit" Version="3.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
     <PackageReference Include="sib_api_v3_sdk" Version="3.3.0" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Avn.Data\Avn.Data.csproj" />
+    <ProjectReference Include="..\Avn.Services.External\Avn.Services.External.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\AppResource.Designer.cs">
+    <Compile Update="Resources\BusinessMessage.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>AppResource.resx</DependentUpon>
+      <DependentUpon>BusinessMessage.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\AppResource.resx">
+    <EmbeddedResource Update="Resources\BusinessMessage.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>AppResource.Designer.cs</LastGenOutput>
+      <LastGenOutput>BusinessMessage.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Implementations\" />
-    <Folder Include="Interfaces\" />
   </ItemGroup>
 
 </Project>

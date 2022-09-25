@@ -4,10 +4,12 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>c2939619-a95b-4253-8498-bc59ceb676ef</UserSecretsId>
+    <UserSecretsId>2140bc15-afcb-4dcc-a2f8-a4a56de2175d</UserSecretsId>
+    <!--<UserSecretsId>c2939619-a95b-4253-8498-bc59ceb676ef</UserSecretsId>-->
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EFCoreSecondLevelCacheInterceptor" Version="3.6.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.5">
@@ -15,6 +17,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="5.1.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
   </ItemGroup>
 

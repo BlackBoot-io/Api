@@ -1,12 +1,9 @@
-﻿using Avn.Data.Extensions;
-using Avn.Shared.Extentions;
+﻿namespace Avn.Data.Context;
 
-namespace Avn.Data.Context;
-
-public class ApplicationDBContext : DbContext
+public class ApplicationDbContext : DbContext
 {
-    public ApplicationDBContext() { }
-    public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options) { }
+    public ApplicationDbContext() { }
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
@@ -16,7 +13,9 @@ public class ApplicationDBContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.RegisterAllEntities<IEntity>(typeof(object).Assembly);
+        modelBuilder.Entity<User>().HasIndex(X => X.Email).IsUnique();
+
+        modelBuilder.RegisterAllEntities<IEntity>(typeof(User).Assembly);
+        modelBuilder.AddPluralizingTableNameConvention();
     }
 }
-

@@ -10,10 +10,4 @@
     <ProjectReference Include="..\Avn.Shared\Avn.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Dtos\" />
-    <Folder Include="Entities\" />
-    <Folder Include="Enums\" />
-  </ItemGroup>
-
 </Project>
