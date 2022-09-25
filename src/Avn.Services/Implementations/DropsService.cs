@@ -55,7 +55,7 @@ public class DropsService : IDropsService
             fileBytes = ms.ToArray();
         }
 
-        var fileResult = await _attachmentService.Value.UploadFileAsync(fileBytes, cancellationToken);
+        var fileResult = await _attachmentService.Value.UploadFileAsync(item.UserId,fileBytes, cancellationToken);
         if (!fileResult.IsSuccess)
             return new ActionResponse<Guid>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidFileContent);
 

@@ -17,7 +17,7 @@ public class Subscription : IEntity
 
     [ForeignKey(nameof(TransactionId))]
     public Transaction Transaction { get; set; }
-    public int TransactionId { get; set; }
+    public int? TransactionId { get; set; }
 
     public DateTime From { get; set; }
 
