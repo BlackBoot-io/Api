@@ -26,7 +26,6 @@ public class UserController : BaseController
     public async Task<IActionResult> ActivateEmailAsync(string uniqueCode, CancellationToken cancellationToken)
         => Ok(await _userService.ActivateEmailAsync(CurrentUserId, uniqueCode, cancellationToken));
 
-
     /// <summary>
     /// Resend Verification Code
     /// </summary>

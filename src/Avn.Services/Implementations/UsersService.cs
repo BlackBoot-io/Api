@@ -61,7 +61,7 @@ public class UsersService : IUsersService
                 OrganizationName = user.OrganizationName,
                 Password = HashGenerator.Hash(user.Password, passwordSalt),
                 PasswordSalt = passwordSalt,
-                Type = user.UserType,
+                Type = user.Type,
                 WalletAddress = user.WalletAddress,
                 EmailIsApproved = false
             };
