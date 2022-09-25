@@ -13,8 +13,8 @@ builder.Host.UseSerilog((hostBuilderContext, loggerConfiguration) =>
 {
     loggerConfiguration.Enrich.FromLogContext();
     loggerConfiguration.WriteTo.Console();
-    loggerConfiguration.WriteTo.Seq("http://localhost:5341");
-        //loggerConfiguration.WriteTo.File();
+    //loggerConfiguration.WriteTo.Seq("http://localhost:5341");
+    loggerConfiguration.WriteTo.File("Serilogs\\AppLogs.log");
 });
 #endregion
 #region Services
@@ -53,7 +53,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-//app.UseSerilogRequestLogging();
+app.UseSerilogRequestLogging();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 app.UseStaticFiles();
 app.UseRouting();
