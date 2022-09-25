@@ -35,7 +35,7 @@ public interface IDropsService : IScopedDependency
     /// <param name="DropId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IActionResponse<bool>> ConfirmAsync(int DropId, CancellationToken cancellationToken = default);
+    Task<IActionResponse<bool>> ConfirmAsync(int dropId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Reject a drop by admin for a resean

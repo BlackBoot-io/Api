@@ -154,10 +154,10 @@ public class DropsService : IDropsService
         return new ActionResponse<bool>(true);
     }
 
-    public async Task<IActionResponse<bool>> ConfirmAsync(int DropId, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<bool>> ConfirmAsync(int dropId, CancellationToken cancellationToken = default)
     {
         var drop = await _uow.DropRepo.Queryable()
-                        .FirstOrDefaultAsync(x => x.Id == DropId && x.DropStatus == DropStatus.Pending, cancellationToken);
+                        .FirstOrDefaultAsync(x => x.Id == dropId && x.DropStatus == DropStatus.Pending, cancellationToken);
         if (drop is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 

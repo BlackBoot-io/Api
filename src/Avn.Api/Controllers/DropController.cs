@@ -48,8 +48,8 @@ public class DropController : BaseController
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> ConfirmAsync(int DropId, CancellationToken cancellationToken = default)
-        => Ok(await _dropsService.ConfirmAsync(DropId, cancellationToken));
+    public async Task<IActionResult> ConfirmAsync(int dropId, CancellationToken cancellationToken = default)
+        => Ok(await _dropsService.ConfirmAsync(dropId, cancellationToken));
 
     /// <summary>
     /// Reject a drop by admin for a resean
