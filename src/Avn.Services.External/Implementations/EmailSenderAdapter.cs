@@ -46,6 +46,7 @@ public class EmailSenderAdapter : IEmailSenderAdapter
                              Content = email.File
                     }
                 },
+                attachment: null,
                 headers: null,
                 templateId: null,
                 _params: null,
