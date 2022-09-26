@@ -5,5 +5,5 @@ public interface INetworkService: IScopedDependency
     /// Get all network we are supporting
     /// </summary>
     /// <returns></returns>
-    Task<IActionResponse<List<Network>>> GetAllAvailableAsync();
+    Task<IActionResponse<IEnumerable<Network>>> GetAllAvailableAsync();
 }

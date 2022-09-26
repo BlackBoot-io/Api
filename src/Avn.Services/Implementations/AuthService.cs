@@ -14,15 +14,15 @@ public class AuthService : IAuthService
     /// <summary>
     /// check username and password then create jwt token
     /// </summary>
-    /// <param name="item"></param>
+    /// <param name="userLoginDto"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<IActionResponse<UserTokenDto>> LoginAsync(UserLoginDto item, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<UserTokenDto>> LoginAsync(UserLoginDto userLoginDto, CancellationToken cancellationToken = default)
     {
         var user = await _uow.UserRepo.Queryable()
-                                      .FirstOrDefaultAsync(X => X.Email == item.Email, cancellationToken);
+                                      .FirstOrDefaultAsync(X => X.Email == userLoginDto.Email, cancellationToken);
 
-        if (user is null || user.Password != HashGenerator.Hash(item.Password, user.PasswordSalt)) return new ActionResponse<UserTokenDto> { Message = BusinessMessage.InvalidUsernameOrPassword };
+        if (user is null || user.Password != HashGenerator.Hash(userLoginDto.Password, user.PasswordSalt)) return new ActionResponse<UserTokenDto> { Message = BusinessMessage.InvalidUsernameOrPassword };
         if (!user.IsActive) return new ActionResponse<UserTokenDto> { Message = BusinessMessage.AccountIsDeActive };
 
         return await _jwtTokensService.GenerateUserTokenAsync(user, cancellationToken: cancellationToken);

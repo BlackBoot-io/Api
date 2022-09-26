@@ -19,8 +19,8 @@ public class SubscriptionService : ISubscriptionService
               .FirstOrDefaultAsync(X => X.To >= DateTime.Now, cancellationToken);
 
         if (subscription is null)
-            return new ActionResponse<Subscription>() { IsSuccess = false };
+            return new ActionResponse<Subscription>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
-        return new ActionResponse<Subscription>() { IsSuccess = true, Data = subscription };
+        return new ActionResponse<Subscription>(subscription);
     }
 }

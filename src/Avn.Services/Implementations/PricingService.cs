@@ -10,10 +10,7 @@ public class PricingService : IPricingService
     /// </summary>
     /// <returns></returns>
     public async Task<IActionResponse<object>> GetAvailablePricing()
-           => new ActionResponse<object>
-           {
-               IsSuccess = true,
-               Data = await _uow.NetworkInPricingRepo.Queryable()
+           => new ActionResponse<object>(await _uow.NetworkInPricingRepo.Queryable()
                         .Include(X => X.Pricing)
                         .Include(X => X.Network)
                         .Where(X => X.Pricing.IsActive)
@@ -35,5 +32,5 @@ public class PricingService : IPricingService
                             }
                         })
                         .ToListAsync()
-           };
+           );
 }
