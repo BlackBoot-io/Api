@@ -194,7 +194,7 @@ public class DropsService : IDropsService
                 drop.Location,
                 drop.ExpireDate,
                 drop.CategoryType,
-                Project = drop.Project.Name,
+                Project = drop.Project?.Name,
             }), cancellationToken);
 
         if (!nftStorageResult.IsSuccess)
@@ -202,10 +202,18 @@ public class DropsService : IDropsService
 
         drop.DropStatus = DropStatus.Confirmed;
         drop.DropUri = nftStorageResult.Data.ContentId;
+        try
+        {
+            var result = await _uow.SaveChangesAsync(cancellationToken);
+            if (!result.ToSaveChangeResult())
+                return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
-        var result = await _uow.SaveChangesAsync(cancellationToken);
-        if (!result.ToSaveChangeResult())
+        }
+        catch (Exception)
+        {
+            await _nftStorageAdaptar.Value.DeleteAsync(drop.DropUri, cancellationToken);
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+        }
 
         var deliveryResult = await _deliveryFactory.Value.GetInstance(drop.DeliveryType)
                                    .ExecuteAsync(drop.Id, drop.Count, cancellationToken);
