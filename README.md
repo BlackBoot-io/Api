@@ -1,3 +1,27 @@
+<!-- PROJECT LOGO -->
+<div align="center">
+  <a href="https://github.com/BlackBoot-io/Api">
+    <img src="https://github.com/BlackBoot-io/Api/blob/Develop/logo.jpg" alt="Logo" width="80" height="80">
+  </a>
+  <h3 align="center">Avanod ecosystem</h3>
+  <p align="center">
+    A decentralized application over the Ethereum network!
+   </p>
+   <br />
+    <a href="https://docs.avanod.com"><strong>Explore the docs »</strong></a>
+    <br />
+    <a href="https://nft.avanod.com">Start Integration</a>
+    ·
+    <a href="https://avanod.com/invest-us">Invest Us</a>
+    .
+    <a href="https://github.com/BlackBoot-io/Api/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/BlackBoot-io/Api/issues">Request Feature</a>
+</div>
+
+<br/>
+
+
 <!-- PROJECT SHIELDS -->
 <!--
 *** I'm using markdown "reference style" links for readability.
@@ -11,36 +35,8 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-      
-      
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://github.com/BlackBoot-io/Api">
-    <img src="https://github.com/BlackBoot-io/Api/blob/Develop/logo.jpg" alt="Logo" width="80" height="80">
-  </a>
 
-  <h3 align="center">Avanod ecosystem</h3>
-
-  <p align="center">
-    A decentralized application over the Ethereum network!
-    <br />
-     
-    <a href="https://docs.avanod.com"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://nft.avanod.com">Start Integration</a>
-    ·
-    <a href="https://avanod.com/invest-us">Invest Us</a>
-    .
-    <a href="https://github.com/BlackBoot-io/Api/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/BlackBoot-io/Api/issues">Request Feature</a>
-  </p>
-</div>
-
-
-
+       
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
