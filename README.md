@@ -9,6 +9,7 @@
    </p>
     <a href="https://docs.avanod.com"><strong>Explore the docs »</strong></a>
     <br />
+    <br />
     <a href="https://nft.avanod.com">Start Integration</a>
     ·
     <a href="https://avanod.com/invest-us">Invest Us</a>
