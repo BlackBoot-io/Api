@@ -28,6 +28,8 @@ public class Network : IEntity
 
     public bool IsActive { get; set; }
 
+    public bool IsDefault { get; set; }
+
     [JsonIgnore]
     public ICollection<Drop> Drops { get; set; }
 
