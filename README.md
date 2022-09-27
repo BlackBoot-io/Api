@@ -7,7 +7,6 @@
   <p align="center">
     A decentralized application over the Ethereum network!
    </p>
-   <br />
     <a href="https://docs.avanod.com"><strong>Explore the docs »</strong></a>
     <br />
     <a href="https://nft.avanod.com">Start Integration</a>
