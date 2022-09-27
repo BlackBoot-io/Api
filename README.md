@@ -250,7 +250,7 @@ Use this space to list resources you find helpful and would like to give credit 
 [stars-url]: https://github.com/BlackBoot-io/Api/stargazers
 [issues-shield]: https://img.shields.io/github/issues/BlackBoot-io/Api?style=for-the-badge
 [issues-url]: https://github.com/BlackBoot-io/Api/issues
-[license-shield]: https://img.shields.io/github/license/BlackBoot-io/Api
+[license-shield]: https://img.shields.io/github/license/BlackBoot-io/Api?style=for-the-badge
 [license-url]: https://github.com/BlackBoot-io/Api/blob/Develop/LICENSE
 [product-screenshot]: https://github.com/BlackBoot-io/Api/blob/Develop/site.JPG
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
