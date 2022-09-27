@@ -1,17 +1,3 @@
-#The basics
-Avanod is a decentralized application over the Ethereum network. we are here to empower you to create NFTs for preserving your recognized contributions in a reliable system. 
-Developers are the major part of this ecosystem. Developers produce a dynamic ecosystem of applications that connect communities to conserve their memories. We have provided amazing integration APIs for developers.
-what we can do?
-we have made a protocol for the preservation of your experiences as digital records, minted as non-fungible tokens on the blockchain under the ERC-721 standard.
-The Avanod platform presents considerable functionalities exposed through the APIs. Everyone is free to utilize Avanod's API to push and store information through drops.
-Additionally, you can use the API to create your applications on top of Avanod by automating drop distributions. For this, you will require an API authorization token to integrate your applications. Please refer to Integration for more information.
-
-Before using our API, we offer a quick read of our Help Center in order to better comprehend the Avanod ecosystem.
-Before getting started, there is some blockchain terminology that may be worth familiarizing yourself with
-
-
-
-
 <!-- PROJECT SHIELDS -->
 <!--
 *** I'm using markdown "reference style" links for readability.
@@ -86,21 +72,20 @@ Before getting started, there is some blockchain terminology that may be worth f
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Product Name Screen Shot][product-screenshot]](https://avanod.com)
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
-
+Avanod is a decentralized application over the Ethereum network. we are here to empower you to create NFTs for preserving your recognized contributions in a reliable system. 
 Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
+* Developers are the major part of this ecosystem. Developers produce a dynamic ecosystem of applications that connect communities to conserve their memories. We have provided amazing integration APIs for developers.
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
+## What we can do?
+we have made a protocol for the preservation of your experiences as digital records, minted as non-fungible tokens on the blockchain under the ERC-721 standard.
+The Avanod platform presents considerable functionalities exposed through the APIs. Everyone is free to utilize Avanod's API to push and store information through drops.
+Additionally, you can use the API to create your applications on top of Avanod by automating drop distributions. For this, you will require an API authorization token to integrate your applications. Please refer to Integration for more information.
 
-Use the `BLANK_README.md` to get started.
+Before using our API, we offer a quick read of our Help Center in order to better comprehend the Avanod ecosystem.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 ### Built With
@@ -110,11 +95,6 @@ This section should list any major frameworks/libraries used to bootstrap your p
 * [![Next][Next.js]][Next-url]
 * [![React][React.js]][React-url]
 * [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -214,9 +194,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Your Name - [@mha_karimi](https://twitter.com/mha_karimi) - mha.karimi@fmail.com
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+Project Link: [Avanod](https://github.com/BlackBoot-io/Api)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
