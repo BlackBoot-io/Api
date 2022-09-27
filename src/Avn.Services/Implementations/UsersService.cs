@@ -8,11 +8,15 @@ public class UsersService : IUsersService
 {
     private readonly IAppUnitOfWork _uow;
     private readonly IVerificationsService _verificationService;
+    private readonly ISubscriptionsService _subscriptionsService;
 
-    public UsersService(IAppUnitOfWork uow, IVerificationsService verificationService)
+    public UsersService(IAppUnitOfWork uow,
+                        IVerificationsService verificationService,
+                        ISubscriptionsService subscriptionsService)
     {
         _uow = uow;
         _verificationService = verificationService;
+        _subscriptionsService = subscriptionsService;
     }
 
     /// <summary>
@@ -50,6 +54,7 @@ public class UsersService : IUsersService
     /// <returns>User Id </returns>
     public async Task<IActionResponse<Guid>> SignUpAsync(UserSignUpDto user, CancellationToken cancellationToken = default)
     {
+        using var transaction = await _uow.Database.BeginTransactionAsync(cancellationToken);
         try
         {
             var passwordSalt = RandomStringGenerator.Generate(10);
@@ -69,13 +74,26 @@ public class UsersService : IUsersService
             var dbResult = await _uow.SaveChangesAsync(cancellationToken);
             if (!dbResult.ToSaveChangeResult())
                 return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError);
-
+            #region Add Basic Subsciption
+            var basicPricing = await _uow.PricingRepo.Queryable().FirstOrDefaultAsync(x => x.IsFree, cancellationToken);
+            if (basicPricing is null)
+                return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError);
+            var subscriptionResult = await _subscriptionsService.AddAsync(new()
+            {
+                PricingId = basicPricing.Id,
+                UserId = model.UserId
+            }, cancellationToken);
+            if (!subscriptionResult.IsSuccess)
+                return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError);
+            #endregion
             await _verificationService.SendOtpAsync(model.UserId, TemplateType.EmailVerification, cancellationToken);
 
+            await transaction.CommitAsync(cancellationToken);
             return new ActionResponse<Guid>(model.UserId);
         }
         catch (DbUpdateException ex)
         {
+            transaction.Rollback();
             return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.DouplicateEmail);
         }
     }

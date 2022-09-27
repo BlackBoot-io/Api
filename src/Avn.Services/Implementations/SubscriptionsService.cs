@@ -1,9 +1,12 @@
-﻿namespace Avn.Services.Implementations;
+﻿using Avn.Domain.Dtos.Subscriptions;
+
+namespace Avn.Services.Implementations;
 
 public class SubscriptionsService : ISubscriptionsService
 {
     private readonly IAppUnitOfWork _uow;
     public SubscriptionsService(IAppUnitOfWork unitOfWork) => _uow = unitOfWork;
+
 
     /// <summary>
     /// Get current subscription model for a user
@@ -23,4 +26,31 @@ public class SubscriptionsService : ISubscriptionsService
 
         return new ActionResponse<Subscription>(subscription);
     }
+
+    /// <summary>
+    /// Add User Subscription
+    /// this is an internal API
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public async Task<IActionResponse<int>> AddAsync(CreateSubscriptionDto item, CancellationToken cancellationToken = default)
+    {
+        Subscription model = new()
+        {
+            UserId = item.UserId,
+            PricingId = item.PricingId,
+            TransactionId = item.TransactionId,
+            From = item.From,
+            To = item.To
+        };
+
+        await _uow.SubscriptionRepo.AddAsync(model, cancellationToken);
+        var result = await _uow.SaveChangesAsync(cancellationToken);
+        if (!result.ToSaveChangeResult())
+            return new ActionResponse<int>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+
+        return new ActionResponse<int>(model.Id);
+    }
+
 }

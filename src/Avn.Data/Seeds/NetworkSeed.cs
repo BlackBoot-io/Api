@@ -16,8 +16,7 @@ public class NetworkSeed : IDataSeedProvider
     public async Task SeedAsync(CancellationToken cancellationToken = default)
     {
 
-        var network = _uow.NetworkRepo.Queryable().FirstOrDefaultAsync(x => x.IsDefault, cancellationToken);
-        if (network is null)
+        if (await _uow.NetworkRepo.Queryable().AnyAsync(x => x.IsDefault, cancellationToken))
             return;
 
         await _uow.NetworkRepo.AddAsync(new()
