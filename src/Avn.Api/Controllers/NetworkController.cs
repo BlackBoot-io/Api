@@ -2,8 +2,8 @@
 
 public class NetworkController : BaseController
 {
-    private readonly INetworkService _networkService;
-    public NetworkController(INetworkService networkService) => _networkService = networkService;
+    private readonly INetworksService _networkService;
+    public NetworkController(INetworksService networkService) => _networkService = networkService;
 
     /// <summary>
     /// Get all available Blockchain networks which we are support.

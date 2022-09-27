@@ -1,9 +1,9 @@
 ﻿namespace Avn.Services.Implementations;
 
-public class NetworkService : INetworkService
+public class NetworksService : INetworksService
 {
     private readonly IAppUnitOfWork _uow;
-    public NetworkService(IAppUnitOfWork unitOfWork) => _uow = unitOfWork;
+    public NetworksService(IAppUnitOfWork unitOfWork) => _uow = unitOfWork;
 
     /// <summary>
     /// Get all network we are supporting

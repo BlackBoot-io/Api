@@ -1,5 +1,5 @@
 ﻿namespace Avn.Services.Interfaces;
-public interface INetworkService: IScopedDependency
+public interface INetworksService: IScopedDependency
 {
     /// <summary>
     /// Get all network we are supporting

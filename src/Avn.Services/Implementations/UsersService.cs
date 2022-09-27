@@ -7,9 +7,9 @@ namespace Avn.Services.Implementations;
 public class UsersService : IUsersService
 {
     private readonly IAppUnitOfWork _uow;
-    private readonly IVerificationService _verificationService;
+    private readonly IVerificationsService _verificationService;
 
-    public UsersService(IAppUnitOfWork uow, IVerificationService verificationService)
+    public UsersService(IAppUnitOfWork uow, IVerificationsService verificationService)
     {
         _uow = uow;
         _verificationService = verificationService;

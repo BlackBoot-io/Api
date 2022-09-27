@@ -1,6 +1,6 @@
 ﻿namespace Avn.Services.Interfaces;
 
-public interface ISubscriptionService : IScopedDependency
+public interface ISubscriptionsService : IScopedDependency
 {
     /// <summary>
     /// Get current subscription model for a user

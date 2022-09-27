@@ -2,8 +2,8 @@
 {
     public class PricingController : BaseController
     {
-        private readonly IPricingService _pricingService;
-        public PricingController(IPricingService pricingService) => _pricingService = pricingService;
+        private readonly IPricingsService _pricingService;
+        public PricingController(IPricingsService pricingService) => _pricingService = pricingService;
 
         /// <summary>
         /// Get all available Blockchain networks which we are support

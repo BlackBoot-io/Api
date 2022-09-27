@@ -1,8 +1,8 @@
 ﻿namespace Avn.Services.Implementations;
-public class PricingService : IPricingService
+public class PricingsService : IPricingsService
 {
     private readonly IAppUnitOfWork _uow;
-    public PricingService(IAppUnitOfWork uow)
+    public PricingsService(IAppUnitOfWork uow)
            => _uow = uow;
 
     /// <summary>

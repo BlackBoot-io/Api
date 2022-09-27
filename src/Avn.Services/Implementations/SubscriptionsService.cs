@@ -1,9 +1,9 @@
 ﻿namespace Avn.Services.Implementations;
 
-public class SubscriptionService : ISubscriptionService
+public class SubscriptionsService : ISubscriptionsService
 {
     private readonly IAppUnitOfWork _uow;
-    public SubscriptionService(IAppUnitOfWork unitOfWork) => _uow = unitOfWork;
+    public SubscriptionsService(IAppUnitOfWork unitOfWork) => _uow = unitOfWork;
 
     /// <summary>
     /// Get current subscription model for a user
