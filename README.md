@@ -243,14 +243,14 @@ Use this space to list resources you find helpful and would like to give credit 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors](https://github.com/BlackBoot-io/Api/graphs/contributors)
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
+[contributors-url]: https://github.com/BlackBoot-io/Api/graphs/contributors
+[forks-shield]: https://img.shields.io/github/issues/BlackBoot-io/Api
 [forks-url]: https://github.com/BlackBoot-io/Api/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/BlackBoot-io/Api
 [stars-url]: https://github.com/BlackBoot-io/Api/stargazers
 [issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
 [issues-url]: https://github.com/BlackBoot-io/Api/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/BlackBoot-io/Api
 [license-url]: https://github.com/BlackBoot-io/Api/blob/Develop/LICENSE
 [product-screenshot]: https://github.com/BlackBoot-io/Api/blob/Develop/site.JPG
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
