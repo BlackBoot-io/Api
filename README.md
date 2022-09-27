@@ -242,13 +242,13 @@ Use this space to list resources you find helpful and would like to give credit 
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/BlackBoot-io/Api?style=for-the-badge
 [contributors-url]: https://github.com/BlackBoot-io/Api/graphs/contributors
-[forks-shield]: https://img.shields.io/github/issues/BlackBoot-io/Api
+[forks-shield]: https://img.shields.io/github/issues/BlackBoot-io/Api?style=for-the-badge
 [forks-url]: https://github.com/BlackBoot-io/Api/network/members
-[stars-shield]: https://img.shields.io/github/stars/BlackBoot-io/Api
+[stars-shield]: https://img.shields.io/github/stars/BlackBoot-io/Api?style=for-the-badge
 [stars-url]: https://github.com/BlackBoot-io/Api/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/BlackBoot-io/Api?style=for-the-badge
 [issues-url]: https://github.com/BlackBoot-io/Api/issues
 [license-shield]: https://img.shields.io/github/license/BlackBoot-io/Api
 [license-url]: https://github.com/BlackBoot-io/Api/blob/Develop/LICENSE
