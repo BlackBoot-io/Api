@@ -33,6 +33,6 @@ public class AttachmentService : IAttachmentService
 
         if (!result.ToSaveChangeResult())
             return new ActionResponse<int>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
-        return new ActionResponse<int> { IsSuccess = true, Data = model.Id };
+        return new ActionResponse<int>(model.Id);
     }
 }

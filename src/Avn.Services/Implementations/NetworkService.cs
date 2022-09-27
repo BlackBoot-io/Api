@@ -9,12 +9,8 @@ public class NetworkService : INetworkService
     /// Get all network we are supporting
     /// </summary>
     /// <returns></returns>
-    public async Task<IActionResponse<List<Network>>> GetAllAvailableAsync()
-          => new ActionResponse<List<Network>>()
-                    {
-                        Data = await _uow.NetworkRepo.Queryable().Where(X => X.IsActive).AsNoTracking().ToListAsync(),
-                        IsSuccess = true
-                    };
+    public async Task<IActionResponse<IEnumerable<Network>>> GetAllAvailableAsync()
+          => new ActionResponse<IEnumerable<Network>>(await _uow.NetworkRepo.Queryable().Where(X => X.IsActive).AsNoTracking().ToListAsync());
 
 }
 

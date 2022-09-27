@@ -40,7 +40,7 @@ public class VerificationService : IVerificationService
                                                    {
                                                        { "UniqueCode", verification.UniqueCode },
                                                    }, type);
-        return new ActionResponse<bool>(ActionResponseStatusCode.Success, true);
+        return new ActionResponse<bool>(true);
     }
 
     /// <summary>
@@ -69,6 +69,6 @@ public class VerificationService : IVerificationService
         if (!dbResult.ToSaveChangeResult())
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
-        return new ActionResponse<bool> { IsSuccess = true, Data = true };
+        return new ActionResponse<bool>(true);
     }
 }
