@@ -220,7 +220,7 @@ Use this space to list resources you find helpful and would like to give credit 
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/BlackBoot-io/Api?style=for-the-badge
 [contributors-url]: https://github.com/BlackBoot-io/Api/graphs/contributors
-[forks-shield]: https://img.shields.io/github/issues/BlackBoot-io/Api?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/BlackBoot-io/Api?style=for-the-badge
 [forks-url]: https://github.com/BlackBoot-io/Api/network/members
 [stars-shield]: https://img.shields.io/github/stars/BlackBoot-io/Api?style=for-the-badge
 [stars-url]: https://github.com/BlackBoot-io/Api/stargazers
