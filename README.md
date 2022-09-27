@@ -75,9 +75,9 @@ Here's why:
 * Developers are the major part of this ecosystem. Developers produce a dynamic ecosystem of applications that connect communities to conserve their memories. We have provided amazing integration APIs for developers.
 
 ## What we can do?
-we have made a protocol for the preservation of your experiences as digital records, minted as non-fungible tokens on the blockchain under the ERC-721 standard.
-The Avanod platform presents considerable functionalities exposed through the APIs. Everyone is free to utilize Avanod's API to push and store information through drops.
-Additionally, you can use the API to create your applications on top of Avanod by automating drop distributions. For this, you will require an API authorization token to integrate your applications. Please refer to Integration for more information.
+* We have made a protocol for the preservation of your experiences as digital records, minted as non-fungible tokens on the blockchain under the ERC-721 standard.
+* The Avanod platform presents considerable functionalities exposed through the APIs. Everyone is free to utilize Avanod's API to push and store information through drops.
+* Additionally, you can use the API to create your applications on top of Avanod by automating drop distributions. For this, you will require an API authorization token to integrate your applications. Please refer to Integration for more information.
 
 Before using our API, we offer a quick read of our Help Center in order to better comprehend the Avanod ecosystem.
 
@@ -85,8 +85,6 @@ Before using our API, we offer a quick read of our Help Center in order to bette
 
 
 ### Built With
-
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
 * [![Next][Next.js]][Next-url]
 * [![React][React.js]][React-url]
@@ -96,68 +94,21 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 
 
-<!-- GETTING STARTED -->
-## Getting Started
-
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
-### Installation
-
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- ROADMAP -->
 ## Roadmap
 
 - [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
+- [x] Add API Integration
+- [x] Add API postman
+- [ ] Add API documents
 - [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
+    - [ ] Arabic
+    - [ ] Persian
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/BlackBoot-io/Api/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- CONTRIBUTING -->
@@ -193,24 +144,6 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 Your Name - [@mha_karimi](https://twitter.com/mha_karimi) - mha.karimi@fmail.com
 
 Project Link: [Avanod](https://github.com/BlackBoot-io/Api)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
