@@ -151,7 +151,7 @@ public class TokensService : ITokensService
     public async Task<IActionResponse<bool>> BurnAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var model = await _uow.TokenRepo.Queryable()
-                              .FirstOrDefaultAsync(x => x.Id == id && !string.IsNullOrEmpty(x.OwnerWalletAddress) && x.IsMinted && !x.IsBurned, cancellationToken);
+                              .FirstOrDefaultAsync(x => x.Id == id && x.IsMinted && !x.IsBurned, cancellationToken);
 
         if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
