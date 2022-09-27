@@ -16,16 +16,19 @@ public class TokensService : ITokensService
     {
         var result = await _uow.TokenRepo.Queryable().Select(row => new TokenDto
         {
+            DropId = row.Drop.Id,
             DropName = row.Drop.Name,
             DropCategoryType = row.Drop.CategoryType,
             Network = row.Drop.Network.Name,
             StartDate = row.Drop.StartDate,
             EndDate = row.Drop.EndDate,
             ExpireDate = row.Drop.ExpireDate,
+            TokenId = row.Id,
             UniqueCode = row.UniqueCode,
             OwerWalletAddress = row.OwnerWalletAddress,
             IsBurned = row.IsBurned,
-            IsMinted = row.IsMinted
+            IsMinted = row.IsMinted,
+
         }).FirstOrDefaultAsync(x => x.UniqueCode == uniqueCode, cancellationToken);
 
         if (result is null)
@@ -121,7 +124,7 @@ public class TokensService : ITokensService
     {
         var model = await _uow.TokenRepo.Queryable()
                               .FirstOrDefaultAsync(x => x.Id == id && x.OwnerWalletAddress != null && !x.IsMinted, cancellationToken);
-    
+
         if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 

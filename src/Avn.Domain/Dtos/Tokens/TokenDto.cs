@@ -4,6 +4,7 @@ public class TokenDto
 {
 
     //Drop
+    public int DropId { get; set; }
     public string DropName { get; set; }
     public string Network { get; set; }
     public DropCategoryType DropCategoryType { get; set; }
@@ -13,6 +14,7 @@ public class TokenDto
 
 
     //token
+    public Guid TokenId { get; set; }
     public string UniqueCode { get; set; }
     public string OwerWalletAddress { get; set; }
     public bool IsMinted { get; set; }
