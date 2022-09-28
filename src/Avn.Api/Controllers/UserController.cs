@@ -1,6 +1,4 @@
-﻿using Avn.Domain.Dtos;
-
-namespace Avn.Api.Controllers;
+﻿namespace Avn.Api.Controllers;
 
 public class UserController : BaseController
 {

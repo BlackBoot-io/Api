@@ -11,8 +11,6 @@ public class NetworkSeed : IDataSeedProvider
     public NetworkSeed(IAppUnitOfWork uow)
         => _uow = uow;
 
-
-
     public async Task SeedAsync(CancellationToken cancellationToken = default)
     {
 

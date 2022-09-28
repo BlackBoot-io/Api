@@ -1,6 +1,4 @@
-﻿
-
-using Avn.Data.UnitofWork;
+﻿using Avn.Data.UnitofWork;
 using Avn.Shared.Core.Data;
 
 namespace Avn.Data.Seeds;
@@ -12,8 +10,6 @@ public class PricingSeed : IDataSeedProvider
 
     public PricingSeed(IAppUnitOfWork uow)
         => _uow = uow;
-
-
 
     public async Task SeedAsync(CancellationToken cancellationToken = default)
     {
@@ -43,7 +39,7 @@ public class PricingSeed : IDataSeedProvider
                 }
             }
         };
-        await _uow.PricingRepo.AddAsync(model);
+        await _uow.PricingRepo.AddAsync(model, cancellationToken);
         await _uow.SaveChangesAsync(cancellationToken);
     }
 }

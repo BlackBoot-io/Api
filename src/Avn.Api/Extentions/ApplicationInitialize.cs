@@ -1,6 +1,5 @@
 ﻿using Avn.Data.UnitofWork;
 using Avn.Shared.Core.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace Avn.Api.Extentions;
 
@@ -14,15 +13,12 @@ public class ApplicationInitialize : BackgroundService
     {
 
         var uow = _serviceScope.ServiceProvider.GetRequiredService<IAppUnitOfWork>();
-        if (await uow.Database.EnsureCreatedAsync() && uow.Database.IsRelational())
-            await uow.Database.MigrateAsync();
-
+        if (await uow.Database.EnsureCreatedAsync(stoppingToken) && uow.Database.IsRelational())
+            await uow.Database.MigrateAsync(cancellationToken: stoppingToken);
 
         var seedServices = _serviceScope.ServiceProvider.GetServices<IDataSeedProvider>();
 
         foreach (var seed in seedServices.OrderBy(x => x.Order))
-        {
             await seed.SeedAsync(stoppingToken);
-        }
     }
 }
