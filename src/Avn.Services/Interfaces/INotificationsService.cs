@@ -1,6 +1,6 @@
 ﻿namespace Avn.Services.Interfaces;
 
-public interface INotificationService : IScopedDependency
+public interface INotificationsService : IScopedDependency
 {
     /// <summary>
     /// send a notification to user such as sms or email or etc.

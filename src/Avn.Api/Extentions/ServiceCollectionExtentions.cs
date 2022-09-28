@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using Avn.Data;
 using Avn.Data.Repository;
 using Avn.Data.UnitofWork;
 using Avn.Services.Resources;
@@ -27,6 +28,7 @@ public static class ServiceCollectionExtentions
 
         services.AddScoped(typeof(IGenericRepo<>), typeof(GenericRepo<>));
         services.AddScoped<IAppUnitOfWork, AppUnitOfWork>();
+        services.RegisterDatabaseSeed();
         services.AddDbContext<ApplicationDbContext>((IServiceProvider serviceProvider, DbContextOptionsBuilder options) =>
         {
             options.UseSqlServer(configuration.GetConnectionString("ApplicationDbContext"))

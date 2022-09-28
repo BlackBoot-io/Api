@@ -2,11 +2,11 @@
 
 namespace Avn.Services.Implementations;
 
-public class NotificationService : INotificationService
+public class NotificationsService : INotificationsService
 {
     private readonly IUsersService _usersService;
     private readonly IEmailSenderAdapter _emailSenderAdapter;
-    public NotificationService(IUsersService usersService, IEmailSenderAdapter emailSenderAdapter)
+    public NotificationsService(IUsersService usersService, IEmailSenderAdapter emailSenderAdapter)
     {
         _usersService = usersService;
         _emailSenderAdapter = emailSenderAdapter;

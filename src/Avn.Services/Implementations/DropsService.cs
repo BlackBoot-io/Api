@@ -9,16 +9,16 @@ public class DropsService : IDropsService
     private readonly Lazy<INftStorageAdapter> _nftStorageAdaptar;
     private readonly Lazy<ITokensService> _tokensService;
     private readonly Lazy<IAttachmentService> _attachmentService;
-    private readonly Lazy<ISubscriptionService> _subscriptionService;
-    private readonly Lazy<INotificationService> _notificationService;
+    private readonly Lazy<ISubscriptionsService> _subscriptionService;
+    private readonly Lazy<INotificationsService> _notificationService;
     private readonly Lazy<IDeliveryFactory> _deliveryFactory;
 
     public DropsService(IAppUnitOfWork uow,
                         Lazy<INftStorageAdapter> nftStorageAdaptar,
                         Lazy<ITokensService> tokensService,
                         Lazy<IAttachmentService> attachmentService,
-                        Lazy<ISubscriptionService> subscriptionService,
-                        Lazy<INotificationService> notificationService,
+                        Lazy<ISubscriptionsService> subscriptionService,
+                        Lazy<INotificationsService> notificationService,
                         Lazy<IDeliveryFactory> deliveryFactory)
     {
         _uow = uow;

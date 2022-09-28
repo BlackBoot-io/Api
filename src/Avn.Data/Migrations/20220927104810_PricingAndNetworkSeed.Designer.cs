@@ -4,6 +4,7 @@ using Avn.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Avn.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220927104810_PricingAndNetworkSeed")]
+    partial class PricingAndNetworkSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -362,13 +364,13 @@ namespace Avn.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("From")
+                    b.Property<DateTime>("From")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("PricingId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("To")
+                    b.Property<DateTime>("To")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("TransactionId")

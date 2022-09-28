@@ -1,6 +1,6 @@
 ﻿namespace Avn.Services.Interfaces;
 
-public interface IVerificationService : IScopedDependency
+public interface IVerificationsService : IScopedDependency
 {
     /// <summary>
     /// Verify uniqueCode

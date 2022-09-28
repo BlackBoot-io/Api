@@ -41,9 +41,11 @@ builder.Services.AddCors(options =>
         .AllowCredentials();
     });
 });
+builder.Services.AddApplicationAuthentication(configuration);
 builder.Services.AddHttpClient();
 builder.Services.RegisterApplicatioinServices();
-builder.Services.AddApplicationAuthentication(configuration);
+builder.Services.AddHostedService<ApplicationInitialize>();
+
 #endregion
 #region Application
 var app = builder.Build();

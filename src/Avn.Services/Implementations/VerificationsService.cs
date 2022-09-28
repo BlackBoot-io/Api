@@ -1,11 +1,11 @@
 ﻿using Avn.Shared.Utilities;
 
 namespace Avn.Services.Implementations;
-public class VerificationService : IVerificationService
+public class VerificationsService : IVerificationsService
 {
     private readonly IAppUnitOfWork _uow;
-    private readonly Lazy<INotificationService> _notificationService;
-    public VerificationService(IAppUnitOfWork uow, Lazy<INotificationService> notificationService)
+    private readonly Lazy<INotificationsService> _notificationService;
+    public VerificationsService(IAppUnitOfWork uow, Lazy<INotificationsService> notificationService)
     {
         _uow = uow;
         _notificationService = notificationService;

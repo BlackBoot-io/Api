@@ -19,7 +19,7 @@ public class Subscription : IEntity
     public Transaction Transaction { get; set; }
     public int? TransactionId { get; set; }
 
-    public DateTime From { get; set; }
+    public DateTime? From { get; set; }
 
-    public DateTime To { get; set; }
+    public DateTime? To { get; set; }
 }
