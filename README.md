@@ -143,7 +143,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Mohammad Karimi - [@mha_karimi](https://twitter.com/mha_karimi) - mha.karimi@gmail.com
 <br/>
-Mohammad Mokhtari - [@mohammad.mokhtari] - mohammad.mokhtari86@gmail.com
+Mohammad Mokhtari - [@MohammadMokhtarii] - mohammad.mokhtari86@gmail.com
 
 Project Link: [Avanod](https://github.com/BlackBoot-io/Api)
 
