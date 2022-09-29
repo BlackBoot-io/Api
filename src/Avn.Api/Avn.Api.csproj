@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Avn.Domain\Avn.Domain.csproj" />
     <ProjectReference Include="..\Avn.Services\Avn.Services.csproj" />
   </ItemGroup>
 

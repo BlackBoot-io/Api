@@ -19,7 +19,7 @@ public class SubscriptionsService : ISubscriptionsService
               .Include(X => X.Pricing)
               .Include(X => X.Pricing.NetworkInPricings)
               .ThenInclude(X => X.Network)
-              .FirstOrDefaultAsync(X => X.To >= DateTime.Now, cancellationToken);
+              .FirstOrDefaultAsync(x => x.UserId == userId && (x.To == null || x.To >= DateTime.Now), cancellationToken);
 
         if (subscription is null)
             return new ActionResponse<Subscription>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
