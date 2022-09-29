@@ -7,7 +7,5 @@ public class QrStrategy : IDeliveryStrategy
     public async Task<IActionResponse<byte[]>> ExecuteAsync(int dropId, int count, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
-
     }
-
 }
