@@ -16,7 +16,7 @@ public interface IDropsService : IScopedDependency
     /// </summary>
     /// <param name="userId"></param>
     /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <returns>object</returns>
     Task<IActionResponse<IEnumerable<object>>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -24,7 +24,7 @@ public interface IDropsService : IScopedDependency
     /// </summary>
     /// <param name="code"></param>
     /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <returns>bool</returns>
     Task<IActionResponse<bool>> ChangeStateAsync(Guid code, CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -34,7 +34,7 @@ public interface IDropsService : IScopedDependency
     /// </summary>
     /// <param name="DropId"></param>
     /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <returns>bool</returns>
     Task<IActionResponse<bool>> ConfirmAsync(int dropId, CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -44,6 +44,16 @@ public interface IDropsService : IScopedDependency
     /// <param name="dropId">PrimaryKey of drop entity</param>
     /// <param name="reviewMessage">resean message</param>
     /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <returns>bool</returns>
     Task<IActionResponse<bool>> RejectAsync(int dropId, string reviewMessage, CancellationToken cancellationToken = default);
+
+
+    /// <summary>
+    /// Get Image Uri In Ipfs
+    /// Then notify the user
+    /// </summary>
+    /// <param name="dropId">PrimaryKey of drop entity</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>string</returns>
+    Task<IActionResponse<string>> GetImageUri(int dropId, CancellationToken cancellationToken = default);
 }

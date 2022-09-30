@@ -20,5 +20,8 @@ public enum ActionResponseStatusCode
     UnAuthorized = 401,
 
     [Display(Name = "the request has been banned.")]
-    Forbidden = 403
+    Forbidden = 403,
+
+    [Display(Name = "Redirect")]
+    Redirect = 302,
 }
