@@ -91,7 +91,8 @@ public class DropsService : IDropsService
             Wages = networkInPricing.Network.Wages,
             DropUri = string.Empty,
             ReviewMessage = string.Empty,
-            ContentId = String.Empty
+            ContentId = String.Empty,
+            IsTest = item.IsTest,
         };
         await _uow.DropRepo.AddAsync(drop, cancellationToken);
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
