@@ -67,9 +67,7 @@ public class DropsService : IDropsService
         if (networkInPricing is null)
             return new ActionResponse<Guid>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidNetwork);
 
-        var code = Guid.NewGuid();
-
-        await _uow.DropRepo.AddAsync(new()
+        Drop drop = new()
         {
             InsertDate = DateTime.Now,
             DropStatus = DropStatus.Pending,
@@ -78,7 +76,7 @@ public class DropsService : IDropsService
             IsPrivate = item.IsPrivate,
             AttachmentId = fileResult.Data,
             CategoryType = item.CategotyType,
-            Code = code,
+            Code = Guid.NewGuid(),
             Count = item.Count,
             DeliveryType = item.DeliveryType,
             EndDate = item.EndDate,
@@ -94,10 +92,14 @@ public class DropsService : IDropsService
             DropUri = string.Empty,
             ReviewMessage = string.Empty,
             ContentId = String.Empty
-        }, cancellationToken);
+        };
+        await _uow.DropRepo.AddAsync(drop, cancellationToken);
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.ToSaveChangeResult())
             return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+
+        if (item.IsTest)
+            await ConfirmAsync(drop.Id, cancellationToken);
 
         await _notificationService.Value.SendAsync(item.UserId,
              new()
@@ -108,7 +110,7 @@ public class DropsService : IDropsService
                  { nameof(item.EndDate), item.EndDate.ToString() }
              }, template: TemplateType.CreateDrop);
 
-        return new ActionResponse<Guid>(code);
+        return new ActionResponse<Guid>(drop.Code);
     }
 
     /// <summary>
@@ -138,6 +140,7 @@ public class DropsService : IDropsService
                     CategoryType = row.CategoryType.ToString(),
                     row.Count,
                     row.IsActive,
+                    row.IsTest,
                     DropStatus = row.DropStatus.ToString(),
                     Project = new
                     {
@@ -179,29 +182,31 @@ public class DropsService : IDropsService
         if (drop is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
-        var attachment = await _attachmentService.Value.GetFile(drop.AttachmentId, cancellationToken);
+        if (!drop.IsTest)
+        {
+            var attachment = await _attachmentService.Value.GetFile(drop.AttachmentId, cancellationToken);
+            var nftStorageResult = await _nftStorageAdaptar.Value.UploadAsync(new UploadRequestDto(
+                drop.Name,
+                drop.Description,
+                attachment.Content,
+                new
+                {
+                    drop.StartDate,
+                    drop.EndDate,
+                    drop.IsVirtual,
+                    drop.IsPrivate,
+                    drop.Location,
+                    drop.ExpireDate,
+                    drop.CategoryType,
+                    Project = drop.Project?.Name,
+                }), cancellationToken);
 
-        var nftStorageResult = await _nftStorageAdaptar.Value.UploadAsync(new UploadRequestDto(
-            drop.Name,
-            drop.Description,
-            attachment.Content,
-            new
-            {
-                drop.StartDate,
-                drop.EndDate,
-                drop.IsVirtual,
-                drop.IsPrivate,
-                drop.Location,
-                drop.ExpireDate,
-                drop.CategoryType,
-                Project = drop.Project?.Name,
-            }), cancellationToken);
+            if (!nftStorageResult.IsSuccess)
+                return new ActionResponse<bool>(nftStorageResult.StatusCode, nftStorageResult.Message);
 
-        if (!nftStorageResult.IsSuccess)
-            return new ActionResponse<bool>(nftStorageResult.StatusCode, nftStorageResult.Message);
-
+            drop.DropUri = nftStorageResult.Data.ContentId;
+        }
         drop.DropStatus = DropStatus.Confirmed;
-        drop.DropUri = nftStorageResult.Data.ContentId;
         try
         {
             var result = await _uow.SaveChangesAsync(cancellationToken);
@@ -211,7 +216,9 @@ public class DropsService : IDropsService
         }
         catch (Exception)
         {
-            await _nftStorageAdaptar.Value.DeleteAsync(drop.DropUri, cancellationToken);
+            if (!drop.IsTest)
+                await _nftStorageAdaptar.Value.DeleteAsync(drop.DropUri, cancellationToken);
+
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
         }
 
