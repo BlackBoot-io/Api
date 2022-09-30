@@ -47,19 +47,11 @@
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
+    
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -141,9 +133,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Mohammad Karimi - [@mha_karimi](https://twitter.com/mha_karimi) - mha.karimi@gmail.com
+Mohammad Karimi - [@mha_karimi](https://github.com/mohammadKarimi) - mha.karimi@gmail.com
 <br/>
-Mohammad Mokhtari - [@mohammad.mokhtari] - mohammad.mokhtari86@gmail.com
+Mohammad Mokhtari - [@MohammadMokhtari](https://github.com/MohammadMokhtarii) - mohammad.mokhtari86@gmail.com
 
 Project Link: [Avanod](https://github.com/BlackBoot-io/Api)
 
