@@ -70,6 +70,15 @@ namespace Avn.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account Is Lockout.
+        /// </summary>
+        public static string AccountIsLockout {
+            get {
+                return ResourceManager.GetString("AccountIsLockout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AddProjectOperationFail.
         /// </summary>
         public static string AddProjectOperationFail {

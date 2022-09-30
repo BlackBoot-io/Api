@@ -83,11 +83,18 @@ public class JwtTokensService : JwtTokensFactory, IJwtTokensService
 {
     private readonly JwtSettings _jwtSettings;
     private readonly IAppUnitOfWork _uow;
+    private readonly IUsersService _usersService;
+    private readonly ICacheService _cacheService;
 
-    public JwtTokensService(IAppUnitOfWork uow, IConfiguration configuration) : base(configuration)
+    public JwtTokensService(IAppUnitOfWork uow,
+                            IConfiguration configuration,
+                            IUsersService usersService,
+                            ICacheService cacheService) : base(configuration)
     {
         _uow = uow;
         _jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
+        _usersService = usersService;
+        _cacheService = cacheService;
     }
 
     #region Private Methods
@@ -136,6 +143,21 @@ public class JwtTokensService : JwtTokensFactory, IJwtTokensService
         _uow.UserJwtTokenRepo.RemoveRange(tokens);
         await _uow.SaveChangesAsync(cancellationToken);
     }
+
+    private async Task<bool> CheckTryCount(Guid userId, CancellationToken cancellationToken = default)
+    {
+        var tryCount = await _cacheService.GetAsync<int>("TryCount" + userId.ToString(), cancellationToken);
+        if (tryCount is > 4)
+        {
+            await _usersService.LockAsync(userId, DateTime.UtcNow.AddDays(1));
+            return true;
+
+        }
+        else
+            await _cacheService.SetAsync("TryCount" + userId.ToString(), tryCount + 1, TimeSpan.FromHours(4), cancellationToken);
+
+        return false;
+    }
     #endregion
 
     /// <summary>
@@ -149,6 +171,11 @@ public class JwtTokensService : JwtTokensFactory, IJwtTokensService
     {
         if (!string.IsNullOrEmpty(refreshToken))
             await DeleteTokensWithSameRefreshTokenAsync(refreshToken, cancellationToken);
+
+
+        var tryCount = await CheckTryCount(user.UserId, cancellationToken);
+        if (tryCount)
+            return new ActionResponse<UserTokenDto>(ActionResponseStatusCode.ServerError, "");
 
         var token = GenerateToken(user.UserId, user.Email);
         await _uow.UserJwtTokenRepo.AddAsync(new UserJwtToken
@@ -199,6 +226,8 @@ public class JwtTokensService : JwtTokensFactory, IJwtTokensService
         if (!dbResult.ToSaveChangeResult())
             return new ActionResponse(ActionResponseStatusCode.ServerError);
 
+        await _cacheService.RemoveAsync("TryCount" + tokens.FirstOrDefault()?.UserId.ToString() ?? "");
+
         return new ActionResponse();
     }
 
@@ -213,7 +242,7 @@ public class JwtTokensService : JwtTokensFactory, IJwtTokensService
         var refresheTokenHashed = HashGenerator.Hash(refreshToken);
         return await _uow.UserJwtTokenRepo.Queryable()
                                           .AsNoTracking()
-                                          .FirstOrDefaultAsync(X => X.RefreshTokenHash == refresheTokenHashed, cancellationToken);
+                                          .FirstOrDefaultAsync(x => x.RefreshTokenHash == refresheTokenHashed, cancellationToken);
     }
     /// <summary>
     /// Check If User Own This Token or Not
@@ -225,7 +254,7 @@ public class JwtTokensService : JwtTokensFactory, IJwtTokensService
     public async Task<IActionResponse<bool>> VerifyTokenAsync(Guid userId, string accessToken, CancellationToken cancellationToken = default)
     {
         var hashesAccessToken = HashGenerator.Hash(accessToken);
-        var token = await _uow.UserJwtTokenRepo.Queryable().AsNoTracking().FirstOrDefaultAsync(x => x.UserId == userId && x.AccessTokenHash == hashesAccessToken, cancellationToken);
-        return new ActionResponse<bool>(token != null && token.AccessTokenExpiresTime >= DateTime.Now);
+        var token = await _uow.UserJwtTokenRepo.Queryable().AsNoTracking().FirstOrDefaultAsync(x => x.UserId == userId && !x.User.IsLockoutEnabled && x.AccessTokenHash == hashesAccessToken, cancellationToken);
+        return new ActionResponse<bool>(token is not null && token.AccessTokenExpiresTime >= DateTime.Now);
     }
 }
