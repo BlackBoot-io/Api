@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EasyCaching.Core" Version="1.6.1" />
     <PackageReference Include="Google.Apis.Auth.AspNetCore3" Version="1.57.0" />
     <PackageReference Include="MailKit" Version="3.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />

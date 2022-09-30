@@ -34,6 +34,9 @@ public class User : IEntity
     [MaxLength(256)]
     public string WalletAddress { get; set; }
 
+    public DateTime? LockoutEndDateUtc { get; set; }
+    public bool IsLockoutEnabled { get; set; }
+
     public bool IsActive { get; set; }
 
     [MaxLength(150)]
