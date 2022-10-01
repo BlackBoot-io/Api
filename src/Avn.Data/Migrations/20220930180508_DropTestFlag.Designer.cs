@@ -4,6 +4,7 @@ using Avn.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Avn.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220930180508_DropTestFlag")]
+    partial class DropTestFlag
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,6 +66,12 @@ namespace Avn.Data.Migrations
                     b.Property<Guid>("Code")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ContentId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)");
+
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
@@ -75,26 +83,20 @@ namespace Avn.Data.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(500)");
 
-                    b.Property<string>("DropContentId")
+                    b.Property<byte>("DropStatus")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("DropUri")
                         .IsRequired()
                         .HasMaxLength(100)
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)");
-
-                    b.Property<byte>("DropStatus")
-                        .HasColumnType("tinyint");
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ExpireDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("ImageContentId")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(100)");
 
                     b.Property<DateTime>("InsertDate")
                         .HasColumnType("datetime2");
@@ -511,12 +513,6 @@ namespace Avn.Data.Migrations
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
-
-                    b.Property<bool>("IsLockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LockoutEndDateUtc")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("OrganizationName")
                         .HasMaxLength(150)

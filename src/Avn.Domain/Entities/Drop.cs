@@ -56,6 +56,7 @@ public class Drop : IEntity
     public bool IsVirtual { get; set; }
     public bool IsPrivate { get; set; }
     public bool IsActive { get; set; }
+    public bool IsTest { get; set; }
 
     [Required]
     public Guid Code { get; set; }
