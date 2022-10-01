@@ -48,7 +48,7 @@ public class DropController : BaseController
     /// <param name="dropId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpGet("drop/{id}/holders")]
+    [HttpGet("drop/{dropId}/holders")]
     public async Task<IActionResult> GetAllHoldersAsync(int dropId, CancellationToken cancellationToken = default)
         => Ok(await _dropsService.GetAllHoldersAsync(CurrentUserId, dropId, cancellationToken));
 
