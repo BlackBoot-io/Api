@@ -47,6 +47,16 @@ public interface IDropsService : IScopedDependency
     /// <returns>bool</returns>
     Task<IActionResponse<bool>> RejectAsync(int dropId, string reviewMessage, CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// For the specified drop ID, this endpoint returns paginated info on the token holders including
+    /// the token ID, drop transfer count, 
+    /// and the owner's information like address, and amount of drops owned.
+    /// </summary>
+    /// <param name="currentUserId"></param>
+    /// <param name="dropId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<object> GetAllHoldersAsync(Guid currentUserId, int dropId, CancellationToken cancellationToken);
 
     /// <summary>
     /// Get Image Uri In Ipfs
