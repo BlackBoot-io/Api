@@ -96,9 +96,9 @@ public class DropsService : IDropsService
             DropContentId = string.Empty,
             ReviewMessage = string.Empty,
             IsTest = item.IsTest,
-            ImageContentId = String.Empty
-
+            ImageContentId = string.Empty
         };
+
         await _uow.DropRepo.AddAsync(drop, cancellationToken);
 
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
@@ -208,7 +208,10 @@ public class DropsService : IDropsService
                     drop.Location,
                     drop.ExpireDate,
                     drop.CategoryType,
-                    Project = drop.Project?.Name,
+                    Project = new
+                    {
+                        drop.Project?.Name,
+                    }
                 }), cancellationToken);
 
             if (!nftStorageResult.IsSuccess)
@@ -292,7 +295,7 @@ public class DropsService : IDropsService
     public async Task<IActionResponse<string>> GetImageUri(int dropId, CancellationToken cancellationToken = default)
     {
         var drop = await _uow.DropRepo.Queryable()
-                .FirstOrDefaultAsync(x => x.Id == dropId && 
+                .FirstOrDefaultAsync(x => x.Id == dropId &&
                                      x.DropStatus == DropStatus.Confirmed &&
                                      !string.IsNullOrEmpty(x.ImageContentId), cancellationToken);
         if (drop is null)
