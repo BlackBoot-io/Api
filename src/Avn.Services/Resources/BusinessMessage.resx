@@ -120,6 +120,9 @@
   <data name="AccountIsDeActive" xml:space="preserve">
     <value>Account is deactive</value>
   </data>
+  <data name="AccountIsLockout" xml:space="preserve">
+    <value>Account Is Lockout</value>
+  </data>
   <data name="AddProjectOperationFail" xml:space="preserve">
     <value>AddProjectOperationFail</value>
   </data>

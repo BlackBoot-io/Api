@@ -45,7 +45,10 @@ builder.Services.AddApplicationAuthentication(configuration);
 builder.Services.AddHttpClient();
 builder.Services.RegisterApplicatioinServices();
 builder.Services.AddHostedService<ApplicationInitialize>();
-
+builder.Services.AddEasyCaching(options =>
+{
+    options.UseInMemory("inMemoryCache");
+});
 #endregion
 #region Application
 var app = builder.Build();

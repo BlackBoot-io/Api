@@ -156,4 +156,72 @@ public class UsersService : IUsersService
 
         return await _verificationService.SendOtpAsync(userId, TemplateType.EmailVerification, cancellationToken);
     }
+
+    /// <summary>
+    /// enable Lockout 
+    /// </summary>
+    /// <param name="userId">user Id</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public async Task<IActionResponse> LockAsync(Guid userId, DateTime endDateUTC, CancellationToken cancellationToken = default)
+    {
+        var user = await _uow.UserRepo.FindAsync(userId, cancellationToken);
+        if (user is null)
+            return new ActionResponse(ActionResponseStatusCode.BadRequest, BusinessMessage.NotFound);
+
+        if (user is { IsLockoutEnabled: true })
+            return new ActionResponse(ActionResponseStatusCode.BadRequest, BusinessMessage.NotFound);
+
+        user.IsLockoutEnabled = true;
+        user.LockoutEndDateUtc = endDateUTC;
+
+        await _uow.SaveChangesAsync(cancellationToken);
+
+        return new ActionResponse();
+
+
+    }
+    /// <summary>
+    /// disable Lockout
+    /// </summary>
+    /// <param name="userId">user Id</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public async Task<IActionResponse> UnLockAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        var user = await _uow.UserRepo.FindAsync(userId, cancellationToken);
+        if (user is null)
+            return new ActionResponse(ActionResponseStatusCode.BadRequest, BusinessMessage.NotFound);
+
+        if (user is { IsLockoutEnabled: false })
+            return new ActionResponse(ActionResponseStatusCode.BadRequest, BusinessMessage.NotFound);
+
+        user.IsLockoutEnabled = false;
+        user.LockoutEndDateUtc = null;
+
+        await _uow.SaveChangesAsync(cancellationToken);
+
+        return new ActionResponse();
+    }
+
+    public async Task<IActionResponse<bool>> CheckLockoutAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        var user = await _uow.UserRepo.FindAsync(userId, cancellationToken);
+        if (user is null)
+            return new ActionResponse<bool>(ActionResponseStatusCode.BadRequest, BusinessMessage.NotFound);
+
+        if (user is  { IsLockoutEnabled: false } )
+            return new ActionResponse<bool>(false);
+
+
+        if (user.LockoutEndDateUtc < DateTime.UtcNow)
+        {
+            await UnLockAsync(userId, cancellationToken);
+            return new ActionResponse<bool>(false);
+        }
+        else
+            return new ActionResponse<bool>(true);
+
+
+    }
 }

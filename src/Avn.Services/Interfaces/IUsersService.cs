@@ -40,4 +40,29 @@ public interface IUsersService : IScopedDependency
     /// <param name="userId"></param>
     /// <returns></returns>
     Task<IActionResponse<bool>> ResendEmailActivationCode(Guid userId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// enable Lockout 
+    /// </summary>
+    /// <param name="userId">user Id</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<IActionResponse> LockAsync(Guid userId, DateTime endDateUTC, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// disable Lockout
+    /// </summary>
+    /// <param name="userId">user Id</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<IActionResponse> UnLockAsync(Guid userId, CancellationToken cancellationToken = default);
+
+
+    /// <summary>
+    /// Check Lockout
+    /// </summary>
+    /// <param name="userId">user Id</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<IActionResponse<bool>> CheckLockoutAsync(Guid userId, CancellationToken cancellationToken = default);
 }
