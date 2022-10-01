@@ -8,11 +8,16 @@ public class ApiResultAttribute : ActionFilterAttribute
 {
     public override void OnResultExecuting(ResultExecutingContext context)
     {
-        if (context.Result is OkObjectResult okObjectResult && okObjectResult.Value is ActionResponse result)
+
+        if (context.Result is OkObjectResult redirectOkObjectResult && redirectOkObjectResult.Value is ActionResponse<string> redirectResult && redirectResult.StatusCode == ActionResponseStatusCode.Redirect)
+            context.Result = new RedirectResult(redirectResult.Data);
+
+        else if (context.Result is OkObjectResult okObjectResult && okObjectResult.Value is ActionResponse result)
             context.Result = new JsonResult(result)
             {
                 StatusCode = (int)result.StatusCode
             };
+
         else if (context.Result is OkResult okResult)
             context.Result = new JsonResult(new ActionResponse())
             {
