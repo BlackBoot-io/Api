@@ -1,5 +1,6 @@
 ﻿using Avn.Domain.Dtos.Externals.NftStorage;
 using Avn.Services.Interfaces.DeliveryStrategies;
+using Microsoft.Extensions.Configuration;
 
 namespace Avn.Services.Interfaces;
 
@@ -12,6 +13,7 @@ public class DropsService : IDropsService
     private readonly Lazy<ISubscriptionsService> _subscriptionService;
     private readonly Lazy<INotificationsService> _notificationService;
     private readonly Lazy<IDeliveryFactory> _deliveryFactory;
+    private readonly Lazy<IConfiguration> _configuration;
 
     public DropsService(IAppUnitOfWork uow,
                         Lazy<INftStorageAdapter> nftStorageAdaptar,
@@ -19,7 +21,8 @@ public class DropsService : IDropsService
                         Lazy<IAttachmentService> attachmentService,
                         Lazy<ISubscriptionsService> subscriptionService,
                         Lazy<INotificationsService> notificationService,
-                        Lazy<IDeliveryFactory> deliveryFactory)
+                        Lazy<IDeliveryFactory> deliveryFactory,
+                        Lazy<IConfiguration> configuration)
     {
         _uow = uow;
         _nftStorageAdaptar = nftStorageAdaptar;
@@ -28,6 +31,7 @@ public class DropsService : IDropsService
         _subscriptionService = subscriptionService;
         _notificationService = notificationService;
         _deliveryFactory = deliveryFactory;
+        _configuration = configuration;
     }
 
     /// <summary>
@@ -89,12 +93,15 @@ public class DropsService : IDropsService
             Location = item.Location,
             StartDate = item.StartDate,
             Wages = networkInPricing.Network.Wages,
-            DropUri = string.Empty,
+            DropContentId = string.Empty,
             ReviewMessage = string.Empty,
             ContentId = String.Empty,
             IsTest = item.IsTest,
+            ImageContentId = String.Empty
+
         };
         await _uow.DropRepo.AddAsync(drop, cancellationToken);
+
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.ToSaveChangeResult())
             return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
@@ -131,7 +138,8 @@ public class DropsService : IDropsService
                     row.Name,
                     row.Description,
                     DeliveryType = row.DeliveryType.ToString(),
-                    row.DropUri,
+                    row.DropContentId,
+                    row.ImageContentId,
                     row.Location,
                     row.StartDate,
                     row.EndDate,
@@ -205,7 +213,8 @@ public class DropsService : IDropsService
             if (!nftStorageResult.IsSuccess)
                 return new ActionResponse<bool>(nftStorageResult.StatusCode, nftStorageResult.Message);
 
-            drop.DropUri = nftStorageResult.Data.ContentId;
+              drop.DropContentId = nftStorageResult.Data.ContentId;
+              drop.ImageContentId = nftStorageResult.Data.ImageContentId;
         }
         drop.DropStatus = DropStatus.Confirmed;
         try
@@ -217,9 +226,10 @@ public class DropsService : IDropsService
         }
         catch (Exception)
         {
-            if (!drop.IsTest)
-                await _nftStorageAdaptar.Value.DeleteAsync(drop.DropUri, cancellationToken);
-
+            if (!drop.IsTest){
+            await _nftStorageAdaptar.Value.DeleteAsync(drop.DropContentId, cancellationToken);
+            await _nftStorageAdaptar.Value.DeleteAsync(drop.ImageContentId, cancellationToken);
+}
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
         }
 
@@ -270,5 +280,25 @@ public class DropsService : IDropsService
                  { nameof(drop.EndDate), drop.EndDate.ToString() }
              }, TemplateType.DropRejected);
         return new ActionResponse<bool>(true);
+    }
+    /// <summary>
+    /// Get Image Uri In Ipfs
+    /// Then notify the user
+    /// </summary>
+    /// <param name="dropId">PrimaryKey of drop entity</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>string</returns>
+    public async Task<IActionResponse<string>> GetImageUri(int dropId, CancellationToken cancellationToken = default)
+    {
+        var drop = await _uow.DropRepo.Queryable()
+                .FirstOrDefaultAsync(x => x.Id == dropId && x.DropStatus == DropStatus.Confirmed && !string.IsNullOrEmpty(x.ImageContentId), cancellationToken);
+        if (drop is null)
+            return new ActionResponse<string>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
+
+
+        var address = string.Format("{0}/{1}", _configuration.Value["IPFS:Gateway:Url"], drop.ImageContentId);
+
+        return new ActionResponse<string>(ActionResponseStatusCode.Redirect, data: address);
+
     }
 }

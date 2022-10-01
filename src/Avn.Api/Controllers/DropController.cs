@@ -13,7 +13,7 @@ public class DropController : BaseController
     /// <param name="item"></param>
     /// <param name="cancellationToken"></param>
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromForm]CreateDropDto item, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> CreateAsync([FromForm] CreateDropDto item, CancellationToken cancellationToken = default)
     {
         item.UserId = CurrentUserId;
         return Ok(await _dropsService.CreateAsync(item, cancellationToken));
@@ -28,6 +28,17 @@ public class DropController : BaseController
     [HttpGet]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
         => Ok(await _dropsService.GetAllAsync(CurrentUserId, cancellationToken));
+
+
+    /// <summary>
+    /// Redirect To Ifps Gateway For Drops Image
+    /// </summary>
+    /// <param name="dropId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("/drop/{dropId}/image")]
+    public async Task<IActionResult> GetAllAsync(int dropId, CancellationToken cancellationToken = default)
+        => Ok(await _dropsService.GetImageUri(dropId, cancellationToken));
 
     /// <summary>
     /// Deactive/Active a drop with a code

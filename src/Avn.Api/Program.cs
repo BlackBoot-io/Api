@@ -3,7 +3,7 @@ using Avn.Api.Middlewares;
 using Avn.Services;
 using System.Text.Json;
 using Serilog;
-
+using Serilog.Formatting.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -14,7 +14,7 @@ builder.Host.UseSerilog((hostBuilderContext, loggerConfiguration) =>
     loggerConfiguration.Enrich.FromLogContext();
     loggerConfiguration.WriteTo.Console();
     //loggerConfiguration.WriteTo.Seq("http://localhost:5341");
-    loggerConfiguration.WriteTo.File("Serilogs\\AppLogs.log");
+    loggerConfiguration.WriteTo.File(new JsonFormatter(),"log\\AppLogs.json");
 });
 #endregion
 #region Services
@@ -24,7 +24,7 @@ builder.Services.AddApplicationDbContext(configuration);
 
 builder.Services.AddControllers().AddJsonOptions(opt =>
 {
-        //opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    //opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     opt.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
 });
 

@@ -39,11 +39,11 @@ public class Drop : IEntity
 
     [Required]
     [MaxLength(100)]
-    public string DropUri { get; set; }
+    public string DropContentId { get; set; }
 
     [Required]
     [MaxLength(100)]
-    public string ContentId { get; set; }
+    public string ImageContentId { get; set; }
 
     [Required]
     [MaxLength(50)]
@@ -70,7 +70,7 @@ public class Drop : IEntity
 
     [MaxLength(500)]
     public string ReviewMessage { get; set; }
-    
+
     public DateTime InsertDate { get; set; }
     public ICollection<Token> Tokens { get; set; }
 
