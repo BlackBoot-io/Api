@@ -40,6 +40,10 @@ public class DropController : BaseController
     public async Task<IActionResult> GetAllAsync(int dropId, CancellationToken cancellationToken = default)
         => Ok(await _dropsService.GetImageUri(dropId, cancellationToken));
 
+
+    [HttpGet("drop/{id}/holders")]
+    public async Task<IActionResponse> GetAllHoldersAsync(int dropId, CancellationToken cancellationToken = default)
+        => Ok(await _dropsService.GetAllHoldersAsync(dropId, cancellationToken));
     /// <summary>
     /// Deactive/Active a drop with a code
     /// </summary>
