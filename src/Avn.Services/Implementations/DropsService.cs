@@ -281,6 +281,7 @@ public class DropsService : IDropsService
              }, TemplateType.DropRejected);
         return new ActionResponse<bool>(true);
     }
+
     /// <summary>
     /// Get Image Uri In Ipfs
     /// Then notify the user
