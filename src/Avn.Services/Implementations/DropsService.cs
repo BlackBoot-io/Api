@@ -291,14 +291,13 @@ public class DropsService : IDropsService
     public async Task<IActionResponse<string>> GetImageUri(int dropId, CancellationToken cancellationToken = default)
     {
         var drop = await _uow.DropRepo.Queryable()
-                .FirstOrDefaultAsync(x => x.Id == dropId && x.DropStatus == DropStatus.Confirmed && !string.IsNullOrEmpty(x.ImageContentId), cancellationToken);
+                .FirstOrDefaultAsync(x => x.Id == dropId && 
+                                     x.DropStatus == DropStatus.Confirmed &&
+                                     !string.IsNullOrEmpty(x.ImageContentId), cancellationToken);
         if (drop is null)
             return new ActionResponse<string>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
-
-        var address = string.Format("{0}/{1}", _configuration.Value["IPFS:Gateway:Url"], drop.ImageContentId);
-
-        return new ActionResponse<string>(ActionResponseStatusCode.Redirect, data: address);
-
+        return new ActionResponse<string>(ActionResponseStatusCode.Redirect,
+            data: $"{_configuration.Value["IPFS:Gateway:Url"]}/{drop.ImageContentId}");
     }
 }
