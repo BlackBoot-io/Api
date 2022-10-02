@@ -16,7 +16,7 @@ public record CreateDropDto
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public DateTime ExpireDate { get; set; }
-    public bool IsVirtual { get; set; }
+    public bool IsVirtual { get; set; } 
     public bool IsPrivate { get; set; }
     public bool IsTest { get; set; }
     public IFormFile? File { get; set; }
