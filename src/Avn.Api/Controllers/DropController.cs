@@ -37,7 +37,7 @@ public class DropController : BaseController
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("/drop/{dropId}/image")]
-    public async Task<IActionResult> GetAllAsync(int dropId, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetImageUri(int dropId, CancellationToken cancellationToken = default)
         => Ok(await _dropsService.GetImageUri(dropId, cancellationToken));
 
     /// <summary>
