@@ -21,6 +21,6 @@ public static class RandomStringGenerator
         var rng = RandomNumberGenerator.Create();
         byte[] rno = new byte[length];
         rng.GetBytes(rno);
-        return Convert.ToBase64String(rno)[..length];
+        return Convert.ToBase64String(rno).Replace("/",string.Empty)[..length];
     }
 }
