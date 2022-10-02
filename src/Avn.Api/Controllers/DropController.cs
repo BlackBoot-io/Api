@@ -78,9 +78,9 @@ public class DropController : BaseController
     /// <param name="code"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPost]
-    public async Task<IActionResult> ChangeStateAsync(Guid code, CancellationToken cancellationToken = default)
-         => Ok(await _dropsService.ChangeStateAsync(code, cancellationToken));
+    [HttpPost("/drop/{dropCode:guid}/ChangeState")]
+    public async Task<IActionResult> ChangeStateAsync(Guid dropCode, CancellationToken cancellationToken = default)
+         => Ok(await _dropsService.ChangeStateAsync(dropCode, cancellationToken));
 
     /// <summary>
     /// Confirm a drop by admin then store file (Image + Metadata) in IPFS
