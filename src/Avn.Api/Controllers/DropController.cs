@@ -40,6 +40,17 @@ public class DropController : BaseController
         => Ok(await _dropsService.GetAsync(CurrentUserId, dropId, cancellationToken));
 
     /// <summary>
+    /// Get a drop by id and userId
+    /// </summary>
+    /// <param name="dropId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("/drop/{dropCode:guid}")]
+    public async Task<IActionResult> GetAsync(Guid dropCode, CancellationToken cancellationToken = default)
+        => Ok(await _dropsService.GetAsync(CurrentUserId, dropCode, cancellationToken));
+
+
+    /// <summary>
     /// Redirect To Ifps Gateway For Drops Image
     /// </summary>
     /// <param name="dropId"></param>

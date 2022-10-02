@@ -162,6 +162,48 @@ public class DropsService : IDropsService
                      }
                  }).FirstOrDefaultAsync(cancellationToken));
 
+    /// <summary>
+    /// Get a drop by dropCode and userId
+    /// </summary>
+    /// <param name="userId">PK user entity</param>
+    /// <param name="dropId">PK drop entity</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>object</returns>
+    public async Task<IActionResponse<object>> GetAsync(Guid userId, Guid dropCode, CancellationToken cancellationToken = default)
+      => new ActionResponse<object>(await _uow.DropRepo.Queryable()
+                 .AsNoTracking()
+                 .Where(x => x.UserId == userId && x.Code == dropCode)
+                 .Select(row => new
+                 {
+                     row.Id,
+                     row.Code,
+                     row.Name,
+                     row.Description,
+                     DeliveryType = row.DeliveryType.ToString(),
+                     row.DropContentId,
+                     row.ImageContentId,
+                     row.Location,
+                     row.StartDate,
+                     row.EndDate,
+                     row.ExpireDate,
+                     row.IsPrivate,
+                     row.IsVirtual,
+                     CategoryType = row.CategoryType.ToString(),
+                     row.Count,
+                     row.IsActive,
+                     row.IsTest,
+                     DropStatus = row.DropStatus.ToString(),
+                     Project = new
+                     {
+                         Id = row.ProjectId,
+                         Name = row.Project != null ? row.Project.Name : "",
+                     },
+                     Network = new
+                     {
+                         Id = row.NetworkId,
+                         Name = row.Network != null ? row.Network.Name : "",
+                     }
+                 }).FirstOrDefaultAsync(cancellationToken));
 
     /// <summary>
     /// Get all drops of a user by UserId
