@@ -78,7 +78,7 @@ public class DropController : BaseController
     /// <param name="code"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPost("/drop/{dropCode:guid}/ChangeState")]
+    [HttpPost("/drop/{dropCode:guid}/changeState")]
     public async Task<IActionResult> ChangeStateAsync(Guid dropCode, CancellationToken cancellationToken = default)
          => Ok(await _dropsService.ChangeStateAsync(dropCode, cancellationToken));
 
