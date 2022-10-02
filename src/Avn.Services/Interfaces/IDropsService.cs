@@ -56,7 +56,7 @@ public interface IDropsService : IScopedDependency
     /// <param name="dropId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<object> GetAllHoldersAsync(Guid currentUserId, int dropId, CancellationToken cancellationToken);
+    Task<IActionResponse<object>> GetAllHoldersAsync(Guid currentUserId, int dropId, CancellationToken cancellationToken);
 
     /// <summary>
     /// Get Image Uri In Ipfs
