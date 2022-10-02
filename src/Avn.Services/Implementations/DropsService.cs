@@ -314,8 +314,8 @@ public class DropsService : IDropsService
     /// <param name="dropId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<object> GetAllHoldersAsync(Guid currentUserId, int dropId, CancellationToken cancellationToken)
-        => await _uow.DropRepo.Queryable()
+    public async Task<IActionResponse<object>> GetAllHoldersAsync(Guid currentUserId, int dropId, CancellationToken cancellationToken)
+        => new ActionResponse<object>(await _uow.DropRepo.Queryable()
                              .Include(X => X.Tokens)
                              .Where(X => X.UserId == currentUserId && X.Id == dropId)
                              .Select(X => new
@@ -333,5 +333,5 @@ public class DropsService : IDropsService
                                  })
                              })
                             .AsNoTracking()
-                            .ToListAsync(cancellationToken);
+                            .ToListAsync(cancellationToken));
 }
