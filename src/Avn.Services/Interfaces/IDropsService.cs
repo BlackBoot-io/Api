@@ -19,6 +19,17 @@ public interface IDropsService : IScopedDependency
     /// <param name="cancellationToken"></param>
     /// <returns>object</returns>
     Task<IActionResponse<object>> GetAsync(Guid userId, int dropId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Get a drop by dropCode and userId
+    /// </summary>
+    /// <param name="userId">PK user entity</param>
+    /// <param name="dropId">PK drop entity</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>object</returns>
+    Task<IActionResponse<object>> GetAsync(Guid userId, Guid dropCode, CancellationToken cancellationToken = default);
+
+
     /// <summary>
     /// Get all drops of a user by UserId
     /// </summary>
