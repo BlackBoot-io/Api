@@ -304,4 +304,34 @@ public class DropsService : IDropsService
         return new ActionResponse<string>(ActionResponseStatusCode.Redirect,
             data: $"{_configuration.Value["IPFS:Gateway:Url"]}/{drop.ImageContentId}");
     }
+
+    /// <summary>
+    /// For the specified drop ID, this endpoint returns paginated info on the token holders including
+    /// the token ID, drop transfer count, 
+    /// and the owner's information like address, and amount of drops owned.
+    /// </summary>
+    /// <param name="currentUserId"></param>
+    /// <param name="dropId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public async Task<IActionResponse<object>> GetAllHoldersAsync(Guid currentUserId, int dropId, CancellationToken cancellationToken)
+        => new ActionResponse<object>(await _uow.DropRepo.Queryable()
+                             .Include(X => X.Tokens)
+                             .Where(X => X.UserId == currentUserId && X.Id == dropId)
+                             .Select(X => new
+                             {
+                                 X.Name,
+                                 X.Description,
+                                 X.Count,
+                                 Tokens = X.Tokens.Select(T => new
+                                 {
+                                     T.OwnerWalletAddress,
+                                     T.IsMinted,
+                                     T.Number,
+                                     T.ContractTokenId,
+                                     T.UniqueCode
+                                 })
+                             })
+                            .AsNoTracking()
+                            .ToListAsync(cancellationToken));
 }

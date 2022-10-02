@@ -41,6 +41,18 @@ public class DropController : BaseController
         => Ok(await _dropsService.GetImageUri(dropId, cancellationToken));
 
     /// <summary>
+    /// For the specified drop ID, this endpoint returns paginated info on the token holders including
+    /// the token ID, drop transfer count, 
+    /// and the owner's information like address, and amount of drops owned.
+    /// </summary>
+    /// <param name="dropId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("drop/{dropId}/holders")]
+    public async Task<IActionResult> GetAllHoldersAsync(int dropId, CancellationToken cancellationToken = default)
+        => Ok(await _dropsService.GetAllHoldersAsync(CurrentUserId, dropId, cancellationToken));
+
+    /// <summary>
     /// Deactive/Active a drop with a code
     /// </summary>
     /// <param name="code"></param>
