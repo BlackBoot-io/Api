@@ -18,18 +18,22 @@ public class TokensService : ITokensService
     {
         var result = await _uow.TokenRepo.Queryable().Select(row => new TokenDto
         {
+            //Token
+            TokenId = row.Id,
+            UniqueCode = row.UniqueCode,
+            OwerWalletAddress = row.OwnerWalletAddress,
+            IsBurned = row.IsBurned,
+            IsMinted = row.IsMinted,
+
+            //Drop
             DropId = row.Drop.Id,
             DropName = row.Drop.Name,
             DropCategoryType = row.Drop.CategoryType,
             Network = row.Drop.Network.Name,
             StartDate = row.Drop.StartDate,
             EndDate = row.Drop.EndDate,
-            ExpireDate = row.Drop.ExpireDate,
-            TokenId = row.Id,
-            UniqueCode = row.UniqueCode,
-            OwerWalletAddress = row.OwnerWalletAddress,
-            IsBurned = row.IsBurned,
-            IsMinted = row.IsMinted
+            ExpireDate = row.Drop.ExpireDate
+
         }).FirstOrDefaultAsync(x => x.UniqueCode == uniqueCode, cancellationToken);
 
         if (result is null)
