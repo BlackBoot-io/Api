@@ -114,7 +114,7 @@ public class DropsService : IDropsService
 
 
         if (item.IsTest)
-            await ConfirmAsync(drop.Id, cancellationToken);
+            await ConfirmAsync(drop.Code, cancellationToken);
 
         return new ActionResponse<Guid>(drop.Code);
     }
@@ -268,10 +268,10 @@ public class DropsService : IDropsService
         return new ActionResponse<bool>(true);
     }
 
-    public async Task<IActionResponse<bool>> ConfirmAsync(int dropId, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<bool>> ConfirmAsync(Guid dropCode, CancellationToken cancellationToken = default)
     {
         var drop = await _uow.DropRepo.Queryable()
-                        .FirstOrDefaultAsync(x => x.Id == dropId && x.DropStatus == DropStatus.Pending, cancellationToken);
+                        .FirstOrDefaultAsync(x => x.Code == dropCode && x.DropStatus == DropStatus.Pending, cancellationToken);
         if (drop is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
