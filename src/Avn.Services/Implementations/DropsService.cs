@@ -8,7 +8,6 @@ public class DropsService : IDropsService
 {
     private readonly IAppUnitOfWork _uow;
     private readonly Lazy<INftStorageAdapter> _nftStorageAdaptar;
-    private readonly Lazy<ITokensService> _tokensService;
     private readonly Lazy<IAttachmentService> _attachmentService;
     private readonly Lazy<ISubscriptionsService> _subscriptionService;
     private readonly Lazy<INotificationsService> _notificationService;
@@ -26,7 +25,6 @@ public class DropsService : IDropsService
     {
         _uow = uow;
         _nftStorageAdaptar = nftStorageAdaptar;
-        _tokensService = tokensService;
         _attachmentService = attachmentService;
         _subscriptionService = subscriptionService;
         _notificationService = notificationService;
@@ -120,6 +118,50 @@ public class DropsService : IDropsService
 
         return new ActionResponse<Guid>(drop.Code);
     }
+
+    /// <summary>
+    /// Get a drop by dropId and userId
+    /// </summary>
+    /// <param name="userId">PK user entity</param>
+    /// <param name="dropId">PK drop entity</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>object</returns>
+    public async Task<IActionResponse<object>> GetAsync(Guid userId, int dropId, CancellationToken cancellationToken = default)
+      => new ActionResponse<object>(await _uow.DropRepo.Queryable()
+                 .AsNoTracking()
+                 .Where(x => x.UserId == userId && x.Id == dropId)
+                 .Select(row => new
+                 {
+                     row.Id,
+                     row.Code,
+                     row.Name,
+                     row.Description,
+                     DeliveryType = row.DeliveryType.ToString(),
+                     row.DropContentId,
+                     row.ImageContentId,
+                     row.Location,
+                     row.StartDate,
+                     row.EndDate,
+                     row.ExpireDate,
+                     row.IsPrivate,
+                     row.IsVirtual,
+                     CategoryType = row.CategoryType.ToString(),
+                     row.Count,
+                     row.IsActive,
+                     row.IsTest,
+                     DropStatus = row.DropStatus.ToString(),
+                     Project = new
+                     {
+                         Id = row.ProjectId,
+                         Name = row.Project != null ? row.Project.Name : "",
+                     },
+                     Network = new
+                     {
+                         Id = row.NetworkId,
+                         Name = row.Network != null ? row.Network.Name : "",
+                     }
+                 }).FirstOrDefaultAsync(cancellationToken));
+
 
     /// <summary>
     /// Get all drops of a user by UserId
