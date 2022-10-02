@@ -70,6 +70,7 @@ public class UsersService : IUsersService
                 WalletAddress = user.WalletAddress,
                 EmailIsApproved = false
             };
+            
             await _uow.UserRepo.AddAsync(model, cancellationToken);
             var dbResult = await _uow.SaveChangesAsync(cancellationToken);
             if (!dbResult.ToSaveChangeResult())
