@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.Data", "2.Data", "{900736
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Services", "3.Services", "{26628D0D-A540-4515-8375-341AD7E06745}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.Api", "4.Api", "{6B433A98-9DD6-4D86-9077-0E57FF7C425D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.Endpoints", "4.Endpoints", "{6B433A98-9DD6-4D86-9077-0E57FF7C425D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avn.Shared", "src\Avn.Shared\Avn.Shared.csproj", "{1356EAD2-C493-432E-A1D4-A88C93917CD3}"
 EndProject
@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avn.Services", "src\Avn.Ser
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avn.Api", "src\Avn.Api\Avn.Api.csproj", "{FFC1556A-65EB-46DF-8ED5-0CBA808C0310}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avn.Services.External", "src\Avn.Services.External\Avn.Services.External.csproj", "{1397B607-1436-4848-951F-8C68869BE457}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avn.Services.External", "src\Avn.Services.External\Avn.Services.External.csproj", "{1397B607-1436-4848-951F-8C68869BE457}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
