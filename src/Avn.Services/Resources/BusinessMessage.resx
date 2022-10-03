@@ -129,6 +129,15 @@
   <data name="DouplicateEmail" xml:space="preserve">
     <value>DouplicateEmail</value>
   </data>
+  <data name="DropHasNoImage" xml:space="preserve">
+    <value>DropHasNoImage</value>
+  </data>
+  <data name="DropIsForTest" xml:space="preserve">
+    <value>DropIsForTest</value>
+  </data>
+  <data name="DropNotConfirmed" xml:space="preserve">
+    <value>DropNotConfirmed</value>
+  </data>
   <data name="InvalidFileContent" xml:space="preserve">
     <value>InvalidFileContent</value>
   </data>

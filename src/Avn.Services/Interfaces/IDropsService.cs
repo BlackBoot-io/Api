@@ -51,10 +51,10 @@ public interface IDropsService : IScopedDependency
     /// Then update cid
     /// Execute Delivery Strategy (link or Qr)
     /// </summary>
-    /// <param name="DropId"></param>
+    /// <param name="dropCode"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>bool</returns>
-    Task<IActionResponse<bool>> ConfirmAsync(int dropId, CancellationToken cancellationToken = default);
+    Task<IActionResponse<bool>> ConfirmAsync(Guid dropCode, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Reject a drop by admin for a resean

@@ -68,7 +68,7 @@ public class DropController : BaseController
     /// <param name="dropId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpGet("drop/{dropId}/holders")]
+    [HttpGet("/drop/{dropId}/holders")]
     public async Task<IActionResult> GetAllHoldersAsync(int dropId, CancellationToken cancellationToken = default)
         => Ok(await _dropsService.GetAllHoldersAsync(CurrentUserId, dropId, cancellationToken));
 
@@ -78,9 +78,9 @@ public class DropController : BaseController
     /// <param name="code"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPost]
-    public async Task<IActionResult> ChangeStateAsync(Guid code, CancellationToken cancellationToken = default)
-         => Ok(await _dropsService.ChangeStateAsync(code, cancellationToken));
+    [HttpPost("/drop/{dropCode:guid}/changeState")]
+    public async Task<IActionResult> ChangeStateAsync(Guid dropCode, CancellationToken cancellationToken = default)
+         => Ok(await _dropsService.ChangeStateAsync(dropCode, cancellationToken));
 
     /// <summary>
     /// Confirm a drop by admin then store file (Image + Metadata) in IPFS
@@ -90,9 +90,9 @@ public class DropController : BaseController
     /// <param name="DropId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPost]
-    public async Task<IActionResult> ConfirmAsync(int dropId, CancellationToken cancellationToken = default)
-        => Ok(await _dropsService.ConfirmAsync(dropId, cancellationToken));
+    [HttpPost("/drop/{dropCode:guid}/confirm")]
+    public async Task<IActionResult> ConfirmAsync(Guid dropCode, CancellationToken cancellationToken = default)
+        => Ok(await _dropsService.ConfirmAsync(dropCode, cancellationToken));
 
     /// <summary>
     /// Reject a drop by admin for a resean
