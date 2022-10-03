@@ -1,7 +1,7 @@
 <!-- PROJECT LOGO -->
 <div align="center">
   <a href="https://github.com/BlackBoot-io/Api">
-    <img src="https://github.com/BlackBoot-io/Api/blob/Develop/logo.jpg" alt="Logo" width="80" height="80">
+    <img src="https://github.com/BlackBoot-io/Api/blob/Develop/logo.jpg" alt="Logo" width="80" height="80" style="border-radius:50%">
   </a>
   <h3 align="center">Avanod ecosystem</h3>
   <p align="center">
