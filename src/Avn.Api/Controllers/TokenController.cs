@@ -6,6 +6,18 @@ public class TokenController : BaseController
 
     public TokenController(ITokensService tokensService) => _tokensService = tokensService;
 
+
+
+    /// <summary>
+    /// get all Minted Token for Specific Wallet address
+    /// </summary>
+    /// <param name="walletAddress"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("/scan/{walletAddress}")]
+    public async Task<IActionResult> GetAllAsync(string walletAddress, CancellationToken cancellationToken)
+        => Ok(await _tokensService.GetAllAsync(walletAddress, cancellationToken));
+
     /// <summary>
     /// Get Token By Token UniqueCode
     /// </summary>
