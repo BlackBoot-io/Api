@@ -21,6 +21,16 @@ public interface ITokensService : IScopedDependency
     Task<IActionResponse<TokenDto>> GetAsync(string uniqueCode, CancellationToken cancellationToken = default);
 
 
+    /// <summary>
+    /// get the token for specific drop and walleraddress
+    /// </summary>
+    /// <param name="walletAddress"></param>
+    /// <param name="dropCode"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<IActionResponse<TokenDto>> GetAsync(string walletAddress, Guid dropCode, CancellationToken cancellationToken = default);
+
+
 
     /// <summary>
     /// Add a token from Qr delivery Type
@@ -51,7 +61,7 @@ public interface ITokensService : IScopedDependency
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<IActionResponse<bool>> ConnectWalletAsync(ConnectWalletDto item, CancellationToken cancellationToken = default);
-   
+
     /// <summary>
     /// update token which is minted by user
     /// then update contract tokenId
