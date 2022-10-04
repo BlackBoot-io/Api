@@ -49,16 +49,15 @@ public class DropController : BaseController
     public async Task<IActionResult> GetAsync(Guid dropCode, CancellationToken cancellationToken = default)
         => Ok(await _dropsService.GetAsync(CurrentUserId, dropCode, cancellationToken));
 
-
     /// <summary>
     /// Redirect To Ifps Gateway For Drops Image
     /// </summary>
     /// <param name="dropId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpGet("/drop/{dropId}/image")]
-    public async Task<IActionResult> GetImageUri(int dropId, CancellationToken cancellationToken = default)
-        => Ok(await _dropsService.GetImageUri(dropId, cancellationToken));
+    [HttpGet("/drop/{dropCode:guid}/image")]
+    public async Task<IActionResult> GetImageUri(Guid dropCode, CancellationToken cancellationToken = default)
+        => Ok(await _dropsService.GetImageUri(dropCode, cancellationToken));
 
     /// <summary>
     /// For the specified drop ID, this endpoint returns paginated info on the token holders including
@@ -68,9 +67,9 @@ public class DropController : BaseController
     /// <param name="dropId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpGet("/drop/{dropId}/holders")]
-    public async Task<IActionResult> GetAllHoldersAsync(int dropId, CancellationToken cancellationToken = default)
-        => Ok(await _dropsService.GetAllHoldersAsync(CurrentUserId, dropId, cancellationToken));
+    [HttpGet("/drop/{dropCode:guid}/holders")]
+    public async Task<IActionResult> GetAllHoldersAsync(Guid dropCode, CancellationToken cancellationToken = default)
+        => Ok(await _dropsService.GetAllHoldersAsync(CurrentUserId, dropCode, cancellationToken));
 
     /// <summary>
     /// Deactive/Active a drop with a code
@@ -80,7 +79,7 @@ public class DropController : BaseController
     /// <returns></returns>
     [HttpPost("/drop/{dropCode:guid}/changeState")]
     public async Task<IActionResult> ChangeStateAsync(Guid dropCode, CancellationToken cancellationToken = default)
-         => Ok(await _dropsService.ChangeStateAsync(dropCode, cancellationToken));
+        => Ok(await _dropsService.ChangeStateAsync(dropCode, cancellationToken));
 
     /// <summary>
     /// Confirm a drop by admin then store file (Image + Metadata) in IPFS
@@ -98,11 +97,11 @@ public class DropController : BaseController
     /// Reject a drop by admin for a resean
     /// Then notify the user
     /// </summary>
-    /// <param name="dropId">PrimaryKey of drop entity</param>
+    /// <param name="dropCode">PrimaryKey of drop entity</param>
     /// <param name="reviewMessage">resean message</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPost]
-    public async Task<IActionResult> RejectAsync(int dropId, string reviewMessage, CancellationToken cancellationToken = default)
-        => Ok(await _dropsService.RejectAsync(dropId, reviewMessage, cancellationToken));
+    [HttpPost("/drop/{dropCode:guid}/reject")]
+    public async Task<IActionResult> RejectAsync(Guid dropCode, string reviewMessage, CancellationToken cancellationToken = default)
+        => Ok(await _dropsService.RejectAsync(dropCode, reviewMessage, cancellationToken));
 }
