@@ -29,6 +29,17 @@ public class TokenController : BaseController
         => Ok(await _tokensService.GetAsync(uniqueCode, cancellationToken));
 
     /// <summary>
+    /// check if the walletAddress has the drop then return the token detail
+    /// </summary>
+    /// <param name="walletAddress"></param>
+    /// <param name="dropCode"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("/Token/Scan/{walletAddress}/{dropCode}")]
+    public async Task<IActionResult> GetAsync(string walletAddress, Guid dropCode, CancellationToken cancellationToken)
+        => Ok(await _tokensService.GetAsync(walletAddress, dropCode, cancellationToken));
+
+    /// <summary>
     /// Update user's wallet address into token
     /// </summary>
     /// <param name="id"></param>
@@ -38,7 +49,7 @@ public class TokenController : BaseController
     [HttpPost]
     public async Task<IActionResult> ConnectWalletAsync(ConnectWalletDto item, CancellationToken cancellationToken)
         => Ok(await _tokensService.ConnectWalletAsync(item, cancellationToken));
-    
+
     /// <summary>
     /// Update user's wallet address into token
     /// </summary>

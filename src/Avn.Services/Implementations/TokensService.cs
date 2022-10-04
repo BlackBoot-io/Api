@@ -73,6 +73,42 @@ public class TokensService : ITokensService
     }
 
     /// <summary>
+    /// get the token for specific drop and walleraddress
+    /// </summary>
+    /// <param name="walletAddress"></param>
+    /// <param name="dropCode"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public async Task<IActionResponse<TokenDto>> GetAsync(string walletAddress, Guid dropCode, CancellationToken cancellationToken = default)
+    {
+        var result = await _uow.TokenRepo.Queryable().Select(row => new TokenDto
+        {
+            //Token
+            TokenId = row.Id,
+            UniqueCode = row.UniqueCode,
+            OwerWalletAddress = row.OwnerWalletAddress,
+            IsBurned = row.IsBurned,
+            IsMinted = row.IsMinted,
+
+            //Drop
+            DropId = row.Drop.Id,
+            DropCode = row.Drop.Code,
+            DropName = row.Drop.Name,
+            DropCategoryType = row.Drop.CategoryType,
+            Network = row.Drop.Network.Name,
+            StartDate = row.Drop.StartDate,
+            EndDate = row.Drop.EndDate,
+            ExpireDate = row.Drop.ExpireDate
+
+        }).FirstOrDefaultAsync(x => x.OwerWalletAddress == walletAddress && x.DropCode == dropCode, cancellationToken);
+
+        if (result is null)
+            return new ActionResponse<TokenDto>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
+
+        return new ActionResponse<TokenDto>(result);
+    }
+
+    /// <summary>
     /// Add a token from Qr delivery Type
     /// this is an internal API
     /// </summary>
