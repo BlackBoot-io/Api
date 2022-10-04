@@ -8,4 +8,4 @@ namespace Avn.Api.Controllers;
 public class BaseController : ControllerBase
 {
     public Guid CurrentUserId => HttpContext?.User?.Identity?.GetUserIdAsGuid() ?? Guid.Empty;
-}
+} 
