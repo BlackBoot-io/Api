@@ -14,7 +14,7 @@ public class TokenController : BaseController
     /// <param name="walletAddress"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpGet("/scan/{walletAddress}")]
+    [HttpGet("/Token/Scan/{walletAddress}")]
     public async Task<IActionResult> GetAllAsync(string walletAddress, CancellationToken cancellationToken)
         => Ok(await _tokensService.GetAllAsync(walletAddress, cancellationToken));
 
