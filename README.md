@@ -1,7 +1,7 @@
 <!-- PROJECT LOGO -->
 <div align="center">
   <a href="https://github.com/BlackBoot-io/Api">
-    <img src="https://github.com/BlackBoot-io/Api/blob/Develop/logo.jpg" alt="Logo" width="80" height="80">
+    <img src="https://github.com/BlackBoot-io/Api/blob/Develop/logo.jpg" alt="Logo" width="80" height="80" style="border-radius:50%">
   </a>
   <h3 align="center">Avanod ecosystem</h3>
   <p align="center">
@@ -77,6 +77,7 @@ Before using our API, we offer a quick read of our Help Center in order to bette
 
 ### Built With
 
+* [![Asp.net][Asp.net]][Asp.net-url]
 * [![Next][Next.js]][Next-url]
 * [![React][React.js]][React-url]
 * [![Vue][Vue.js]][Vue-url]
@@ -159,5 +160,7 @@ Project Link: [Avanod](https://github.com/BlackBoot-io/Api)
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
+[Asp.net]: https://img.shields.io/badge/asp.net-35495E?style=for-the-badge&logo=.net&logoColor=61DAFB
+[Asp.net-url]: https://dotnet.microsoft.com/en-us/learn/aspnet/what-is-aspnet-core
 [Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
 [Vue-url]: https://vuejs.org/

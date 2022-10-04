@@ -11,4 +11,3 @@ public interface IGenericRepo<TEntity> where TEntity : class
     public void Remove(TEntity entity);
     public void RemoveRange(IEnumerable<TEntity> entities);
 }
-

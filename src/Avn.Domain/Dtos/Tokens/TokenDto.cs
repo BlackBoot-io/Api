@@ -2,7 +2,6 @@
 
 public class TokenDto
 {
-
     //Drop
     public int DropId { get; set; }
     public string DropName { get; set; }
@@ -12,12 +11,10 @@ public class TokenDto
     public DateTime? EndDate { get; set; }
     public DateTime ExpireDate { get; set; }
 
-
-    //token
+    //Token
     public Guid TokenId { get; set; }
     public string UniqueCode { get; set; }
     public string OwerWalletAddress { get; set; }
     public bool IsMinted { get; set; }
     public bool IsBurned { get; set; }
-
 }

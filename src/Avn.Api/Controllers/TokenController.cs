@@ -36,8 +36,8 @@ public class TokenController : BaseController
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> ConnectWalletAsync(Guid id, string walletAdress, CancellationToken cancellationToken)
-        => Ok(await _tokensService.ConnectWalletAsync(id, walletAdress, cancellationToken));
+    public async Task<IActionResult> ConnectWalletAsync(ConnectWalletDto item, CancellationToken cancellationToken)
+        => Ok(await _tokensService.ConnectWalletAsync(item, cancellationToken));
     
     /// <summary>
     /// Update user's wallet address into token
