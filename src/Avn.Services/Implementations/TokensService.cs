@@ -17,7 +17,7 @@ public class TokensService : ITokensService
     /// <returns></returns>
     public async Task<IActionResponse<IEnumerable<TokenDto>>> GetAllAsync(string walletAddress, CancellationToken cancellationToken = default)
     {
-        var result = await _uow.TokenRepo.Queryable().AsQueryable().Where(x => x.IsMinted && x.OwnerWalletAddress == walletAddress).Select(row => new TokenDto
+        var result = await _uow.TokenRepo.Queryable().Where(x => x.IsMinted && x.OwnerWalletAddress == walletAddress).Select(row => new TokenDto
         {
             DropId = row.Drop.Id,
             DropName = row.Drop.Name,
