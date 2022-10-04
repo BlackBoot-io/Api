@@ -40,7 +40,7 @@ public interface ITokensService : IScopedDependency
     /// <param name="walletAdress"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IActionResponse<bool>> ConnectWalletAsync(Guid id, string walletAdress, CancellationToken cancellationToken = default);
+    Task<IActionResponse<bool>> ConnectWalletAsync(ConnectWalletDto item, CancellationToken cancellationToken = default);
    
     /// <summary>
     /// update token which is minted by user

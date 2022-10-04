@@ -104,13 +104,13 @@ public class TokensService : ITokensService
     /// <param name="walletAdress"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<IActionResponse<bool>> ConnectWalletAsync(Guid id, string walletAdress, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<bool>> ConnectWalletAsync(ConnectWalletDto item, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.TokenRepo.Queryable().FirstOrDefaultAsync(x => x.Id == id && string.IsNullOrEmpty(x.OwnerWalletAddress), cancellationToken);
+        var model = await _uow.TokenRepo.Queryable().FirstOrDefaultAsync(x => x.Id == item.Id && string.IsNullOrEmpty(x.OwnerWalletAddress), cancellationToken);
         if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
-        model.OwnerWalletAddress = walletAdress;
+        model.OwnerWalletAddress = item.WalletAdress;
 
         var result = await _uow.SaveChangesAsync(cancellationToken);
         if (!result.ToSaveChangeResult())
