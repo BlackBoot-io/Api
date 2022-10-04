@@ -166,7 +166,7 @@ public class DropsService : IDropsService
     /// Get a drop by dropCode and userId
     /// </summary>
     /// <param name="userId">PK user entity</param>
-    /// <param name="dropId">PK drop entity</param>
+    /// <param name="dropCode">PK drop entity</param>
     /// <param name="cancellationToken"></param>
     /// <returns>object</returns>
     public async Task<IActionResponse<object>> GetAsync(Guid userId, Guid dropCode, CancellationToken cancellationToken = default)
@@ -250,12 +250,12 @@ public class DropsService : IDropsService
     /// <summary>
     /// Deactive/Activate a drop with a code
     /// </summary>
-    /// <param name="code"></param>
+    /// <param name="dropCode"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<IActionResponse<bool>> ChangeStateAsync(Guid code, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<bool>> ChangeStateAsync(Guid dropCode, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.DropRepo.Queryable().FirstOrDefaultAsync(x => x.Code == code, cancellationToken);
+        var model = await _uow.DropRepo.Queryable().FirstOrDefaultAsync(x => x.Code == dropCode, cancellationToken);
         if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
@@ -341,13 +341,13 @@ public class DropsService : IDropsService
     /// <summary>
     /// this method called by admin, and rejects a drop for a resean
     /// </summary>
-    /// <param name="dropId">primaryKey of drop entity</param>
+    /// <param name="dropCode">primaryKey of drop entity</param>
     /// <param name="reviewMessage">reason</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<IActionResponse<bool>> RejectAsync(int dropId, string reviewMessage, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<bool>> RejectAsync(Guid dropCode, string reviewMessage, CancellationToken cancellationToken = default)
     {
-        var drop = await _uow.DropRepo.Queryable().FirstOrDefaultAsync(x => x.Id == dropId && x.DropStatus == DropStatus.Pending, cancellationToken);
+        var drop = await _uow.DropRepo.Queryable().FirstOrDefaultAsync(x => x.Code == dropCode && x.DropStatus == DropStatus.Pending, cancellationToken);
         if (drop is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
@@ -373,12 +373,12 @@ public class DropsService : IDropsService
     /// Get Image Uri In Ipfs
     /// Then notify the user
     /// </summary>
-    /// <param name="dropId">PrimaryKey of drop entity</param>
+    /// <param name="dropCode">PrimaryKey of drop entity</param>
     /// <param name="cancellationToken"></param>
     /// <returns>string</returns>
-    public async Task<IActionResponse<string>> GetImageUri(int dropId, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<string>> GetImageUri(Guid dropCode, CancellationToken cancellationToken = default)
     {
-        var drop = await _uow.DropRepo.Queryable().FirstOrDefaultAsync(x => x.Id == dropId, cancellationToken);
+        var drop = await _uow.DropRepo.Queryable().FirstOrDefaultAsync(x => x.Code == dropCode, cancellationToken);
 
         if (drop is null)
             return new ActionResponse<string>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
@@ -402,13 +402,13 @@ public class DropsService : IDropsService
     /// and the owner's information like address, and amount of drops owned.
     /// </summary>
     /// <param name="currentUserId"></param>
-    /// <param name="dropId"></param>
+    /// <param name="dropCode"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<IActionResponse<object>> GetAllHoldersAsync(Guid currentUserId, int dropId, CancellationToken cancellationToken)
+    public async Task<IActionResponse<object>> GetAllHoldersAsync(Guid currentUserId, Guid dropCode, CancellationToken cancellationToken)
         => new ActionResponse<object>(await _uow.DropRepo.Queryable()
                              .Include(X => X.Tokens)
-                             .Where(X => X.UserId == currentUserId && X.Id == dropId)
+                             .Where(X => X.UserId == currentUserId && X.Code == dropCode)
                              .Select(X => new
                              {
                                  X.Name,
