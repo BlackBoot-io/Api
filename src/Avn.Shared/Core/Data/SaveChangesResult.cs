@@ -29,6 +29,7 @@ public class SaveChangesResult
     public bool IsSuccess { get; set; }
     public SaveChangesResultType ResultType { get; set; }
     public string Message { get; set; }
+
 }
 
 public enum SaveChangesResultType : byte

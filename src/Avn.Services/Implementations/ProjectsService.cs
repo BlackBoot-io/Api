@@ -46,7 +46,7 @@ public class ProjectsService : IProjectsService
         await _uow.ProjectRepo.AddAsync(model, cancellationToken);
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.IsSuccess)
-            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.AddProjectOperationFail);
+            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, dbResult.Message);
 
         return new ActionResponse<Guid>(model.Id);
     }
@@ -68,7 +68,7 @@ public class ProjectsService : IProjectsService
 
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.IsSuccess)
-            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.AddProjectOperationFail);
+            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, dbResult.Message);
 
         return new ActionResponse<Guid>(model.Id);
     }
@@ -90,7 +90,7 @@ public class ProjectsService : IProjectsService
 
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.IsSuccess)
-            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.AddProjectOperationFail);
+            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, dbResult.Message);
 
         return new ActionResponse<Guid>(model.Id);
     }

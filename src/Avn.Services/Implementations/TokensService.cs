@@ -131,7 +131,7 @@ public class TokensService : ITokensService
         await _uow.TokenRepo.AddAsync(model, cancellationToken);
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.IsSuccess)
-            return new ActionResponse<string>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+            return new ActionResponse<string>(ActionResponseStatusCode.ServerError, dbResult.Message);
 
         return new ActionResponse<string>(model.UniqueCode);
     }
@@ -157,7 +157,7 @@ public class TokensService : ITokensService
         await _uow.TokenRepo.AddRangeAsync(models, cancellationToken);
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.IsSuccess)
-            return new ActionResponse<IEnumerable<string>>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+            return new ActionResponse<IEnumerable<string>>(ActionResponseStatusCode.ServerError, dbResult.Message);
 
         return new ActionResponse<IEnumerable<string>>(models.Select(x => x.UniqueCode));
     }
@@ -179,7 +179,7 @@ public class TokensService : ITokensService
 
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.IsSuccess)
-            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, dbResult.Message);
 
         return new ActionResponse<bool>(true);
     }
@@ -205,7 +205,7 @@ public class TokensService : ITokensService
 
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.IsSuccess)
-            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, dbResult.Message);
 
         return new ActionResponse<bool>(true);
     }
@@ -229,7 +229,7 @@ public class TokensService : ITokensService
 
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.IsSuccess)
-            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, dbResult.Message);
 
         return new ActionResponse<bool>(true);
     }

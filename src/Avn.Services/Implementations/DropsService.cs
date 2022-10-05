@@ -101,7 +101,7 @@ public class DropsService : IDropsService
 
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.IsSuccess)
-            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, dbResult.Message);
 
         await _notificationService.Value.SendAsync(item.UserId,
             new()
@@ -263,7 +263,7 @@ public class DropsService : IDropsService
 
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.IsSuccess)
-            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, dbResult.Message);
 
         return new ActionResponse<bool>(true);
     }
@@ -311,7 +311,7 @@ public class DropsService : IDropsService
         {
             var dbResult = await _uow.SaveChangesAsync(cancellationToken);
             if (!dbResult.IsSuccess)
-                return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+                return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, dbResult.Message);
         }
         catch (Exception)
         {
@@ -359,7 +359,7 @@ public class DropsService : IDropsService
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
 
         if (!dbResult.IsSuccess)
-            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, dbResult.Message);
 
         await _notificationService.Value.SendAsync(drop.UserId,
              new()
