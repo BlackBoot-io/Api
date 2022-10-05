@@ -129,8 +129,8 @@ public class TokensService : ITokensService
         };
 
         await _uow.TokenRepo.AddAsync(model, cancellationToken);
-        var result = await _uow.SaveChangesAsync(cancellationToken);
-        if (!result.IsSuccess)
+        var dbResult = await _uow.SaveChangesAsync(cancellationToken);
+        if (!dbResult.IsSuccess)
             return new ActionResponse<string>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         return new ActionResponse<string>(model.UniqueCode);
@@ -155,8 +155,8 @@ public class TokensService : ITokensService
         });
 
         await _uow.TokenRepo.AddRangeAsync(models, cancellationToken);
-        var result = await _uow.SaveChangesAsync(cancellationToken);
-        if (!result.IsSuccess)
+        var dbResult = await _uow.SaveChangesAsync(cancellationToken);
+        if (!dbResult.IsSuccess)
             return new ActionResponse<IEnumerable<string>>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         return new ActionResponse<IEnumerable<string>>(models.Select(x => x.UniqueCode));
@@ -177,8 +177,8 @@ public class TokensService : ITokensService
 
         model.OwnerWalletAddress = item.WalletAdress;
 
-        var result = await _uow.SaveChangesAsync(cancellationToken);
-        if (!result.IsSuccess)
+        var dbResult = await _uow.SaveChangesAsync(cancellationToken);
+        if (!dbResult.IsSuccess)
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         return new ActionResponse<bool>(true);
@@ -203,8 +203,8 @@ public class TokensService : ITokensService
         model.IsMinted = true;
         model.ContractTokenId = contractTokenId;
 
-        var result = await _uow.SaveChangesAsync(cancellationToken);
-        if (!result.IsSuccess)
+        var dbResult = await _uow.SaveChangesAsync(cancellationToken);
+        if (!dbResult.IsSuccess)
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         return new ActionResponse<bool>(true);
@@ -227,8 +227,8 @@ public class TokensService : ITokensService
 
         model.IsBurned = true;
 
-        var result = await _uow.SaveChangesAsync(cancellationToken);
-        if (!result.IsSuccess)
+        var dbResult = await _uow.SaveChangesAsync(cancellationToken);
+        if (!dbResult.IsSuccess)
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         return new ActionResponse<bool>(true);

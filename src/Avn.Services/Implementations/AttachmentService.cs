@@ -10,8 +10,14 @@ public class AttachmentService : IAttachmentService
     /// </summary>
     /// <param name="attachmentId"></param>
     /// <returns></returns>
-    public async Task<Attachment> GetFile(int attachmentId, CancellationToken cancellationToken) =>
-        await _uow.AttachmentRepo.Queryable().FirstOrDefaultAsync(X => X.Id == attachmentId, cancellationToken);
+    public async Task<IActionResponse<Attachment>> GetFile(int attachmentId, CancellationToken cancellationToken)
+    {
+        var model = await _uow.AttachmentRepo.Queryable().FirstOrDefaultAsync(X => X.Id == attachmentId, cancellationToken);
+        if (model is null)
+            return new ActionResponse<Attachment>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
+
+        return new ActionResponse<Attachment>(model);
+    }
 
     /// <summary>
     /// Add Image on data base and return primary Key
@@ -29,9 +35,8 @@ public class AttachmentService : IAttachmentService
             UserId = userId
         };
         await _uow.AttachmentRepo.AddAsync(model, cancellationToken);
-        var result = await _uow.SaveChangesAsync(cancellationToken);
-
-        if (!result.IsSuccess)
+        var dbResult = await _uow.SaveChangesAsync(cancellationToken);
+        if (!dbResult.IsSuccess)
             return new ActionResponse<int>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
         return new ActionResponse<int>(model.Id);
     }

@@ -10,6 +10,6 @@ public class NetworkController : BaseController
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public async Task<IActionResult> AllAvailableAsync()
-        => Ok(await _networkService.GetAllAvailableAsync());
+    public async Task<IActionResult> AllAvailableAsync(CancellationToken cancellationToken=default)
+        => Ok(await _networkService.GetAllAvailableAsync(cancellationToken));
 }

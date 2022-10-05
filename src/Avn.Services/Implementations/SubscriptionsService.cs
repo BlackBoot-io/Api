@@ -46,8 +46,8 @@ public class SubscriptionsService : ISubscriptionsService
         };
 
         await _uow.SubscriptionRepo.AddAsync(model, cancellationToken);
-        var result = await _uow.SaveChangesAsync(cancellationToken);
-        if (!result.IsSuccess)
+        var dbResult = await _uow.SaveChangesAsync(cancellationToken);
+        if (!dbResult.IsSuccess)
             return new ActionResponse<int>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         return new ActionResponse<int>(model.Id);
