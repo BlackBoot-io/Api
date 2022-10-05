@@ -1,5 +1,4 @@
 ﻿#nullable disable
-using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
@@ -45,26 +44,7 @@ public class ActionResponse : IActionResponse
     public bool IsSuccess { get; set; }
     public ActionResponseStatusCode StatusCode { get; set; }
     public string Message { get; set; }
-    #region Implicit Operators
-    public static implicit operator ActionResponse(OkResult result) => new(ActionResponseStatusCode.Success);
-
-    public static implicit operator ActionResponse(BadRequestResult result) => new(ActionResponseStatusCode.BadRequest);
-
-    public static implicit operator ActionResponse(BadRequestObjectResult result)
-    {
-        var message = result.Value?.ToString();
-        if (result.Value is SerializableError errors)
-        {
-            var errorMessages = errors.SelectMany(p => (string[])p.Value).Distinct();
-            message = string.Join(" | ", errorMessages);
-        }
-        return new(ActionResponseStatusCode.BadRequest, message);
-    }
-
-    public static implicit operator ActionResponse(ContentResult result) => new(ActionResponseStatusCode.Success, result.Content);
-    public static implicit operator ActionResponse(NotFoundResult result) => new(ActionResponseStatusCode.NotFound);
-
-    #endregion
+   
 
     public static string GetDisplayName(Enum value)
     {
@@ -88,26 +68,4 @@ public class ActionResponse<TData> : ActionResponse, IActionResponse<TData>
     public ActionResponse(ActionResponseStatusCode statusCode, TData data) : base(statusCode) => Data = data;
     public ActionResponse(TData data) => Data = data;
     public ActionResponse(ActionResponseStatusCode statusCode, TData data, string message) : base(statusCode, message) => Data = data;
-
-
-    #region Implicit Operators
-    public static implicit operator ActionResponse<TData>(TData data) => new(ActionResponseStatusCode.Success, data);
-    public static implicit operator ActionResponse<TData>(OkResult result) => new(ActionResponseStatusCode.Success);
-    public static implicit operator ActionResponse<TData>(OkObjectResult result) => new(ActionResponseStatusCode.Success, (TData)result.Value);
-    public static implicit operator ActionResponse<TData>(BadRequestResult result) => new(ActionResponseStatusCode.BadRequest);
-    public static implicit operator ActionResponse<TData>(BadRequestObjectResult result)
-    {
-        var message = result.Value?.ToString();
-        if (result.Value is SerializableError errors)
-        {
-            var errorMessages = errors.SelectMany(p => (string[])p.Value).Distinct();
-            message = string.Join(" | ", errorMessages);
-        }
-        return new(ActionResponseStatusCode.BadRequest, message);
-    }
-    public static implicit operator ActionResponse<TData>(ContentResult result) => new(ActionResponseStatusCode.Success, result.Content);
-    public static implicit operator ActionResponse<TData>(NotFoundResult result) => new(ActionResponseStatusCode.NotFound);
-    public static implicit operator ActionResponse<TData>(NotFoundObjectResult result) => new(ActionResponseStatusCode.NotFound, (TData)result.Value);
-
-    #endregion
 }
