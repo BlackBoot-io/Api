@@ -100,8 +100,8 @@ public class DropsService : IDropsService
         await _uow.DropRepo.AddAsync(drop, cancellationToken);
 
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
-        if (!dbResult.ToSaveChangeResult())
-            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+        if (!dbResult.IsSuccess)
+            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, dbResult.Message);
 
         await _notificationService.Value.SendAsync(item.UserId,
             new()
@@ -261,9 +261,9 @@ public class DropsService : IDropsService
 
         model.IsActive = !model.IsActive;
 
-        var result = await _uow.SaveChangesAsync(cancellationToken);
-        if (!result.ToSaveChangeResult())
-            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+        var dbResult = await _uow.SaveChangesAsync(cancellationToken);
+        if (!dbResult.IsSuccess)
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, dbResult.Message);
 
         return new ActionResponse<bool>(true);
     }
@@ -279,10 +279,13 @@ public class DropsService : IDropsService
         if (!drop.IsTest)
         {
             var attachment = await _attachmentService.Value.GetFile(drop.AttachmentId, cancellationToken);
+            if (!attachment.IsSuccess)
+                return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
+
             var nftStorageResult = await _nftStorageAdaptar.Value.UploadAsync(new UploadRequestDto(
                 drop.Name,
                 drop.Description,
-                attachment.Content,
+                attachment.Data.Content,
                 new
                 {
                     drop.StartDate,
@@ -306,9 +309,9 @@ public class DropsService : IDropsService
         }
         try
         {
-            var result = await _uow.SaveChangesAsync(cancellationToken);
-            if (!result.ToSaveChangeResult())
-                return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+            var dbResult = await _uow.SaveChangesAsync(cancellationToken);
+            if (!dbResult.IsSuccess)
+                return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, dbResult.Message);
         }
         catch (Exception)
         {
@@ -353,10 +356,10 @@ public class DropsService : IDropsService
 
         drop.DropStatus = DropStatus.Rejected;
         drop.ReviewMessage = reviewMessage;
-        var result = await _uow.SaveChangesAsync(cancellationToken);
+        var dbResult = await _uow.SaveChangesAsync(cancellationToken);
 
-        if (!result.ToSaveChangeResult())
-            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+        if (!dbResult.IsSuccess)
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, dbResult.Message);
 
         await _notificationService.Value.SendAsync(drop.UserId,
              new()

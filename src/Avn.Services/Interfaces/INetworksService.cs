@@ -5,5 +5,5 @@ public interface INetworksService: IScopedDependency
     /// Get all network we are supporting
     /// </summary>
     /// <returns></returns>
-    Task<IActionResponse<IEnumerable<Network>>> GetAllAvailableAsync();
+    Task<IActionResponse<IEnumerable<Network>>> GetAllAvailableAsync(CancellationToken cancellationToken=default);
 }

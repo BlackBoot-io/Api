@@ -6,5 +6,5 @@ public interface IPricingsService:IScopedDependency
     /// Get all available pricing model for UI
     /// </summary>
     /// <returns></returns>
-    Task<IActionResponse<object>> GetAvailablePricing();
+    Task<IActionResponse<object>> GetAvailablePricing(CancellationToken cancellationToken=default);
 }

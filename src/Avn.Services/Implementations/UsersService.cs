@@ -73,8 +73,8 @@ public class UsersService : IUsersService
             
             await _uow.UserRepo.AddAsync(model, cancellationToken);
             var dbResult = await _uow.SaveChangesAsync(cancellationToken);
-            if (!dbResult.ToSaveChangeResult())
-                return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError);
+            if (!dbResult.IsSuccess)
+                return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, dbResult.Message);
             #region Add Basic Subsciption
             var basicPricing = await _uow.PricingRepo.Queryable().FirstOrDefaultAsync(x => x.IsFree, cancellationToken);
             if (basicPricing is null)
@@ -111,8 +111,8 @@ public class UsersService : IUsersService
         user.Type = userDto.Type;
 
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
-        if (!dbResult.ToSaveChangeResult())
-            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+        if (!dbResult.IsSuccess)
+            return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, dbResult.Message);
 
         return new ActionResponse<Guid>(user.UserId);
     }
@@ -137,8 +137,8 @@ public class UsersService : IUsersService
 
         result.EmailIsApproved = true;
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
-        if (!dbResult.ToSaveChangeResult())
-            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
+        if (!dbResult.IsSuccess)
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, dbResult.Message);
 
         return new ActionResponse<bool>(true);
     }
@@ -176,7 +176,9 @@ public class UsersService : IUsersService
         user.IsLockoutEnabled = true;
         user.LockoutEndDateUtc = endDateUTC;
 
-        await _uow.SaveChangesAsync(cancellationToken);
+        var dbResult = await _uow.SaveChangesAsync(cancellationToken);
+        if (!dbResult.IsSuccess)
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, dbResult.Message);
 
         return new ActionResponse();
 
@@ -200,7 +202,9 @@ public class UsersService : IUsersService
         user.IsLockoutEnabled = false;
         user.LockoutEndDateUtc = null;
 
-        await _uow.SaveChangesAsync(cancellationToken);
+        var dbResult = await _uow.SaveChangesAsync(cancellationToken);
+        if (!dbResult.IsSuccess)
+            return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, dbResult.Message);
 
         return new ActionResponse();
     }

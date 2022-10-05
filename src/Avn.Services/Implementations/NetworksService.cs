@@ -9,8 +9,8 @@ public class NetworksService : INetworksService
     /// Get all network we are supporting
     /// </summary>
     /// <returns></returns>
-    public async Task<IActionResponse<IEnumerable<Network>>> GetAllAvailableAsync()
-          => new ActionResponse<IEnumerable<Network>>(await _uow.NetworkRepo.Queryable().Where(X => X.IsActive).AsNoTracking().ToListAsync());
+    public async Task<IActionResponse<IEnumerable<Network>>> GetAllAvailableAsync(CancellationToken cancellationToken = default)
+          => new ActionResponse<IEnumerable<Network>>(await _uow.NetworkRepo.Queryable().Where(X => X.IsActive).AsNoTracking().ToListAsync(cancellationToken));
 
 }
 

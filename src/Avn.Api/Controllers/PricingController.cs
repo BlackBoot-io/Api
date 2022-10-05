@@ -10,7 +10,7 @@
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetAvailablePricing()
-            => Ok(await _pricingService.GetAvailablePricing());
+        public async Task<IActionResult> GetAvailablePricing(CancellationToken cancellationToken = default)
+            => Ok(await _pricingService.GetAvailablePricing(cancellationToken));
     }
 }
