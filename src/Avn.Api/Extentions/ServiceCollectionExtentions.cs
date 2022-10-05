@@ -1,10 +1,10 @@
 ﻿#nullable disable
 
+using Avn.Api.Core.Authentication;
 using Avn.Data;
 using Avn.Data.Repository;
 using Avn.Data.UnitofWork;
 using Avn.Services.Resources;
-using Avn.Shared;
 using Avn.Shared.Extentions;
 using EFCoreSecondLevelCacheInterceptor;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -39,12 +39,7 @@ public static class ServiceCollectionExtentions
     {
         var jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
         services.AddAuthorization();
-        _ = services.AddAuthentication(options =>
-        {
-            options.DefaultChallengeScheme = "Bearer";
-            options.DefaultSignInScheme = "Bearer";
-            options.DefaultAuthenticateScheme = "Bearer";
-        })
+        _ = services.AddAuthentication()
         .AddJwtBearer(cfg =>
         {
             cfg.RequireHttpsMetadata = false;
@@ -90,8 +85,18 @@ public static class ServiceCollectionExtentions
                 }
             };
             cfg.SecurityTokenValidators.Add(new RequireEncryptedTokenHandler());
+        })
+        .AddScheme<ApiKeyAuthenticationOptions, ApiKeyAuthenticationHandler>(ApiKeyAuthenticationOptions.AuthenticationScheme, null);
+
+        services.AddAuthorization(options =>
+        {
+            options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme,
+                                                                   ApiKeyAuthenticationOptions.AuthenticationScheme)
+                                            .RequireAuthenticatedUser()
+                                            .Build();
         });
     }
 
 
 }
+
