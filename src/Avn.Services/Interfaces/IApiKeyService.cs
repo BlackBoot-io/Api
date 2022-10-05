@@ -1,4 +1,4 @@
-﻿using Avn.Domain.Dtos.Drops;
+﻿using Avn.Domain.Dtos.ApiKey;
 
 namespace Avn.Services.Interfaces;
 
@@ -10,5 +10,5 @@ public interface IApiKeyService : IScopedDependency
     /// <param name="apiKey"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>collection of user information </returns>
-    Task<IActionResponse<ApiKeyDto>> VerifyAsync(string apiKey, CancellationToken cancellationToken = default);
+    Task<IActionResponse<ApiKeyDto>> VerifyAsync(Guid apiKey, CancellationToken cancellationToken = default);
 }
