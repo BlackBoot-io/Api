@@ -31,7 +31,7 @@ public class AttachmentService : IAttachmentService
         await _uow.AttachmentRepo.AddAsync(model, cancellationToken);
         var result = await _uow.SaveChangesAsync(cancellationToken);
 
-        if (!result.ToSaveChangeResult())
+        if (!result.IsSuccess)
             return new ActionResponse<int>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
         return new ActionResponse<int>(model.Id);
     }

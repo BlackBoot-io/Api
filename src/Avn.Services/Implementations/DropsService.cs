@@ -102,7 +102,7 @@ public class DropsService : IDropsService
         await _uow.DropRepo.AddAsync(drop, cancellationToken);
 
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
-        if (!dbResult.ToSaveChangeResult())
+        if (!dbResult.IsSuccess)
             return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         await _notificationService.Value.SendAsync(item.UserId,
@@ -178,7 +178,7 @@ public class DropsService : IDropsService
         model.IsActive = !model.IsActive;
 
         var result = await _uow.SaveChangesAsync(cancellationToken);
-        if (!result.ToSaveChangeResult())
+        if (!result.IsSuccess)
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         return new ActionResponse<bool>(true);
@@ -223,7 +223,7 @@ public class DropsService : IDropsService
         try
         {
             var result = await _uow.SaveChangesAsync(cancellationToken);
-            if (!result.ToSaveChangeResult())
+            if (!result.IsSuccess)
                 return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
         }
         catch (Exception)
@@ -271,7 +271,7 @@ public class DropsService : IDropsService
         drop.ReviewMessage = reviewMessage;
         var result = await _uow.SaveChangesAsync(cancellationToken);
 
-        if (!result.ToSaveChangeResult())
+        if (!result.IsSuccess)
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         await _notificationService.Value.SendAsync(drop.UserId,

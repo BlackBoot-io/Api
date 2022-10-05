@@ -72,7 +72,7 @@ public class UsersService : IUsersService
             };
             await _uow.UserRepo.AddAsync(model, cancellationToken);
             var dbResult = await _uow.SaveChangesAsync(cancellationToken);
-            if (!dbResult.ToSaveChangeResult())
+            if (!dbResult.IsSuccess)
                 return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError);
             #region Add Basic Subsciption
             var basicPricing = await _uow.PricingRepo.Queryable().FirstOrDefaultAsync(x => x.IsFree, cancellationToken);
@@ -110,7 +110,7 @@ public class UsersService : IUsersService
         user.Type = userDto.Type;
 
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
-        if (!dbResult.ToSaveChangeResult())
+        if (!dbResult.IsSuccess)
             return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         return new ActionResponse<Guid>(user.UserId);
@@ -136,7 +136,7 @@ public class UsersService : IUsersService
 
         result.EmailIsApproved = true;
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
-        if (!dbResult.ToSaveChangeResult())
+        if (!dbResult.IsSuccess)
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         return new ActionResponse<bool>(true);

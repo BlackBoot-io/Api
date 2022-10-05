@@ -32,7 +32,7 @@ public class VerificationsService : IVerificationsService
 
         await _uow.VerificationCodeRepo.AddAsync(verification, cancellationToken);
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
-        if (!dbResult.ToSaveChangeResult())
+        if (!dbResult.IsSuccess)
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         await _notificationService.Value.SendAsync(userId,
@@ -66,7 +66,7 @@ public class VerificationsService : IVerificationsService
         verification.IsUsed = true;
 
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
-        if (!dbResult.ToSaveChangeResult())
+        if (!dbResult.IsSuccess)
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, BusinessMessage.ServerError);
 
         return new ActionResponse<bool>(true);
