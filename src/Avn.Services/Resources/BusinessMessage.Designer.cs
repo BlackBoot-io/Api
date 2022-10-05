@@ -97,6 +97,33 @@ namespace Avn.Services.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DropHasNoImage.
+        /// </summary>
+        public static string DropHasNoImage {
+            get {
+                return ResourceManager.GetString("DropHasNoImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DropIsForTest.
+        /// </summary>
+        public static string DropIsForTest {
+            get {
+                return ResourceManager.GetString("DropIsForTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DropNotConfirmed.
+        /// </summary>
+        public static string DropNotConfirmed {
+            get {
+                return ResourceManager.GetString("DropNotConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to InvalidFileContent.
         /// </summary>
         public static string InvalidFileContent {

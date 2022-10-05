@@ -8,15 +8,16 @@ public class TokensService : ITokensService
 
     public TokensService(IAppUnitOfWork uow) => _uow = uow;
 
+
     /// <summary>
-    /// get a token via link's uniqueCode 
+    /// get all Minted Token for Specific Wallet address
     /// </summary>
-    /// <param name="uniqueCode"></param>
+    /// <param name="walletAddress"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<IActionResponse<TokenDto>> GetAsync(string uniqueCode, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<IEnumerable<TokenDto>>> GetAllAsync(string walletAddress, CancellationToken cancellationToken = default)
     {
-        var result = await _uow.TokenRepo.Queryable().Select(row => new TokenDto
+        var result = await _uow.TokenRepo.Queryable().AsQueryable().Where(x => x.IsMinted && x.OwnerWalletAddress == walletAddress).Select(row => new TokenDto
         {
             DropId = row.Drop.Id,
             DropName = row.Drop.Name,
@@ -30,6 +31,38 @@ public class TokensService : ITokensService
             OwerWalletAddress = row.OwnerWalletAddress,
             IsBurned = row.IsBurned,
             IsMinted = row.IsMinted
+        }).ToListAsync(cancellationToken);
+
+        return new ActionResponse<IEnumerable<TokenDto>>(result);
+    }
+
+
+    /// <summary>
+    /// get a token via link's uniqueCode 
+    /// </summary>
+    /// <param name="uniqueCode"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public async Task<IActionResponse<TokenDto>> GetAsync(string uniqueCode, CancellationToken cancellationToken = default)
+    {
+        var result = await _uow.TokenRepo.Queryable().Select(row => new TokenDto
+        {
+            //Token
+            TokenId = row.Id,
+            UniqueCode = row.UniqueCode,
+            OwerWalletAddress = row.OwnerWalletAddress,
+            IsBurned = row.IsBurned,
+            IsMinted = row.IsMinted,
+
+            //Drop
+            DropId = row.Drop.Id,
+            DropName = row.Drop.Name,
+            DropCategoryType = row.Drop.CategoryType,
+            Network = row.Drop.Network.Name,
+            StartDate = row.Drop.StartDate,
+            EndDate = row.Drop.EndDate,
+            ExpireDate = row.Drop.ExpireDate
+
         }).FirstOrDefaultAsync(x => x.UniqueCode == uniqueCode, cancellationToken);
 
         if (result is null)
@@ -37,6 +70,42 @@ public class TokensService : ITokensService
 
         return new ActionResponse<TokenDto>(result);
 
+    }
+
+    /// <summary>
+    /// get the token for specific drop and walleraddress
+    /// </summary>
+    /// <param name="walletAddress"></param>
+    /// <param name="dropCode"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public async Task<IActionResponse<TokenDto>> GetAsync(string walletAddress, Guid dropCode, CancellationToken cancellationToken = default)
+    {
+        var result = await _uow.TokenRepo.Queryable().Select(row => new TokenDto
+        {
+            //Token
+            TokenId = row.Id,
+            UniqueCode = row.UniqueCode,
+            OwerWalletAddress = row.OwnerWalletAddress,
+            IsBurned = row.IsBurned,
+            IsMinted = row.IsMinted,
+
+            //Drop
+            DropId = row.Drop.Id,
+            DropCode = row.Drop.Code,
+            DropName = row.Drop.Name,
+            DropCategoryType = row.Drop.CategoryType,
+            Network = row.Drop.Network.Name,
+            StartDate = row.Drop.StartDate,
+            EndDate = row.Drop.EndDate,
+            ExpireDate = row.Drop.ExpireDate
+
+        }).FirstOrDefaultAsync(x => x.OwerWalletAddress == walletAddress && x.DropCode == dropCode, cancellationToken);
+
+        if (result is null)
+            return new ActionResponse<TokenDto>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
+
+        return new ActionResponse<TokenDto>(result);
     }
 
     /// <summary>
@@ -100,13 +169,13 @@ public class TokensService : ITokensService
     /// <param name="walletAdress"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<IActionResponse<bool>> ConnectWalletAsync(Guid id, string walletAdress, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<bool>> ConnectWalletAsync(ConnectWalletDto item, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.TokenRepo.Queryable().FirstOrDefaultAsync(x => x.Id == id && string.IsNullOrEmpty(x.OwnerWalletAddress), cancellationToken);
+        var model = await _uow.TokenRepo.Queryable().FirstOrDefaultAsync(x => x.Id == item.Id && string.IsNullOrEmpty(x.OwnerWalletAddress), cancellationToken);
         if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
-        model.OwnerWalletAddress = walletAdress;
+        model.OwnerWalletAddress = item.WalletAdress;
 
         var result = await _uow.SaveChangesAsync(cancellationToken);
         if (!result.IsSuccess)
@@ -164,4 +233,6 @@ public class TokensService : ITokensService
 
         return new ActionResponse<bool>(true);
     }
+
+
 }

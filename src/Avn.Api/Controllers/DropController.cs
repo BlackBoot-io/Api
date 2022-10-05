@@ -29,6 +29,25 @@ public class DropController : BaseController
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
         => Ok(await _dropsService.GetAllAsync(CurrentUserId, cancellationToken));
 
+    /// <summary>
+    /// Get a drop by id and userId
+    /// </summary>
+    /// <param name="dropId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("/drop/{dropId}")]
+    public async Task<IActionResult> GetAsync(int dropId, CancellationToken cancellationToken = default)
+        => Ok(await _dropsService.GetAsync(CurrentUserId, dropId, cancellationToken));
+
+    /// <summary>
+    /// Get a drop by id and userId
+    /// </summary>
+    /// <param name="dropId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("/drop/{dropCode:guid}")]
+    public async Task<IActionResult> GetAsync(Guid dropCode, CancellationToken cancellationToken = default)
+        => Ok(await _dropsService.GetAsync(CurrentUserId, dropCode, cancellationToken));
 
     /// <summary>
     /// Redirect To Ifps Gateway For Drops Image
@@ -36,9 +55,21 @@ public class DropController : BaseController
     /// <param name="dropId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpGet("/drop/{dropId}/image")]
-    public async Task<IActionResult> GetAllAsync(int dropId, CancellationToken cancellationToken = default)
-        => Ok(await _dropsService.GetImageUri(dropId, cancellationToken));
+    [HttpGet("/drop/{dropCode:guid}/image")]
+    public async Task<IActionResult> GetImageUri(Guid dropCode, CancellationToken cancellationToken = default)
+        => Ok(await _dropsService.GetImageUri(dropCode, cancellationToken));
+
+    /// <summary>
+    /// For the specified drop ID, this endpoint returns paginated info on the token holders including
+    /// the token ID, drop transfer count, 
+    /// and the owner's information like address, and amount of drops owned.
+    /// </summary>
+    /// <param name="dropId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("/drop/{dropCode:guid}/holders")]
+    public async Task<IActionResult> GetAllHoldersAsync(Guid dropCode, CancellationToken cancellationToken = default)
+        => Ok(await _dropsService.GetAllHoldersAsync(CurrentUserId, dropCode, cancellationToken));
 
     /// <summary>
     /// Deactive/Active a drop with a code
@@ -46,9 +77,9 @@ public class DropController : BaseController
     /// <param name="code"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPost]
-    public async Task<IActionResult> ChangeStateAsync(Guid code, CancellationToken cancellationToken = default)
-         => Ok(await _dropsService.ChangeStateAsync(code, cancellationToken));
+    [HttpPost("/drop/{dropCode:guid}/changeState")]
+    public async Task<IActionResult> ChangeStateAsync(Guid dropCode, CancellationToken cancellationToken = default)
+        => Ok(await _dropsService.ChangeStateAsync(dropCode, cancellationToken));
 
     /// <summary>
     /// Confirm a drop by admin then store file (Image + Metadata) in IPFS
@@ -58,19 +89,19 @@ public class DropController : BaseController
     /// <param name="DropId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPost]
-    public async Task<IActionResult> ConfirmAsync(int dropId, CancellationToken cancellationToken = default)
-        => Ok(await _dropsService.ConfirmAsync(dropId, cancellationToken));
+    [HttpPost("/drop/{dropCode:guid}/confirm")]
+    public async Task<IActionResult> ConfirmAsync(Guid dropCode, CancellationToken cancellationToken = default)
+        => Ok(await _dropsService.ConfirmAsync(dropCode, cancellationToken));
 
     /// <summary>
     /// Reject a drop by admin for a resean
     /// Then notify the user
     /// </summary>
-    /// <param name="dropId">PrimaryKey of drop entity</param>
+    /// <param name="dropCode">PrimaryKey of drop entity</param>
     /// <param name="reviewMessage">resean message</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPost]
-    public async Task<IActionResult> RejectAsync(int dropId, string reviewMessage, CancellationToken cancellationToken = default)
-        => Ok(await _dropsService.RejectAsync(dropId, reviewMessage, cancellationToken));
+    [HttpPost("/drop/{dropCode:guid}/reject")]
+    public async Task<IActionResult> RejectAsync(Guid dropCode, string reviewMessage, CancellationToken cancellationToken = default)
+        => Ok(await _dropsService.RejectAsync(dropCode, reviewMessage, cancellationToken));
 }

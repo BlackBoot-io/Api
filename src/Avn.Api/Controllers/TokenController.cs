@@ -6,6 +6,18 @@ public class TokenController : BaseController
 
     public TokenController(ITokensService tokensService) => _tokensService = tokensService;
 
+
+
+    /// <summary>
+    /// get all Minted Token for Specific Wallet address
+    /// </summary>
+    /// <param name="walletAddress"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("/Token/Scan/{walletAddress}")]
+    public async Task<IActionResult> GetAllAsync(string walletAddress, CancellationToken cancellationToken)
+        => Ok(await _tokensService.GetAllAsync(walletAddress, cancellationToken));
+
     /// <summary>
     /// Get Token By Token UniqueCode
     /// </summary>
@@ -17,6 +29,17 @@ public class TokenController : BaseController
         => Ok(await _tokensService.GetAsync(uniqueCode, cancellationToken));
 
     /// <summary>
+    /// check if the walletAddress has the drop then return the token detail
+    /// </summary>
+    /// <param name="walletAddress"></param>
+    /// <param name="dropCode"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("/Token/Scan/{walletAddress}/{dropCode}")]
+    public async Task<IActionResult> GetAsync(string walletAddress, Guid dropCode, CancellationToken cancellationToken)
+        => Ok(await _tokensService.GetAsync(walletAddress, dropCode, cancellationToken));
+
+    /// <summary>
     /// Update user's wallet address into token
     /// </summary>
     /// <param name="id"></param>
@@ -24,9 +47,9 @@ public class TokenController : BaseController
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> ConnectWalletAsync(Guid id, string walletAdress, CancellationToken cancellationToken)
-        => Ok(await _tokensService.ConnectWalletAsync(id, walletAdress, cancellationToken));
-    
+    public async Task<IActionResult> ConnectWalletAsync(ConnectWalletDto item, CancellationToken cancellationToken)
+        => Ok(await _tokensService.ConnectWalletAsync(item, cancellationToken));
+
     /// <summary>
     /// Update user's wallet address into token
     /// </summary>

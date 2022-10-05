@@ -8,7 +8,6 @@ public class DropsService : IDropsService
 {
     private readonly IAppUnitOfWork _uow;
     private readonly Lazy<INftStorageAdapter> _nftStorageAdaptar;
-    private readonly Lazy<ITokensService> _tokensService;
     private readonly Lazy<IAttachmentService> _attachmentService;
     private readonly Lazy<ISubscriptionsService> _subscriptionService;
     private readonly Lazy<INotificationsService> _notificationService;
@@ -26,7 +25,6 @@ public class DropsService : IDropsService
     {
         _uow = uow;
         _nftStorageAdaptar = nftStorageAdaptar;
-        _tokensService = tokensService;
         _attachmentService = attachmentService;
         _subscriptionService = subscriptionService;
         _notificationService = notificationService;
@@ -48,7 +46,7 @@ public class DropsService : IDropsService
         #region Validations
         //like time 
         //count
-        //...
+        //... 
         #endregion
         var fileBytes = new byte[item.File.Length];
 
@@ -116,10 +114,96 @@ public class DropsService : IDropsService
 
 
         if (item.IsTest)
-            await ConfirmAsync(drop.Id, cancellationToken);
+            await ConfirmAsync(drop.Code, cancellationToken);
 
         return new ActionResponse<Guid>(drop.Code);
     }
+
+    /// <summary>
+    /// Get a drop by dropId and userId
+    /// </summary>
+    /// <param name="userId">PK user entity</param>
+    /// <param name="dropId">PK drop entity</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>object</returns>
+    public async Task<IActionResponse<object>> GetAsync(Guid userId, int dropId, CancellationToken cancellationToken = default)
+      => new ActionResponse<object>(await _uow.DropRepo.Queryable()
+                 .AsNoTracking()
+                 .Where(x => x.UserId == userId && x.Id == dropId)
+                 .Select(row => new
+                 {
+                     row.Id,
+                     row.Code,
+                     row.Name,
+                     row.Description,
+                     DeliveryType = row.DeliveryType.ToString(),
+                     row.DropContentId,
+                     row.ImageContentId,
+                     row.Location,
+                     row.StartDate,
+                     row.EndDate,
+                     row.ExpireDate,
+                     row.IsPrivate,
+                     row.IsVirtual,
+                     CategoryType = row.CategoryType.ToString(),
+                     row.Count,
+                     row.IsActive,
+                     row.IsTest,
+                     DropStatus = row.DropStatus.ToString(),
+                     Project = new
+                     {
+                         Id = row.ProjectId,
+                         Name = row.Project != null ? row.Project.Name : "",
+                     },
+                     Network = new
+                     {
+                         Id = row.NetworkId,
+                         Name = row.Network != null ? row.Network.Name : "",
+                     }
+                 }).FirstOrDefaultAsync(cancellationToken));
+
+    /// <summary>
+    /// Get a drop by dropCode and userId
+    /// </summary>
+    /// <param name="userId">PK user entity</param>
+    /// <param name="dropCode">PK drop entity</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>object</returns>
+    public async Task<IActionResponse<object>> GetAsync(Guid userId, Guid dropCode, CancellationToken cancellationToken = default)
+      => new ActionResponse<object>(await _uow.DropRepo.Queryable()
+                 .AsNoTracking()
+                 .Where(x => x.UserId == userId && x.Code == dropCode)
+                 .Select(row => new
+                 {
+                     row.Id,
+                     row.Code,
+                     row.Name,
+                     row.Description,
+                     DeliveryType = row.DeliveryType.ToString(),
+                     row.DropContentId,
+                     row.ImageContentId,
+                     row.Location,
+                     row.StartDate,
+                     row.EndDate,
+                     row.ExpireDate,
+                     row.IsPrivate,
+                     row.IsVirtual,
+                     CategoryType = row.CategoryType.ToString(),
+                     row.Count,
+                     row.IsActive,
+                     row.IsTest,
+                     DropStatus = row.DropStatus.ToString(),
+                     Project = new
+                     {
+                         Id = row.ProjectId,
+                         Name = row.Project != null ? row.Project.Name : "",
+                     },
+                     Network = new
+                     {
+                         Id = row.NetworkId,
+                         Name = row.Network != null ? row.Network.Name : "",
+                     }
+                 }).FirstOrDefaultAsync(cancellationToken));
 
     /// <summary>
     /// Get all drops of a user by UserId
@@ -166,12 +250,12 @@ public class DropsService : IDropsService
     /// <summary>
     /// Deactive/Activate a drop with a code
     /// </summary>
-    /// <param name="code"></param>
+    /// <param name="dropCode"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<IActionResponse<bool>> ChangeStateAsync(Guid code, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<bool>> ChangeStateAsync(Guid dropCode, CancellationToken cancellationToken = default)
     {
-        var model = await _uow.DropRepo.Queryable().FirstOrDefaultAsync(x => x.Code == code, cancellationToken);
+        var model = await _uow.DropRepo.Queryable().FirstOrDefaultAsync(x => x.Code == dropCode, cancellationToken);
         if (model is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
@@ -184,10 +268,10 @@ public class DropsService : IDropsService
         return new ActionResponse<bool>(true);
     }
 
-    public async Task<IActionResponse<bool>> ConfirmAsync(int dropId, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<bool>> ConfirmAsync(Guid dropCode, CancellationToken cancellationToken = default)
     {
         var drop = await _uow.DropRepo.Queryable()
-                        .FirstOrDefaultAsync(x => x.Id == dropId && x.DropStatus == DropStatus.Pending, cancellationToken);
+                        .FirstOrDefaultAsync(x => x.Code == dropCode && x.DropStatus == DropStatus.Pending, cancellationToken);
         if (drop is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
@@ -257,13 +341,13 @@ public class DropsService : IDropsService
     /// <summary>
     /// this method called by admin, and rejects a drop for a resean
     /// </summary>
-    /// <param name="dropId">primaryKey of drop entity</param>
+    /// <param name="dropCode">primaryKey of drop entity</param>
     /// <param name="reviewMessage">reason</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<IActionResponse<bool>> RejectAsync(int dropId, string reviewMessage, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<bool>> RejectAsync(Guid dropCode, string reviewMessage, CancellationToken cancellationToken = default)
     {
-        var drop = await _uow.DropRepo.Queryable().FirstOrDefaultAsync(x => x.Id == dropId && x.DropStatus == DropStatus.Pending, cancellationToken);
+        var drop = await _uow.DropRepo.Queryable().FirstOrDefaultAsync(x => x.Code == dropCode && x.DropStatus == DropStatus.Pending, cancellationToken);
         if (drop is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
@@ -289,19 +373,56 @@ public class DropsService : IDropsService
     /// Get Image Uri In Ipfs
     /// Then notify the user
     /// </summary>
-    /// <param name="dropId">PrimaryKey of drop entity</param>
+    /// <param name="dropCode">PrimaryKey of drop entity</param>
     /// <param name="cancellationToken"></param>
     /// <returns>string</returns>
-    public async Task<IActionResponse<string>> GetImageUri(int dropId, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<string>> GetImageUri(Guid dropCode, CancellationToken cancellationToken = default)
     {
-        var drop = await _uow.DropRepo.Queryable()
-                .FirstOrDefaultAsync(x => x.Id == dropId &&
-                                     x.DropStatus == DropStatus.Confirmed &&
-                                     !string.IsNullOrEmpty(x.ImageContentId), cancellationToken);
+        var drop = await _uow.DropRepo.Queryable().FirstOrDefaultAsync(x => x.Code == dropCode, cancellationToken);
+
         if (drop is null)
             return new ActionResponse<string>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
+
+        if (drop.DropStatus != DropStatus.Confirmed)
+            return new ActionResponse<string>(ActionResponseStatusCode.NotFound, BusinessMessage.DropNotConfirmed);
+
+        if (drop.IsTest)
+            return new ActionResponse<string>(ActionResponseStatusCode.NotFound, BusinessMessage.DropIsForTest);
+
+        if (!string.IsNullOrEmpty(drop.ImageContentId))
+            return new ActionResponse<string>(ActionResponseStatusCode.NotFound, BusinessMessage.DropHasNoImage);
 
         return new ActionResponse<string>(ActionResponseStatusCode.Redirect,
             data: $"{_configuration.Value["IPFS:Gateway:Url"]}/{drop.ImageContentId}");
     }
+
+    /// <summary>
+    /// For the specified drop ID, this endpoint returns paginated info on the token holders including
+    /// the token ID, drop transfer count, 
+    /// and the owner's information like address, and amount of drops owned.
+    /// </summary>
+    /// <param name="currentUserId"></param>
+    /// <param name="dropCode"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public async Task<IActionResponse<object>> GetAllHoldersAsync(Guid currentUserId, Guid dropCode, CancellationToken cancellationToken)
+        => new ActionResponse<object>(await _uow.DropRepo.Queryable()
+                             .Include(X => X.Tokens)
+                             .Where(X => X.UserId == currentUserId && X.Code == dropCode)
+                             .Select(X => new
+                             {
+                                 X.Name,
+                                 X.Description,
+                                 X.Count,
+                                 Tokens = X.Tokens.Select(T => new
+                                 {
+                                     T.OwnerWalletAddress,
+                                     T.IsMinted,
+                                     T.Number,
+                                     T.ContractTokenId,
+                                     T.UniqueCode
+                                 })
+                             })
+                            .AsNoTracking()
+                            .ToListAsync(cancellationToken));
 }

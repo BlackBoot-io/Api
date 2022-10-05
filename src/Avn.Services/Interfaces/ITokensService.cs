@@ -3,6 +3,15 @@
 public interface ITokensService : IScopedDependency
 {
 
+
+    /// <summary>
+    /// get all Minted Token for Specific Wallet address
+    /// </summary>
+    /// <param name="walletAddress"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<IActionResponse<IEnumerable<TokenDto>>> GetAllAsync(string walletAddress, CancellationToken cancellationToken = default);
+
     /// <summary>
     /// get a token via link's uniqueCode 
     /// </summary>
@@ -10,6 +19,17 @@ public interface ITokensService : IScopedDependency
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<IActionResponse<TokenDto>> GetAsync(string uniqueCode, CancellationToken cancellationToken = default);
+
+
+    /// <summary>
+    /// get the token for specific drop and walleraddress
+    /// </summary>
+    /// <param name="walletAddress"></param>
+    /// <param name="dropCode"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<IActionResponse<TokenDto>> GetAsync(string walletAddress, Guid dropCode, CancellationToken cancellationToken = default);
+
 
 
     /// <summary>
@@ -40,8 +60,8 @@ public interface ITokensService : IScopedDependency
     /// <param name="walletAdress"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IActionResponse<bool>> ConnectWalletAsync(Guid id, string walletAdress, CancellationToken cancellationToken = default);
-   
+    Task<IActionResponse<bool>> ConnectWalletAsync(ConnectWalletDto item, CancellationToken cancellationToken = default);
+
     /// <summary>
     /// update token which is minted by user
     /// then update contract tokenId
@@ -51,7 +71,7 @@ public interface ITokensService : IScopedDependency
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<IActionResponse<bool>> MintAsync(Guid id, int contractTokenId, CancellationToken cancellationToken = default);
-   
+
     /// <summary>
     /// burn a token by admin
     /// </summary>
