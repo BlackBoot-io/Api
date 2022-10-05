@@ -1,5 +1,6 @@
 ﻿using Avn.Data.Context;
 using Avn.Data.Repository;
+using Avn.Shared.Core.Data;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -16,17 +17,34 @@ public partial class AppUnitOfWork : IAppUnitOfWork
     public DatabaseFacade Database => _dbContext.Database;
 
 
-    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) => _dbContext.SaveChangesAsync(cancellationToken);
+    public async Task<SaveChangesResult> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            await _dbContext.SaveChangesAsync(cancellationToken);
+            return new();
+        }
+        catch (DbUpdateConcurrencyException e)
+        {
+            return new(SaveChangesResultType.UpdateConcurrencyException, e.Message);
+        }
+        catch (DbUpdateException e)
+        {
 
-    //public void Dispose()
-    //{
-    //    _dbContext.Dispose();
-    //    GC.SuppressFinalize(this);
-    //}
+            return new(SaveChangesResultType.UpdateException, e.Message);
+        }
+    }
 
-    //public async ValueTask DisposeAsync()
-    //{
-    //    await _dbContext.DisposeAsync();
-    //    GC.SuppressFinalize(this);
-    //}
+    public void Dispose()
+    {
+        _dbContext.Dispose();
+        GC.SuppressFinalize(this);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await _dbContext.DisposeAsync();
+        GC.SuppressFinalize(this);
+    }
+
 }

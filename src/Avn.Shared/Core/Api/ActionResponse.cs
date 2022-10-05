@@ -1,4 +1,5 @@
 ﻿#nullable disable
+using Avn.Shared.Extentions;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
@@ -24,7 +25,7 @@ public class ActionResponse : IActionResponse
     {
         IsSuccess = true;
         StatusCode = ActionResponseStatusCode.Success;
-        Message = GetDisplayName(StatusCode);
+        Message = StatusCode.GetDisplayName();
     }
     public ActionResponse(ActionResponseStatusCode statusCode)
     {
@@ -34,7 +35,7 @@ public class ActionResponse : IActionResponse
             _ => false
         };
         StatusCode = statusCode;
-        Message = GetDisplayName(statusCode);
+        Message = statusCode.GetDisplayName();
     }
     public ActionResponse(ActionResponseStatusCode statusCode, string message) : this(statusCode)
     {
@@ -66,17 +67,7 @@ public class ActionResponse : IActionResponse
 
     #endregion
 
-    public static string GetDisplayName(Enum value)
-    {
-        var attribute = value.GetType().GetField(value.ToString())
-            .GetCustomAttributes<DisplayAttribute>(false).FirstOrDefault();
-
-        if (attribute is null)
-            return value.ToString();
-
-        var propValue = attribute.GetType().GetProperty("Name").GetValue(attribute, null);
-        return propValue.ToString();
-    }
+   
 }
 public class ActionResponse<TData> : ActionResponse, IActionResponse<TData>
 {
