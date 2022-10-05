@@ -45,35 +45,7 @@ public class ActionResponse : IActionResponse
     public bool IsSuccess { get; set; }
     public ActionResponseStatusCode StatusCode { get; set; }
     public string Message { get; set; }
-   
-
-    public static implicit operator ActionResponse(BadRequestObjectResult result)
-    {
-        var message = result.Value?.ToString();
-        if (result.Value is SerializableError errors)
-        {
-            var errorMessages = errors.SelectMany(p => (string[])p.Value).Distinct();
-            message = string.Join(" | ", errorMessages);
-        }
-        return new(ActionResponseStatusCode.BadRequest, message);
-    }
-
-    public static implicit operator ActionResponse(ContentResult result) => new(ActionResponseStatusCode.Success, result.Content);
-    public static implicit operator ActionResponse(NotFoundResult result) => new(ActionResponseStatusCode.NotFound);
-
-    #endregion
-
-    public static string GetDisplayName(Enum value)
-    {
-        var attribute = value.GetType().GetField(value.ToString())
-            .GetCustomAttributes<DisplayAttribute>(false).FirstOrDefault();
-
-        if (attribute is null)
-            return value.ToString();
-
-        var propValue = attribute.GetType().GetProperty("Name").GetValue(attribute, null);
-        return propValue.ToString();
-    }
+  
 }
 public class ActionResponse<TData> : ActionResponse, IActionResponse<TData>
 {
