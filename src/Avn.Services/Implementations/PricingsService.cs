@@ -9,7 +9,7 @@ public class PricingsService : IPricingsService
     /// Get all available pricing model for UI
     /// </summary>
     /// <returns></returns>
-    public async Task<IActionResponse<object>> GetAvailablePricing()
+    public async Task<IActionResponse<object>> GetAvailablePricing(CancellationToken cancellationToken=default)
            => new ActionResponse<object>(await _uow.NetworkInPricingRepo.Queryable()
                         .Include(X => X.Pricing)
                         .Include(X => X.Network)
@@ -31,6 +31,6 @@ public class PricingsService : IPricingsService
                                 X.Network.Type
                             }
                         })
-                        .ToListAsync()
+                        .ToListAsync(cancellationToken)
            );
 }

@@ -14,5 +14,5 @@ public interface IAttachmentService : IScopedDependency
     /// </summary>
     /// <param name="attachmentId"></param>
     /// <returns></returns>
-    Task<Attachment> GetFile(int attachmentId, CancellationToken cancellationToken);
+    Task<IActionResponse<Attachment>> GetFile(int attachmentId, CancellationToken cancellationToken);
 }

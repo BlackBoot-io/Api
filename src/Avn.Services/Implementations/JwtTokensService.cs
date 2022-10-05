@@ -188,8 +188,8 @@ public class JwtTokensService : JwtTokensFactory, IJwtTokensService
         }, cancellationToken);
 
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
-        if (!dbResult.ToSaveChangeResult())
-            return new ActionResponse<UserTokenDto>(ActionResponseStatusCode.ServerError);
+        if (!dbResult.IsSuccess)
+            return new ActionResponse<UserTokenDto>(ActionResponseStatusCode.ServerError, dbResult.Message);
 
         token.User = new UserDto
         {
@@ -223,8 +223,8 @@ public class JwtTokensService : JwtTokensFactory, IJwtTokensService
                                                 .Where(t => t.RefreshTokenHash == hashedRefreshToken).ToListAsync(cancellationToken);
         _uow.UserJwtTokenRepo.RemoveRange(tokens);
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
-        if (!dbResult.ToSaveChangeResult())
-            return new ActionResponse(ActionResponseStatusCode.ServerError);
+        if (!dbResult.IsSuccess)
+            return new ActionResponse(ActionResponseStatusCode.ServerError, dbResult.Message);
 
         await _cacheService.RemoveAsync("TryCount" + tokens.FirstOrDefault()?.UserId.ToString() ?? "");
 
