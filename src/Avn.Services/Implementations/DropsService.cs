@@ -153,12 +153,12 @@ public class DropsService : IDropsService
                      Project = new
                      {
                          Id = row.ProjectId,
-                         Name = row.Project != null ? row.Project.Name : "",
+                         Name = row.Project.Name,
                      },
                      Network = new
                      {
                          Id = row.NetworkId,
-                         Name = row.Network != null ? row.Network.Name : "",
+                         Name = row.Network.Name,
                      }
                  }).FirstOrDefaultAsync(cancellationToken));
 
@@ -196,12 +196,12 @@ public class DropsService : IDropsService
                      Project = new
                      {
                          Id = row.ProjectId,
-                         Name = row.Project != null ? row.Project.Name : "",
+                         Name = row.Project.Name,
                      },
                      Network = new
                      {
                          Id = row.NetworkId,
-                         Name = row.Network != null ? row.Network.Name : "",
+                         Name = row.Network.Name,
                      }
                  }).FirstOrDefaultAsync(cancellationToken));
 
@@ -238,12 +238,12 @@ public class DropsService : IDropsService
                     Project = new
                     {
                         Id = row.ProjectId,
-                        Name = row.Project != null ? row.Project.Name : "",
+                        Name = row.Project.Name,
                     },
                     Network = new
                     {
                         Id = row.NetworkId,
-                        Name = row.Network != null ? row.Network.Name : "",
+                        Name = row.Network.Name,
                     }
                 }).ToListAsync(cancellationToken));
 
@@ -396,7 +396,7 @@ public class DropsService : IDropsService
             return new ActionResponse<string>(ActionResponseStatusCode.NotFound, BusinessMessage.DropHasNoImage);
 
         return new ActionResponse<string>(ActionResponseStatusCode.Redirect,
-            data: $"{_configuration.Value["IPFS:Gateway:Url"]}/{drop.ImageContentId}");
+            data: string.Format(_configuration.Value["IPFS:Gateway:Url"], drop.ImageContentId));
     }
 
     /// <summary>

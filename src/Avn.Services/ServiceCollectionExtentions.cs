@@ -1,16 +1,10 @@
 ﻿using Avn.Services.External;
+using Avn.Shared.Core.Services;
 using Avn.Shared.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Avn.Services;
 
-internal class Lazier<T> : Lazy<T> where T : class
-{
-    public Lazier(IServiceProvider provider)
-        : base(() => provider.GetRequiredService<T>())
-    {
-    }
-}
 
 public static class ServiceCollectionExtentions
 {

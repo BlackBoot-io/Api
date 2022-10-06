@@ -7,12 +7,12 @@ namespace Avn.Services.Implementations;
 public class UsersService : IUsersService
 {
     private readonly IAppUnitOfWork _uow;
-    private readonly IVerificationsService _verificationService;
-    private readonly ISubscriptionsService _subscriptionsService;
+    private readonly Lazy<IVerificationsService> _verificationService;
+    private readonly Lazy<ISubscriptionsService> _subscriptionsService;
 
     public UsersService(IAppUnitOfWork uow,
-                        IVerificationsService verificationService,
-                        ISubscriptionsService subscriptionsService)
+                        Lazy<IVerificationsService> verificationService,
+                        Lazy<ISubscriptionsService> subscriptionsService)
     {
         _uow = uow;
         _verificationService = verificationService;
@@ -79,7 +79,7 @@ public class UsersService : IUsersService
             var basicPricing = await _uow.PricingRepo.Queryable().FirstOrDefaultAsync(x => x.IsFree, cancellationToken);
             if (basicPricing is null)
                 return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError);
-            var subscriptionResult = await _subscriptionsService.AddAsync(new()
+            var subscriptionResult = await _subscriptionsService.Value.AddAsync(new()
             {
                 PricingId = basicPricing.Id,
                 UserId = model.UserId
@@ -87,7 +87,7 @@ public class UsersService : IUsersService
             if (!subscriptionResult.IsSuccess)
                 return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError);
             #endregion
-            await _verificationService.SendOtpAsync(model.UserId, TemplateType.EmailVerification, cancellationToken);
+            await _verificationService.Value.SendOtpAsync(model.UserId, TemplateType.EmailVerification, cancellationToken);
 
             await transaction.CommitAsync(cancellationToken);
             return new ActionResponse<Guid>(model.UserId);
@@ -127,7 +127,7 @@ public class UsersService : IUsersService
     /// <returns></returns>
     public async Task<IActionResponse<bool>> ActivateEmailAsync(Guid userId, string uniqueCode, CancellationToken cancellationToken = default)
     {
-        var verificationResult = await _verificationService.VerifyAsync(userId, uniqueCode, TemplateType.EmailVerification, cancellationToken);
+        var verificationResult = await _verificationService.Value.VerifyAsync(userId, uniqueCode, TemplateType.EmailVerification, cancellationToken);
         if (!verificationResult.IsSuccess)
             return verificationResult;
 
@@ -155,7 +155,7 @@ public class UsersService : IUsersService
         if (user is null || user.Data.EmailIsApproved)
             return new ActionResponse<bool>(ActionResponseStatusCode.BadRequest, BusinessMessage.UserIsActive);
 
-        return await _verificationService.SendOtpAsync(userId, TemplateType.EmailVerification, cancellationToken);
+        return await _verificationService.Value.SendOtpAsync(userId, TemplateType.EmailVerification, cancellationToken);
     }
 
     /// <summary>

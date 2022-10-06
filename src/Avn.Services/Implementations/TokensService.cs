@@ -122,7 +122,7 @@ public class TokensService : ITokensService
             DropId = item.DropId,
             UniqueCode = RandomStringGenerator.Generate(15),
             InsertDate = DateTime.UtcNow,
-            OwnerWalletAddress = "",
+            OwnerWalletAddress = string.Empty,
             Number = (await _uow.TokenRepo.Queryable()
                                           .Where(x => x.DropId == item.DropId)
                                           .MaxAsync(x => x.Number, cancellationToken: cancellationToken)) + 1
