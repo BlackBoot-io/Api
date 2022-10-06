@@ -1,5 +1,4 @@
 ﻿using Avn.Data.Context;
-using Avn.Data.Repository;
 using Avn.Shared.Core.Data;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -9,13 +8,10 @@ namespace Avn.Data.UnitofWork;
 public partial class AppUnitOfWork : IAppUnitOfWork
 {
     private readonly ApplicationDbContext _dbContext;
-
-    public AppUnitOfWork(ApplicationDbContext dbContext) => _dbContext = dbContext;
-
     public ChangeTracker ChangeTracker => _dbContext.ChangeTracker;
-
     public DatabaseFacade Database => _dbContext.Database;
 
+    public AppUnitOfWork(ApplicationDbContext dbContext) => _dbContext = dbContext;
 
     public async Task<SaveChangesResult> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
