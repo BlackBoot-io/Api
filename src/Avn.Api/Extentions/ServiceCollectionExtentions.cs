@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-using Avn.Api.Core.Authentication;
+﻿using Avn.Api.Core.Authentication;
 using Avn.Data;
 using Avn.Data.Repository;
 using Avn.Data.UnitofWork;
@@ -21,7 +19,7 @@ public static class ServiceCollectionExtentions
         services.AddEFSecondLevelCache(options =>
         {
             options.UseMemoryCacheProvider();
-            options.CacheAllQueries(CacheExpirationMode.Absolute, TimeSpan.FromMinutes(30));
+            options.CacheAllQueries(CacheExpirationMode.Absolute, TimeSpan.FromMinutes(60));
             options.DisableLogging(true);
             options.UseCacheKeyPrefix("Avn_");
         });

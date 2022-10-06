@@ -14,10 +14,8 @@ public class DropController : BaseController
     /// <param name="cancellationToken"></param>
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromForm] CreateDropDto item, CancellationToken cancellationToken = default)
-    {
-        item.UserId = CurrentUserId;
-        return Ok(await _dropsService.CreateAsync(item, cancellationToken));
-    }
+       => Ok(await _dropsService.CreateAsync(item with { UserId = CurrentUserId }, cancellationToken));
+
 
     /// <summary>
     /// Get all drops of a user by UserId

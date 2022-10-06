@@ -1,5 +1,6 @@
 ﻿#nullable disable
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Net;
 using System.Text.Json;
 
 namespace Avn.Api.Filters;
@@ -23,7 +24,8 @@ public class ApiResultAttribute : ActionFilterAttribute
             {
                 StatusCode = okResult.StatusCode
             };
-        else if (context.Result is ObjectResult badRequestObjectResult && badRequestObjectResult.StatusCode == 400)
+
+        else if (context.Result is ObjectResult badRequestObjectResult && badRequestObjectResult.StatusCode == (int)HttpStatusCode.BadRequest)
         {
             string message = null;
             switch (badRequestObjectResult.Value)
@@ -44,7 +46,7 @@ public class ApiResultAttribute : ActionFilterAttribute
             ActionResponse apiResult = new(ActionResponseStatusCode.BadRequest, message);
             context.Result = new JsonResult(apiResult) { StatusCode = badRequestObjectResult.StatusCode };
         }
-        else if (context.Result is ObjectResult notFoundObjectResult && notFoundObjectResult.StatusCode == 404)
+        else if (context.Result is ObjectResult notFoundObjectResult && notFoundObjectResult.StatusCode == (int)HttpStatusCode.NotFound)
         {
             string message = null;
             if (notFoundObjectResult.Value != null && notFoundObjectResult.Value is not ProblemDetails)

@@ -13,10 +13,8 @@ public class ProjectsController : BaseController
     /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> AddAsync([FromBody] CreateProjectDto item, CancellationToken cancellationToken)
-    {
-        item.UserId = CurrentUserId;
-        return Ok(await _projectService.CreateAsync(item, cancellationToken));
-    }
+        => Ok(await _projectService.CreateAsync(item with { UserId = CurrentUserId }, cancellationToken));
+
 
     /// <summary>
     /// update name,ip,website of a project
@@ -26,10 +24,8 @@ public class ProjectsController : BaseController
     /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> UpdateAsync([FromBody] UpdateProjectDto item, CancellationToken cancellationToken)
-    {
-        item.UserId = CurrentUserId;
-        return Ok(await _projectService.UpdateAsync(item, cancellationToken));
-    }
+        => Ok(await _projectService.UpdateAsync(item with { UserId = CurrentUserId }, cancellationToken));
+
 
     /// <summary>
     /// Get all user's project with userId

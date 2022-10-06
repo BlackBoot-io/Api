@@ -12,10 +12,8 @@ public class ApiKeyAuthenticationHandler : AuthenticationHandler<ApiKeyAuthentic
                                        ILoggerFactory logger,
                                        UrlEncoder encoder,
                                        ISystemClock clock,
-                                       IApiKeyService apiKeyService) : base(options, logger, encoder, clock)
-    {
-        _apiKeyService = apiKeyService;
-    }
+                                       IApiKeyService apiKeyService) : base(options, logger, encoder, clock) => _apiKeyService = apiKeyService;
+
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
