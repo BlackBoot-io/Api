@@ -1,5 +1,6 @@
 ﻿namespace Avn.Domain.Entities;
 
+[Table(nameof(NetworkInPricing), Schema = nameof(EntitySchema.Base))]
 public class NetworkInPricing : IEntity
 {
     [Key]

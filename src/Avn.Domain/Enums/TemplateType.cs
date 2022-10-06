@@ -2,10 +2,9 @@
 
 public enum TemplateType : byte
 {
-    EmailVerification = 2,
-    
-    ForgetPassword = 3,
-    CreateDrop = 4,
-    DropRejected = 5,
-    ConfirmDrop = 6
+    EmailVerification = 1,    
+    ForgetPassword = 2,
+    CreateDrop = 3,
+    DropRejected = 4,
+    ConfirmDrop = 5
 }

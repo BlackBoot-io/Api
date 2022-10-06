@@ -1,10 +1,10 @@
 ﻿namespace Avn.Domain.Dtos;
 
-public class UpdateProjectDto
+public record UpdateProjectDto
 {
-    public Guid Id { get; set; }
-    public Guid UserId { get; set; }
-    public string Name { get; set; }
-    public string SourceIp { get; set; }
-    public string Website { get; set; }
+    public Guid Id { get; init; }
+    public Guid UserId { get; init; }
+    public string Name { get; init; }
+    public string SourceIp { get; init; }
+    public string Website { get; init; }
 }
