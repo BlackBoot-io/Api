@@ -39,7 +39,7 @@ public class PricingSeed : IDataSeedProvider
                 }
             }
         };
-        await _uow.PricingRepo.AddAsync(model, cancellationToken);
+        _uow.PricingRepo.Add(model);
         await _uow.SaveChangesAsync(cancellationToken);
     }
 }

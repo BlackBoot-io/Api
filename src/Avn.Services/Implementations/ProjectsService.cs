@@ -43,7 +43,7 @@ public class ProjectsService : IProjectsService
             InsertDate = DateTime.Now,
             IsActive = true
         };
-        await _uow.ProjectRepo.AddAsync(model, cancellationToken);
+        _uow.ProjectRepo.Add(model);
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.IsSuccess)
             return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, dbResult.Message);

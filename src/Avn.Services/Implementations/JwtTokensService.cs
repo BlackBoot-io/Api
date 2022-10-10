@@ -178,14 +178,14 @@ public class JwtTokensService : JwtTokensFactory, IJwtTokensService
             return new ActionResponse<UserTokenDto>(ActionResponseStatusCode.ServerError, "");
 
         var token = GenerateToken(user.UserId, user.Email);
-        await _uow.UserJwtTokenRepo.AddAsync(new UserJwtToken
+        _uow.UserJwtTokenRepo.Add(new UserJwtToken
         {
             UserId = user.UserId,
             AccessTokenHash = HashGenerator.Hash(token.AccessToken),
             AccessTokenExpiresTime = DateTime.Now.AddMinutes(_jwtSettings.AccessTokenExpirationMinutes),
             RefreshTokenHash = HashGenerator.Hash(token.RefreshToken),
             RefreshTokenExpiresTime = DateTime.Now.AddMinutes(_jwtSettings.RefreshTokenExpirationMinutes)
-        }, cancellationToken);
+        });
 
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.IsSuccess)

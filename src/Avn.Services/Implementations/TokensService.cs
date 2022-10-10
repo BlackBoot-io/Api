@@ -128,7 +128,7 @@ public class TokensService : ITokensService
                                           .MaxAsync(x => x.Number, cancellationToken: cancellationToken)) + 1
         };
 
-        await _uow.TokenRepo.AddAsync(model, cancellationToken);
+        _uow.TokenRepo.Add(model);
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.IsSuccess)
             return new ActionResponse<string>(ActionResponseStatusCode.ServerError, dbResult.Message);

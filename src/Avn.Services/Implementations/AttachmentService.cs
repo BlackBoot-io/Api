@@ -34,7 +34,7 @@ public class AttachmentService : IAttachmentService
             InsertDate = DateTime.Now,
             UserId = userId
         };
-        await _uow.AttachmentRepo.AddAsync(model, cancellationToken);
+        _uow.AttachmentRepo.Add(model);
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.IsSuccess)
             return new ActionResponse<int>(ActionResponseStatusCode.ServerError, dbResult.Message);

@@ -70,8 +70,8 @@ public class UsersService : IUsersService
                 WalletAddress = user.WalletAddress,
                 EmailIsApproved = false
             };
-            
-            await _uow.UserRepo.AddAsync(model, cancellationToken);
+
+            _uow.UserRepo.Add(model);
             var dbResult = await _uow.SaveChangesAsync(cancellationToken);
             if (!dbResult.IsSuccess)
                 return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, dbResult.Message);
@@ -215,7 +215,7 @@ public class UsersService : IUsersService
         if (user is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.BadRequest, BusinessMessage.NotFound);
 
-        if (user is  { IsLockoutEnabled: false } )
+        if (user is { IsLockoutEnabled: false })
             return new ActionResponse<bool>(false);
 
 

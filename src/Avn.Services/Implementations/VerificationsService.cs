@@ -30,7 +30,7 @@ public class VerificationsService : IVerificationsService
             UserId = userId,
         };
 
-        await _uow.VerificationCodeRepo.AddAsync(verification, cancellationToken);
+        _uow.VerificationCodeRepo.Add(verification);
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.IsSuccess)
             return new ActionResponse<bool>(ActionResponseStatusCode.ServerError, dbResult.Message);

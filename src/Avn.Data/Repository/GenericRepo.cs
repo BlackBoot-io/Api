@@ -14,6 +14,8 @@ public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity : class
 
     public async Task<TEntity> FindAsync(object key, CancellationToken cancellationToken = default) => await _entities.FindAsync(new object[] { key }, cancellationToken);
 
+    public void Add(TEntity entity) => _entities.Add(entity);
+
     public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default) => await _entities.AddAsync(entity, cancellationToken);
 
     public async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default) => await _entities.AddRangeAsync(entities, cancellationToken);

@@ -17,7 +17,7 @@ public class NetworkSeed : IDataSeedProvider
         if (await _uow.NetworkRepo.Queryable().AnyAsync(x => x.IsDefault, cancellationToken))
             return;
 
-        await _uow.NetworkRepo.AddAsync(new()
+        _uow.NetworkRepo.Add(new()
         {
             Name = "Default",
             Type = Domain.Enums.NetworkType.TestNet,
@@ -27,7 +27,7 @@ public class NetworkSeed : IDataSeedProvider
             IsActive = true,
             IsDefault = true,
 
-        }, cancellationToken);
+        });
         await _uow.SaveChangesAsync(cancellationToken);
     }
 }
