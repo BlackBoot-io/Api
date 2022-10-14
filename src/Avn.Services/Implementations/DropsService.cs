@@ -96,7 +96,6 @@ public class DropsService : IDropsService
             IsTest = item.IsTest,
             ImageContentId = string.Empty
         };
-
         _uow.DropRepo.Add(drop);
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
         if (!dbResult.IsSuccess)
