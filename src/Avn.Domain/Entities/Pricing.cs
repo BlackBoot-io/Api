@@ -1,7 +1,7 @@
 ﻿namespace Avn.Domain.Entities;
 
 [Table(nameof(Pricing), Schema = nameof(EntitySchema.Base))]
-public class Pricing
+public class Pricing : IEntity
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
