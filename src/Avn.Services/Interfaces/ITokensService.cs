@@ -18,7 +18,7 @@ public interface ITokensService : IScopedDependency
     /// <param name="uniqueCode"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IActionResponse<TokenDto>> GetAsync(string uniqueCode, CancellationToken cancellationToken = default);
+    Task<IActionResponse<object>> GetAsync(string uniqueCode, CancellationToken cancellationToken = default);
 
 
     /// <summary>

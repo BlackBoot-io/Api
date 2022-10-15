@@ -36,39 +36,41 @@ public class TokensService : ITokensService
         return new ActionResponse<IEnumerable<TokenDto>>(result);
     }
 
-
     /// <summary>
     /// get a token via link's uniqueCode 
     /// </summary>
     /// <param name="uniqueCode"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<IActionResponse<TokenDto>> GetAsync(string uniqueCode, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<object>> GetAsync(string uniqueCode, CancellationToken cancellationToken = default)
     {
-        var result = await _uow.TokenRepo.Queryable().Select(row => new TokenDto
+        var result = await _uow.TokenRepo.Queryable().Select(row => new
         {
-            //Token
-            TokenId = row.Id,
-            UniqueCode = row.UniqueCode,
-            OwerWalletAddress = row.OwnerWalletAddress,
-            IsBurned = row.IsBurned,
-            IsMinted = row.IsMinted,
-
-            //Drop
-            DropId = row.Drop.Id,
-            DropName = row.Drop.Name,
-            DropCategoryType = row.Drop.CategoryType,
-            Network = row.Drop.Network.Name,
-            StartDate = row.Drop.StartDate,
-            EndDate = row.Drop.EndDate,
-            ExpireDate = row.Drop.ExpireDate
-
-        }).FirstOrDefaultAsync(x => x.UniqueCode == uniqueCode, cancellationToken);
+            Token = new
+            {
+                row.Id,
+                row.UniqueCode,
+                row.OwnerWalletAddress,
+                row.IsBurned,
+                row.IsMinted,
+            },
+            Drop = new
+            {
+                row.Drop.Id,
+                row.Drop.Name,
+                row.Drop.CategoryType,
+                Network = row.Drop.Network.Name,
+                row.Drop.StartDate,
+                row.Drop.EndDate,
+                row.Drop.ExpireDate,
+                row.Drop.Code
+            }
+        }).FirstOrDefaultAsync(x => x.Token.UniqueCode == uniqueCode, cancellationToken);
 
         if (result is null)
-            return new ActionResponse<TokenDto>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
+            return new ActionResponse<object>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
-        return new ActionResponse<TokenDto>(result);
+        return new ActionResponse<object>(result);
 
     }
 
