@@ -15,27 +15,34 @@ public class TokensService : ITokensService
     /// <param name="walletAddress"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<IActionResponse<IEnumerable<TokenDto>>> GetAllAsync(string walletAddress, CancellationToken cancellationToken = default)
+    public async Task<IActionResponse<IEnumerable<object>>> GetAllAsync(string walletAddress, CancellationToken cancellationToken = default)
     {
         var result = await _uow.TokenRepo.Queryable()
             .Where(x => x.IsMinted && x.OwnerWalletAddress == walletAddress)
-            .Select(row => new TokenDto
+            .Select(row => new  
             {
-                DropId = row.Drop.Id,
-                DropName = row.Drop.Name,
-                DropCategoryType = row.Drop.CategoryType,
-                Network = row.Drop.Network.Name,
-                StartDate = row.Drop.StartDate,
-                EndDate = row.Drop.EndDate,
-                ExpireDate = row.Drop.ExpireDate,
-                TokenId = row.Id,
-                UniqueCode = row.UniqueCode,
-                OwerWalletAddress = row.OwnerWalletAddress,
-                IsBurned = row.IsBurned,
-                IsMinted = row.IsMinted
+                Token = new
+                {
+                    row.Id,
+                    row.UniqueCode,
+                    row.OwnerWalletAddress,
+                    row.IsBurned,
+                    row.IsMinted,
+                },
+                Drop = new
+                {
+                    row.Drop.Id,
+                    row.Drop.Name,
+                    row.Drop.CategoryType,
+                    Network = row.Drop.Network.Name,
+                    row.Drop.StartDate,
+                    row.Drop.EndDate,
+                    row.Drop.ExpireDate,
+                    row.Drop.Code
+                }
             }).ToListAsync(cancellationToken);
 
-        return new ActionResponse<IEnumerable<TokenDto>>(result);
+        return new ActionResponse<IEnumerable<object>>(result);
     }
 
     /// <summary>

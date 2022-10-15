@@ -10,7 +10,7 @@ public interface ITokensService : IScopedDependency
     /// <param name="walletAddress"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IActionResponse<IEnumerable<TokenDto>>> GetAllAsync(string walletAddress, CancellationToken cancellationToken = default);
+    Task<IActionResponse<IEnumerable<object>>> GetAllAsync(string walletAddress, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// get a token via link's uniqueCode 
