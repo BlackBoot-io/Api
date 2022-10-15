@@ -17,21 +17,23 @@ public class TokensService : ITokensService
     /// <returns></returns>
     public async Task<IActionResponse<IEnumerable<TokenDto>>> GetAllAsync(string walletAddress, CancellationToken cancellationToken = default)
     {
-        var result = await _uow.TokenRepo.Queryable().Where(x => x.IsMinted && x.OwnerWalletAddress == walletAddress).Select(row => new TokenDto
-        {
-            DropId = row.Drop.Id,
-            DropName = row.Drop.Name,
-            DropCategoryType = row.Drop.CategoryType,
-            Network = row.Drop.Network.Name,
-            StartDate = row.Drop.StartDate,
-            EndDate = row.Drop.EndDate,
-            ExpireDate = row.Drop.ExpireDate,
-            TokenId = row.Id,
-            UniqueCode = row.UniqueCode,
-            OwerWalletAddress = row.OwnerWalletAddress,
-            IsBurned = row.IsBurned,
-            IsMinted = row.IsMinted
-        }).ToListAsync(cancellationToken);
+        var result = await _uow.TokenRepo.Queryable()
+            .Where(x => x.IsMinted && x.OwnerWalletAddress == walletAddress)
+            .Select(row => new TokenDto
+            {
+                DropId = row.Drop.Id,
+                DropName = row.Drop.Name,
+                DropCategoryType = row.Drop.CategoryType,
+                Network = row.Drop.Network.Name,
+                StartDate = row.Drop.StartDate,
+                EndDate = row.Drop.EndDate,
+                ExpireDate = row.Drop.ExpireDate,
+                TokenId = row.Id,
+                UniqueCode = row.UniqueCode,
+                OwerWalletAddress = row.OwnerWalletAddress,
+                IsBurned = row.IsBurned,
+                IsMinted = row.IsMinted
+            }).ToListAsync(cancellationToken);
 
         return new ActionResponse<IEnumerable<TokenDto>>(result);
     }
