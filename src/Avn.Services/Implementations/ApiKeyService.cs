@@ -1,6 +1,4 @@
-﻿using Avn.Domain.Dtos.ApiKey;
-
-namespace Avn.Services.Implementations;
+﻿namespace Avn.Services.Implementations;
 
 public class ApiKeyService : IApiKeyService
 {

@@ -1,4 +1,4 @@
-﻿using Avn.Domain.Dtos.Externals.NftStorage;
+﻿using Avn.Services.External.Dtos;
 using Avn.Services.Interfaces.DeliveryStrategies;
 using Microsoft.Extensions.Configuration;
 

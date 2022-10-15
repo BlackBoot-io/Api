@@ -1,6 +1,4 @@
-﻿using Avn.Domain.Dtos.Subscriptions;
-
-namespace Avn.Services.Interfaces;
+﻿namespace Avn.Services.Interfaces;
 
 public interface ISubscriptionsService : IScopedDependency
 {

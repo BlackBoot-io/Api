@@ -1,6 +1,4 @@
-﻿using Avn.Domain.Dtos.Subscriptions;
-
-namespace Avn.Services.Implementations;
+﻿namespace Avn.Services.Implementations;
 
 public class SubscriptionsService : ISubscriptionsService
 {

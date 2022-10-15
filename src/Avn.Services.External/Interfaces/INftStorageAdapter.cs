@@ -1,4 +1,4 @@
-﻿using Avn.Domain.Dtos.Externals.NftStorage;
+﻿using Avn.Services.External.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Threading;

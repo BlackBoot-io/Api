@@ -1,6 +1,4 @@
-﻿using Avn.Domain.Dtos.ApiKey;
-
-namespace Avn.Services.Interfaces;
+﻿namespace Avn.Services.Interfaces;
 
 public interface IApiKeyService : IScopedDependency
 {

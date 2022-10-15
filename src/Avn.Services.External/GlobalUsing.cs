@@ -1,2 +1,2 @@
-﻿global using Avn.Domain.Dtos;
+﻿global using Avn.Services.External.Dtos;
 global using Avn.Shared.Core;
