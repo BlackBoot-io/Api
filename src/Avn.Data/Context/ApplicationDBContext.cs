@@ -11,8 +11,6 @@ public class ApplicationDbContext : DbContext
         base.ConfigureConventions(configurationBuilder);
     }
 
- 
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>().HasIndex(X => X.Email).IsUnique();
