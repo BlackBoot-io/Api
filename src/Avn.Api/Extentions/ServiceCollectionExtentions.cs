@@ -30,7 +30,8 @@ public static class ServiceCollectionExtentions
         services.AddDbContext<ApplicationDbContext>((IServiceProvider serviceProvider, DbContextOptionsBuilder options) =>
         {
             options.UseSqlServer(configuration.GetConnectionString("ApplicationDbContext"))
-                    .AddInterceptors(serviceProvider.GetRequiredService<SecondLevelCacheInterceptor>());
+                    .AddInterceptors(serviceProvider.GetRequiredService<SecondLevelCacheInterceptor>())
+                    .EnableSensitiveDataLogging();
         });
     }
     public static void AddApplicationAuthentication(this IServiceCollection services, IConfiguration configuration)

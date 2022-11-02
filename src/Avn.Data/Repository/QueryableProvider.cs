@@ -23,8 +23,15 @@ public class QueryProvider<TEntity> : IAsyncQueryProvider where TEntity : class
            => throw new NotImplementedException();
 
     public TResult Execute<TResult>(Expression expression)
-           => throw new NotImplementedException();
+        => throw new NotImplementedException();
 
     public TResult ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default)
-           => throw new NotImplementedException();
+    {
+        if (_targetDbSet.AsQueryable().Provider is IAsyncQueryProvider provider)
+            return provider.ExecuteAsync<TResult>(
+               new ExpressionRootReplacing<TEntity>(_targetDbSet)
+                                                 .Visit(expression),
+                cancellationToken);
+        throw new InvalidOperationException("IQueryableProviderNotAsync");
+    }
 }
