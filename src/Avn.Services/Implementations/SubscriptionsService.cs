@@ -13,7 +13,7 @@ public class SubscriptionsService : ISubscriptionsService
     /// <returns></returns>
     public async Task<IActionResponse<Subscription>> GetCurrentModelAsync(Guid userId, CancellationToken cancellationToken = default)
     {
-        var subscription = await _uow.SubscriptionRepo.Queryable()
+        var subscription = await _uow.SubscriptionRepo
               .Include(X => X.Pricing)
               .Include(X => X.Pricing.NetworkInPricings)
               .ThenInclude(X => X.Network)

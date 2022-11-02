@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Avn.Data;
 
-
 public static class ServiceCollectionExtentions
 {
     public static void RegisterDatabaseSeed(this IServiceCollection services)

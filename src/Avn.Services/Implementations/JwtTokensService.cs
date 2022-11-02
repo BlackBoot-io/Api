@@ -138,7 +138,7 @@ public class JwtTokensService : JwtTokensFactory, IJwtTokensService
         if (string.IsNullOrWhiteSpace(refreshToken))
             return;
         var hashedRefreshToken = HashGenerator.Hash(refreshToken);
-        var tokens = await _uow.UserJwtTokenRepo.Queryable()
+        var tokens = await _uow.UserJwtTokenRepo
                                                 .Where(t => t.RefreshTokenHash == hashedRefreshToken).ToListAsync(cancellationToken);
         _uow.UserJwtTokenRepo.RemoveRange(tokens);
         await _uow.SaveChangesAsync(cancellationToken);
@@ -219,7 +219,7 @@ public class JwtTokensService : JwtTokensFactory, IJwtTokensService
             return new ActionResponse(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidPrameter);
 
         var hashedRefreshToken = HashGenerator.Hash(refreshToken);
-        var tokens = await _uow.UserJwtTokenRepo.Queryable()
+        var tokens = await _uow.UserJwtTokenRepo
                                                 .Where(t => t.RefreshTokenHash == hashedRefreshToken).ToListAsync(cancellationToken);
         _uow.UserJwtTokenRepo.RemoveRange(tokens);
         var dbResult = await _uow.SaveChangesAsync(cancellationToken);
@@ -240,7 +240,7 @@ public class JwtTokensService : JwtTokensFactory, IJwtTokensService
     public async Task<UserJwtToken> GetRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
     {
         var refresheTokenHashed = HashGenerator.Hash(refreshToken);
-        return await _uow.UserJwtTokenRepo.Queryable()
+        return await _uow.UserJwtTokenRepo
                                           .AsNoTracking()
                                           .FirstOrDefaultAsync(x => x.RefreshTokenHash == refresheTokenHashed, cancellationToken);
     }
@@ -254,7 +254,7 @@ public class JwtTokensService : JwtTokensFactory, IJwtTokensService
     public async Task<IActionResponse<bool>> VerifyTokenAsync(Guid userId, string accessToken, CancellationToken cancellationToken = default)
     {
         var hashesAccessToken = HashGenerator.Hash(accessToken);
-        var token = await _uow.UserJwtTokenRepo.Queryable().AsNoTracking().FirstOrDefaultAsync(x => x.UserId == userId && !x.User.IsLockoutEnabled && x.AccessTokenHash == hashesAccessToken, cancellationToken);
+        var token = await _uow.UserJwtTokenRepo.AsNoTracking().FirstOrDefaultAsync(x => x.UserId == userId && !x.User.IsLockoutEnabled && x.AccessTokenHash == hashesAccessToken, cancellationToken);
         return new ActionResponse<bool>(token is not null && token.AccessTokenExpiresTime >= DateTime.Now);
     }
 }

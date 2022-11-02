@@ -14,10 +14,10 @@ public class PricingSeed : IDataSeedProvider
     public async Task SeedAsync(CancellationToken cancellationToken = default)
     {
 
-        if (await _uow.PricingRepo.Queryable().AnyAsync(x => x.IsFree, cancellationToken))
+        if (await _uow.PricingRepo.AnyAsync(x => x.IsFree, cancellationToken))
             return;
 
-        var network = await _uow.NetworkRepo.Queryable().FirstOrDefaultAsync(x => x.IsDefault, cancellationToken);
+        var network = await _uow.NetworkRepo.FirstOrDefaultAsync(x => x.IsDefault, cancellationToken);
         if (network is null)
             return;
 

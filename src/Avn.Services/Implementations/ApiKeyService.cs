@@ -14,7 +14,7 @@ public class ApiKeyService : IApiKeyService
     /// <returns>collection of user information </returns>
     public async Task<IActionResponse<ApiKeyDto>> VerifyAsync(Guid apiKey, CancellationToken cancellationToken = default)
     {
-        var project = await _uow.ProjectRepo.Queryable().AsNoTracking().Include(x => x.User).Select(row => new ApiKeyDto
+        var project = await _uow.ProjectRepo.AsNoTracking().Include(x => x.User).Select(row => new ApiKeyDto
         {
             UserId = row.UserId,
             FullName = row.User.FullName,

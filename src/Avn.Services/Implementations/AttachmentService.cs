@@ -12,7 +12,7 @@ public class AttachmentService : IAttachmentService
     /// <returns></returns>
     public async Task<IActionResponse<Attachment>> GetFile(int attachmentId, CancellationToken cancellationToken)
     {
-        var model = await _uow.AttachmentRepo.Queryable().FirstOrDefaultAsync(X => X.Id == attachmentId, cancellationToken);
+        var model = await _uow.AttachmentRepo.FirstOrDefaultAsync(X => X.Id == attachmentId, cancellationToken);
         if (model is null)
             return new ActionResponse<Attachment>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 

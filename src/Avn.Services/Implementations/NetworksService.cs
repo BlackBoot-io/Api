@@ -10,7 +10,7 @@ public class NetworksService : INetworksService
     /// </summary>
     /// <returns></returns>
     public async Task<IActionResponse<IEnumerable<Network>>> GetAllAvailableAsync(CancellationToken cancellationToken = default)
-          => new ActionResponse<IEnumerable<Network>>(await _uow.NetworkRepo.Queryable().Where(X => X.IsActive).AsNoTracking().ToListAsync(cancellationToken));
+          => new ActionResponse<IEnumerable<Network>>(await _uow.NetworkRepo.Where(X => X.IsActive).AsNoTracking().ToListAsync(cancellationToken));
 
 }
 

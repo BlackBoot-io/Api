@@ -3,16 +3,10 @@ using Avn.Data.Context;
 
 namespace Avn.Data.Repository;
 
-public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity : class
+public class GenericRepo<TEntity> : BaseEntityQueryable<TEntity>, IGenericRepo<TEntity> where TEntity : class, IEntity
 {
     protected readonly DbSet<TEntity> _entities;
     public GenericRepo(ApplicationDbContext dbContext) => _entities = dbContext.Set<TEntity>();
-
-    public IQueryable<TEntity> Queryable() => _entities;
-
-    public async Task<TEntity> FindAsync(object[] keyValues, CancellationToken cancellationToken = default) => await _entities.FindAsync(keyValues, cancellationToken);
-
-    public async Task<TEntity> FindAsync(object key, CancellationToken cancellationToken = default) => await _entities.FindAsync(new object[] { key }, cancellationToken);
 
     public void Add(TEntity entity) => _entities.Add(entity);
 

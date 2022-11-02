@@ -10,7 +10,7 @@ public class PricingsService : IPricingsService
     /// </summary>
     /// <returns></returns>
     public async Task<IActionResponse<object>> GetAvailablePricing(CancellationToken cancellationToken=default)
-           => new ActionResponse<object>(await _uow.NetworkInPricingRepo.Queryable()
+           => new ActionResponse<object>(await _uow.NetworkInPricingRepo
                         .Include(X => X.Pricing)
                         .Include(X => X.Network)
                         .Where(X => X.Pricing.IsActive)

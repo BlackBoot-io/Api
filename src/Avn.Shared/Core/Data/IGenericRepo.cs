@@ -1,10 +1,7 @@
 ﻿namespace Avn.Shared.Core;
 
-public interface IGenericRepo<TEntity> where TEntity : class
+public interface IGenericRepo<TEntity> : IOrderedQueryable<TEntity> where TEntity : class, IEntity
 {
-    public IQueryable<TEntity> Queryable();
-    public Task<TEntity> FindAsync(object key, CancellationToken cancellationToken = default);
-    public Task<TEntity> FindAsync(object[] keyValues, CancellationToken cancellationToken = default);
     public void Add(TEntity entity);
     public Task AddAsync(TEntity entity, CancellationToken cancellationToken = default);
     public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);

@@ -27,7 +27,7 @@ public class UsersService : IUsersService
     /// <returns></returns>
     public async Task<IActionResponse<UserDto>> GetCurrentUserAsync(Guid userId, CancellationToken cancellationToken = default)
     {
-        var user = await _uow.UserRepo.Queryable()
+        var user = await _uow.UserRepo
                         .Where(X => X.UserId == userId)
                         .Select(X => new UserDto
                         {
@@ -76,7 +76,7 @@ public class UsersService : IUsersService
             if (!dbResult.IsSuccess)
                 return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError, dbResult.Message);
             #region Add Basic Subsciption
-            var basicPricing = await _uow.PricingRepo.Queryable().FirstOrDefaultAsync(x => x.IsFree, cancellationToken);
+            var basicPricing = await _uow.PricingRepo.FirstOrDefaultAsync(x => x.IsFree, cancellationToken);
             if (basicPricing is null)
                 return new ActionResponse<Guid>(ActionResponseStatusCode.ServerError);
             var subscriptionResult = await _subscriptionsService.Value.AddAsync(new()
@@ -101,7 +101,7 @@ public class UsersService : IUsersService
 
     public async Task<IActionResponse<Guid>> UpdateProfileAsync(Guid userId, UpdateUserDto userDto, CancellationToken cancellationToken = default)
     {
-        var user = await _uow.UserRepo.FindAsync(userId, cancellationToken);
+        var user = await _uow.UserRepo.FirstOrDefaultAsync(X => X.UserId == userId, cancellationToken);
         if (user is null)
             return new ActionResponse<Guid>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidUser);
 
@@ -131,7 +131,7 @@ public class UsersService : IUsersService
         if (!verificationResult.IsSuccess)
             return verificationResult;
 
-        var result = await _uow.UserRepo.FindAsync(userId, cancellationToken);
+        var result = await _uow.UserRepo.FirstOrDefaultAsync(X => X.UserId == userId, cancellationToken);
         if (result is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.BadRequest, BusinessMessage.InvalidPrameter);
 
@@ -166,7 +166,7 @@ public class UsersService : IUsersService
     /// <returns></returns>
     public async Task<IActionResponse> LockAsync(Guid userId, DateTime endDateUTC, CancellationToken cancellationToken = default)
     {
-        var user = await _uow.UserRepo.FindAsync(userId, cancellationToken);
+        var user = await _uow.UserRepo.FirstOrDefaultAsync(X => X.UserId == userId, cancellationToken);
         if (user is null)
             return new ActionResponse(ActionResponseStatusCode.BadRequest, BusinessMessage.NotFound);
 
@@ -192,7 +192,7 @@ public class UsersService : IUsersService
     /// <returns></returns>
     public async Task<IActionResponse> UnLockAsync(Guid userId, CancellationToken cancellationToken = default)
     {
-        var user = await _uow.UserRepo.FindAsync(userId, cancellationToken);
+        var user = await _uow.UserRepo.FirstOrDefaultAsync(X => X.UserId == userId, cancellationToken);
         if (user is null)
             return new ActionResponse(ActionResponseStatusCode.BadRequest, BusinessMessage.NotFound);
 
@@ -211,7 +211,7 @@ public class UsersService : IUsersService
 
     public async Task<IActionResponse<bool>> CheckLockoutAsync(Guid userId, CancellationToken cancellationToken = default)
     {
-        var user = await _uow.UserRepo.FindAsync(userId, cancellationToken);
+        var user = await _uow.UserRepo.FirstOrDefaultAsync(X => X.UserId == userId, cancellationToken);
         if (user is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.BadRequest, BusinessMessage.NotFound);
 

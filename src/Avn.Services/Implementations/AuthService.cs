@@ -23,7 +23,7 @@ public class AuthService : IAuthService
     /// <returns></returns>
     public async Task<IActionResponse<UserTokenDto>> LoginAsync(UserLoginDto userLoginDto, CancellationToken cancellationToken = default)
     {
-        var user = await _uow.UserRepo.Queryable()
+        var user = await _uow.UserRepo
                                       .FirstOrDefaultAsync(X => X.Email == userLoginDto.Email, cancellationToken);
 
         if (user is null || user.Password != HashGenerator.Hash(userLoginDto.Password, user.PasswordSalt))
@@ -48,7 +48,7 @@ public class AuthService : IAuthService
         if (refreshTokenModel is null)
             return new ActionResponse<UserTokenDto>(ActionResponseStatusCode.NotFound, BusinessMessage.InvalidUser);
 
-        var user = await _uow.UserRepo.Queryable()
+        var user = await _uow.UserRepo
                                       .AsNoTracking()
                                       .FirstOrDefaultAsync(X => X.UserId == refreshTokenModel.UserId, cancellationToken);
         if (user is null)

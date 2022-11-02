@@ -53,7 +53,7 @@ public class VerificationsService : IVerificationsService
     public async Task<IActionResponse<bool>> VerifyAsync(Guid userId, string uniqueCode, TemplateType type, CancellationToken cancellationToken = default)
     {
         var verification = await _uow.VerificationCodeRepo
-                                .Queryable()
+                                
                                 .FirstOrDefaultAsync(X => X.UserId == userId &&
                                                      X.UniqueCode == uniqueCode &&
                                                      !X.IsUsed &&
