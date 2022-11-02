@@ -6,7 +6,9 @@ namespace Avn.Data.Repository;
 public class GenericRepo<TEntity> : BaseEntityQueryable<TEntity>, IGenericRepo<TEntity> where TEntity : class, IEntity
 {
     protected readonly DbSet<TEntity> _entities;
-    public GenericRepo(ApplicationDbContext dbContext) => _entities = dbContext.Set<TEntity>();
+
+    public GenericRepo(ApplicationDbContext dbContext) : base(dbContext.Set<TEntity>()) 
+        => _entities = dbContext.Set<TEntity>();
 
     public void Add(TEntity entity) => _entities.Add(entity);
 
