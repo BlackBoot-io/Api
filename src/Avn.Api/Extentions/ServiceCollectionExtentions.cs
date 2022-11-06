@@ -1,4 +1,6 @@
-﻿using Avn.Api.Core.Authentication;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Avn.Api.Core.Authentication;
 using Avn.Data;
 using Avn.Data.Repository;
 using Avn.Data.UnitofWork;
@@ -7,8 +9,6 @@ using Avn.Shared.Extentions;
 using EFCoreSecondLevelCacheInterceptor;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
 
 namespace Avn.Api.Extentions;
 
@@ -34,6 +34,7 @@ public static class ServiceCollectionExtentions
                     .EnableSensitiveDataLogging();
         });
     }
+
     public static void AddApplicationAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         var jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();

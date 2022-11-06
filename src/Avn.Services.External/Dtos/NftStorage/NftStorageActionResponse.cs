@@ -1,7 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace Avn.Services.External.Dtos;
-
+﻿namespace Avn.Services.External.Dtos;
 
 internal record struct NftStorageActionResponse<TValue>(bool Ok, TValue Value, NftStorageUploadResponseError Error);
 internal record struct NftStorageActionResponse(bool Ok, NftStorageUploadResponseValue Value, NftStorageUploadResponseError Error);

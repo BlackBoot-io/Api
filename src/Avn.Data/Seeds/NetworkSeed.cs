@@ -13,7 +13,6 @@ public class NetworkSeed : IDataSeedProvider
 
     public async Task SeedAsync(CancellationToken cancellationToken = default)
     {
-
         if (await _uow.NetworkRepo.AnyAsync(x => x.IsDefault, cancellationToken))
             return;
 

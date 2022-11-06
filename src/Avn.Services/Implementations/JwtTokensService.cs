@@ -160,13 +160,7 @@ public class JwtTokensService : JwtTokensFactory, IJwtTokensService
     }
     #endregion
 
-    /// <summary>
-    /// first of all this method gnerates a token
-    /// then hashes access tokens and the Adds jwt token to entity 
-    /// </summary>
-    /// <param name="user">User Model</param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    ///  <inheritdoc/>
     public async Task<IActionResponse<UserTokenDto>> GenerateUserTokenAsync(User user, string refreshToken = "", CancellationToken cancellationToken = default)
     {
         if (!string.IsNullOrEmpty(refreshToken))

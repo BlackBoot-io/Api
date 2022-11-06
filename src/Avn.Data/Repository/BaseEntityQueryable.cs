@@ -5,17 +5,20 @@ namespace Avn.Data.Repository;
 
 public class BaseEntityQueryable<TEntity> : IOrderedQueryable<TEntity> where TEntity : class, IEntity
 {
+    protected readonly DbSet<TEntity> _entity;
     public Expression Expression { get; set; }
     public IQueryProvider Provider { get; }
     public Type ElementType => typeof(TEntity);
 
     public BaseEntityQueryable(DbSet<TEntity> entity)
     {
-        Expression = Expression.Constant(this);
-        Provider = new QueryProvider<TEntity>(entity);
+        _entity = entity;
+        Expression = entity.AsQueryable().Expression;
+        Provider = entity.AsQueryable().Provider;
     }
 
     public IEnumerator<TEntity> GetEnumerator()
-        => Provider.Execute<IEnumerable<TEntity>>(Expression).GetEnumerator();
+        => throw new NotSupportedException();
+
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
