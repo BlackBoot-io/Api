@@ -1,6 +1,9 @@
 ﻿using Avn.Services.External.Interfaces;
 using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.Extensions.Configuration;
+using MimeKit;
+using MimeKit.Text;
 using sib_api_v3_sdk.Api;
 using sib_api_v3_sdk.Client;
 using sib_api_v3_sdk.Model;
@@ -41,7 +44,7 @@ public class EmailSenderAdapter : IEmailSenderAdapter
                 textContent: TextContent,
                 subject: Subject,
                 replyTo: null,
-                attachment:email.File is null ? null:  new List<SendSmtpEmailAttachment>() {
+                attachment: email.File is null ? null : new List<SendSmtpEmailAttachment>() {
                     new SendSmtpEmailAttachment {
                              Content = email.File
                     }
@@ -66,6 +69,8 @@ public class EmailSenderAdapter : IEmailSenderAdapter
         {
             return new(false, $"Exception {e.Message}");
         }
+
+
     }
 
     public async Task<IActionResponse> SendAsync(EmailRequestDto email)

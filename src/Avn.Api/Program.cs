@@ -18,7 +18,7 @@ builder.Host.UseSerilog((hostBuilderContext, loggerConfiguration) =>
     loggerConfiguration.WriteTo.Console();
 
     // loggerConfiguration.WriteTo.Seq("http://localhost:5341");
-    loggerConfiguration.WriteTo.File(new JsonFormatter(),"log\\AppLogs.json");
+    loggerConfiguration.WriteTo.File(new JsonFormatter(), "log\\AppLogs.json");
 });
 
 builder.Services.AddHttpContextAccessor();
