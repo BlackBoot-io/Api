@@ -1,6 +1,4 @@
-﻿using Avn.Data.Repository;
-using Avn.Domain.Entities;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Avn.Data.UnitofWork;
 
@@ -19,7 +17,6 @@ public partial class AppUnitOfWork
     public IGenericRepo<Pricing> PricingRepo => _dbContext.GetService<IGenericRepo<Pricing>>();
     public IGenericRepo<NetworkInPricing> NetworkInPricingRepo => _dbContext.GetService<IGenericRepo<NetworkInPricing>>();
     public IGenericRepo<Subscription> SubscriptionRepo => _dbContext.GetService<IGenericRepo<Subscription>>();
-
     #endregion
     #region File
     public IGenericRepo<Attachment> AttachmentRepo => _dbContext.GetService<IGenericRepo<Attachment>>();

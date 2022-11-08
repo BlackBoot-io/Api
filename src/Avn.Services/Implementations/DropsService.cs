@@ -110,7 +110,6 @@ public class DropsService : IDropsService
                 { nameof(item.EndDate), item.EndDate.ToString() }
             }, template: TemplateType.CreateDrop);
 
-
         if (item.IsTest)
             await ConfirmAsync(drop.Code, cancellationToken);
 
@@ -269,7 +268,8 @@ public class DropsService : IDropsService
     public async Task<IActionResponse<bool>> ConfirmAsync(Guid dropCode, CancellationToken cancellationToken = default)
     {
         var drop = await _uow.DropRepo
-                        .FirstOrDefaultAsync(x => x.Code == dropCode && x.DropStatus == DropStatus.Pending, cancellationToken);
+                             .FirstOrDefaultAsync(x => x.Code == dropCode && x.DropStatus == DropStatus.Pending, cancellationToken);
+       
         if (drop is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
@@ -348,7 +348,9 @@ public class DropsService : IDropsService
     /// <returns></returns>
     public async Task<IActionResponse<bool>> RejectAsync(Guid dropCode, string reviewMessage, CancellationToken cancellationToken = default)
     {
-        var drop = await _uow.DropRepo.FirstOrDefaultAsync(x => x.Code == dropCode && x.DropStatus == DropStatus.Pending, cancellationToken);
+        var drop = await _uow.DropRepo
+                             .FirstOrDefaultAsync(x => x.Code == dropCode && x.DropStatus == DropStatus.Pending, cancellationToken);
+      
         if (drop is null)
             return new ActionResponse<bool>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
 
@@ -379,7 +381,8 @@ public class DropsService : IDropsService
     /// <returns>string</returns>
     public async Task<IActionResponse<string>> GetImageUri(Guid dropCode, CancellationToken cancellationToken = default)
     {
-        var drop = await _uow.DropRepo.FirstOrDefaultAsync(x => x.Code == dropCode, cancellationToken);
+        var drop = await _uow.DropRepo
+                             .FirstOrDefaultAsync(x => x.Code == dropCode, cancellationToken);
 
         if (drop is null)
             return new ActionResponse<string>(ActionResponseStatusCode.NotFound, BusinessMessage.NotFound);
