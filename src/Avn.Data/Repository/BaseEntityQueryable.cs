@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Avn.Data.Repository;
 
-public class BaseEntityQueryable<TEntity> : IOrderedQueryable<TEntity> where TEntity : class, IEntity
+public abstract class BaseEntityQueryable<TEntity> : IOrderedQueryable<TEntity> where TEntity : class, IEntity
 {
     protected readonly DbSet<TEntity> _entity;
     public Expression Expression { get; set; }

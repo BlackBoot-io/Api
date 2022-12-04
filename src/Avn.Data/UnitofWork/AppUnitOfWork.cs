@@ -11,7 +11,8 @@ public partial class AppUnitOfWork : IAppUnitOfWork
     public ChangeTracker ChangeTracker => _dbContext.ChangeTracker;
     public DatabaseFacade Database => _dbContext.Database;
 
-    public AppUnitOfWork(ApplicationDbContext dbContext) => _dbContext = dbContext;
+    public AppUnitOfWork(ApplicationDbContext dbContext) 
+        => _dbContext = dbContext;
 
     public async Task<SaveChangesResult> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
@@ -42,5 +43,4 @@ public partial class AppUnitOfWork : IAppUnitOfWork
         await _dbContext.DisposeAsync();
         GC.SuppressFinalize(this);
     }
-
 }

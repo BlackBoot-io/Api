@@ -2,6 +2,8 @@
 
 public interface IGenericRepo<TEntity> : IOrderedQueryable<TEntity> where TEntity : class, IEntity
 {
+    public TEntity? Find(params object?[]? keyValues);
+    public ValueTask<TEntity?> FindAsync(params object?[]? keyValues);
     public void Add(TEntity entity);
     public Task AddAsync(TEntity entity, CancellationToken cancellationToken = default);
     public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
