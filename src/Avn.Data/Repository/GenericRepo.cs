@@ -11,6 +11,7 @@ public sealed class GenericRepo<TEntity> : BaseEntityQueryable<TEntity>, IGeneri
     public TEntity? Find(params object?[]? keyValues)
              => _entity.Find(keyValues);
 
+
     public async ValueTask<TEntity?> FindAsync(params object?[]? keyValues)
         => await _entity.FindAsync(keyValues);
 
