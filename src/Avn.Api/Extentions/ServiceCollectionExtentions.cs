@@ -1,4 +1,8 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿// <copyright file="ServiceCollectionExtentions.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Avn.Api.Core.Authentication;
 using Avn.Data;
@@ -59,7 +63,6 @@ public static class ServiceCollectionExtentions
 
             static async Task validate(TokenValidatedContext context)
             {
-
                 var token = ((JwtSecurityToken)context.SecurityToken).RawData;
                 var userTokenService = context.HttpContext.RequestServices.GetRequiredService<IJwtTokensService>();
                 var userId = context?.Principal?.Identity?.GetUserIdAsGuid();
@@ -96,7 +99,4 @@ public static class ServiceCollectionExtentions
                                             .Build();
         });
     }
-
-
 }
-
